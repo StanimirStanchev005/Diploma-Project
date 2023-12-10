@@ -11,7 +11,8 @@ import Foundation
 class LoginModel {
     var email = ""
     var password = ""
-   
+    let error = "Invalid email or password"
+    
     var isValid: Bool {
         return true
     }

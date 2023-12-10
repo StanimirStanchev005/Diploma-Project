@@ -12,11 +12,22 @@ struct ContentView: View {
         NavigationStack {
             VStack {
                 Spacer()
-                SignInButton(text: "Sign in", destination: LoginView(), color: .black)
-                SignInButton(text: "Register", destination: RegisterView(), color: .black)
+                
+                NavigationLink {
+                    LoginView()
+                } label: {
+                    SignInButton(text: "Sign in", color: .black)
+                }
+                NavigationLink {
+                    RegisterView()
+                } label: {
+                    SignInButton(text: "Register", color: .green)
+                }
             }
+            .padding(.bottom)
             .navigationTitle("Sport Scheduler")
         }
+        .preferredColorScheme(.light)
     }
 }
 

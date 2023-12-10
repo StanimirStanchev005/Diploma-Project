@@ -7,17 +7,15 @@
 
 import SwiftUI
 
-struct SignInButton<TargetView: View>: View {
+struct SignInButton: View {
     let text: String
-    let destination: TargetView
     let color: Color
     
     var body: some View {
-        NavigationLink(destination: destination) {
             ZStack {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundStyle(color)
-                    .frame(width: 280, height: 60)
+                    .frame(maxWidth: 280, maxHeight: 60)
                 
                 Text(text)
                     .foregroundStyle(.white)
@@ -25,8 +23,7 @@ struct SignInButton<TargetView: View>: View {
             }
         }
     }
-}
 
 #Preview {
-    SignInButton(text: "", destination: LoginView(), color: .black)
+    SignInButton(text: "", color: .black)
 }
