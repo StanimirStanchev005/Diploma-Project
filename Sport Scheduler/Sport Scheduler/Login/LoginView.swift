@@ -55,12 +55,11 @@ struct LoginView: View {
             }
             .padding(.bottom)
             .navigationDestination(isPresented: $isShwoingUserClubsScreen) {
-                UserClubsView()
+                MainView()
             }
             .navigationTitle("Sign in")
             .navigationBarTitleDisplayMode(.inline)
         }
-        .preferredColorScheme(.light)
     }
 }
 

@@ -65,12 +65,11 @@ struct RegisterView: View {
             }
             .padding(.bottom)
             .navigationDestination(isPresented: $isShwoingUserClubsScreen) {
-                UserClubsView()
+                MainView()
             }
         }
         .navigationTitle("Register")
         .navigationBarTitleDisplayMode(.inline)
-        .preferredColorScheme(.light)
     }
 }
 

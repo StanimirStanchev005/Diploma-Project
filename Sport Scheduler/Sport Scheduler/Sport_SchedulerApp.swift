@@ -12,6 +12,7 @@ struct Sport_SchedulerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.light)
         }
     }
 }

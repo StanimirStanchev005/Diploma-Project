@@ -27,7 +27,7 @@ struct ContentView: View {
             .padding(.bottom)
             .navigationTitle("Sport Scheduler")
         }
-        .preferredColorScheme(.light)
+
     }
 }
 
