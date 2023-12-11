@@ -7,11 +7,11 @@
 
 import Foundation
 
-@Observable
-class Club: Identifiable {
-    let name: String
-    let picture = "ClubPlaceholder"
-    let members: [Users] = []
+
+class Club: Identifiable, Codable {
+    var name: String
+    var picture = "ClubPlaceholder"
+    var members: [User] = []
     
     init(name: String) {
         self.name = name

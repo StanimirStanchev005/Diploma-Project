@@ -12,17 +12,17 @@ struct SignInButton: View {
     let color: Color
     
     var body: some View {
-            ZStack {
-                RoundedRectangle(cornerRadius: 10)
-                    .foregroundStyle(color)
-                    .frame(maxWidth: 280, maxHeight: 60)
-                
-                Text(text)
-                    .foregroundStyle(.white)
-                    .font(.title3)
-            }
+        ZStack {
+            RoundedRectangle(cornerRadius: 10)
+                .foregroundStyle(color)
+                .frame(maxWidth: 280, maxHeight: 60)
+            
+            Text(text)
+                .foregroundStyle(.white)
+                .font(.title3)
         }
     }
+}
 
 #Preview {
     SignInButton(text: "", color: .black)

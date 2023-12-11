@@ -7,10 +7,8 @@
 
 import Foundation
 
-@Observable
-class Users {
-  
-    let id = UUID()
+class User: Codable {
+    
     var name: String
     var picture = "UserPlaceholder"
     var joinedClubs: [Club] = []
@@ -23,12 +21,16 @@ class Users {
     }
 }
 
-extension Users: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        return hasher.combine(id)
+extension User: Hashable {
+    var identifier: String {
+        return UUID().uuidString
     }
     
-    public static func == (lhs: Users, rhs: Users) -> Bool {
-        return lhs.id == rhs.id
+    public func hash(into hasher: inout Hasher) {
+        return hasher.combine(identifier)
+    }
+    
+    public static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.identifier == rhs.identifier
     }
 }

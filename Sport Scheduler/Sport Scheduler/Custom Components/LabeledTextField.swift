@@ -19,6 +19,7 @@ struct LabeledTextField: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(text)
                 .font(.subheadline)
+                .foregroundStyle(.secondary)
             Group {
                 if isSecure {
                     SecureField(text, text: $input)
@@ -29,7 +30,7 @@ struct LabeledTextField: View {
             .padding(10)
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
-                    .stroke(Color.black, lineWidth: 1)
+                    .stroke(Color.secondary, lineWidth: 1)
             )
             .frame(maxWidth: 280, maxHeight: 50)
             .overlay(

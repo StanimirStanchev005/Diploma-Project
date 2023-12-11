@@ -8,26 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @EnvironmentObject var viewModel: AppViewModel
+    
     var body: some View {
-        NavigationStack {
-            VStack {
-                Spacer()
-                
-                NavigationLink {
-                    LoginView()
-                } label: {
-                    SignInButton(text: "Sign in", color: .black)
-                }
-                NavigationLink {
-                    RegisterView()
-                } label: {
-                    SignInButton(text: "Register", color: .green)
-                }
+        VStack {
+            if viewModel.isSignedInAndSynced {
+                MainView()
+            } else {
+                WelcomeView()
             }
-            .padding(.bottom)
-            .navigationTitle("Sport Scheduler")
+            
         }
-
+        
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

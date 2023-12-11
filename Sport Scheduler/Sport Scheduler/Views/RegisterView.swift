@@ -9,7 +9,8 @@ import SwiftUI
 
 struct RegisterView: View {
     @State private var registerModel = RegisterModel()
-    @State private var isShwoingUserClubsScreen = false
+    @EnvironmentObject var viewModel: AppViewModel
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 20) {
@@ -31,7 +32,7 @@ struct RegisterView: View {
             }
             VStack(spacing: 10) {
                 Button {
-                    isShwoingUserClubsScreen = registerModel.isInputValid
+                    viewModel.register(name: registerModel.fullName, email: registerModel.email, password: registerModel.password)
                 } label: {
                     SignInButton(text: "Sign up", color: registerModel.isInputValid ? .blue : .gray)
                 }
@@ -41,7 +42,7 @@ struct RegisterView: View {
                     .frame(maxWidth: 350, maxHeight: 2)
                 
                 Button {
-                    isShwoingUserClubsScreen = true
+                    //                    isShwoingUserClubsScreen.toggle()
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -64,9 +65,6 @@ struct RegisterView: View {
                 }
             }
             .padding(.bottom)
-            .navigationDestination(isPresented: $isShwoingUserClubsScreen) {
-                MainView()
-            }
         }
         .navigationTitle("Register")
         .navigationBarTitleDisplayMode(.inline)

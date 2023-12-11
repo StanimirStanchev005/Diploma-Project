@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 @Observable
 class RegisterModel {
@@ -38,7 +39,7 @@ extension RegisterModel {
             return !isFullNameValid
         }
     }
-
+    
     func validEmail() -> Bool {
         if email.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
             return false
@@ -46,13 +47,13 @@ extension RegisterModel {
             return !isEmailValid
         }
     }
-
+    
     func validPassword() -> Bool {
         if password.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
             return false
         } else {
             return !isPasswordValid
         }
-       
+        
     }
 }

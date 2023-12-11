@@ -9,7 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     @State private var loginModel = LoginModel()
-    @State private var isShwoingUserClubsScreen = false
+    @EnvironmentObject var viewModel: AppViewModel
+    @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 50) {
@@ -22,16 +23,16 @@ struct LoginView: View {
             VStack(spacing: 15) {
                 
                 Button {
-                    isShwoingUserClubsScreen = true
+                    viewModel.login(email: loginModel.email, password: loginModel.password)
                 } label: {
                     SignInButton(text: "Sign in", color: .blue)
                 }
-        
+                
                 Rectangle()
                     .frame(maxWidth: 350, maxHeight: 2)
                 
                 Button {
-                    isShwoingUserClubsScreen = true
+                    // isShwoingUserClubsScreen = true
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 10)
@@ -54,9 +55,6 @@ struct LoginView: View {
                 }
             }
             .padding(.bottom)
-            .navigationDestination(isPresented: $isShwoingUserClubsScreen) {
-                MainView()
-            }
             .navigationTitle("Sign in")
             .navigationBarTitleDisplayMode(.inline)
         }

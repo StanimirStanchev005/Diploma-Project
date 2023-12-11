@@ -14,7 +14,7 @@ struct MainView: View {
                 .tabItem {
                     Label("Clubs", systemImage: "person.3.fill")
                 }
-           
+            
             WorkoutsView()
                 .tabItem {
                     Label("Workouts", systemImage: "figure.run.square.stack.fill")
