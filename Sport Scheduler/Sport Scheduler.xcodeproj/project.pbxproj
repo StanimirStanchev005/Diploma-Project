@@ -32,9 +32,15 @@
 		36ADF95D2B2743EC0028C73B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADF95C2B2743EC0028C73B /* FirebaseAuth */; };
 		36ADF95F2B2743EC0028C73B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADF95E2B2743EC0028C73B /* FirebaseFirestore */; };
 		36ADF9632B274B660028C73B /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9622B274B660028C73B /* WelcomeView.swift */; };
-		36ADF9662B274EFF0028C73B /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9652B274EFF0028C73B /* AppViewModel.swift */; };
 		36ADF9692B2771610028C73B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 36ADF9682B2771610028C73B /* GoogleService-Info.plist */; };
 		36ADF96C2B27792B0028C73B /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADF96B2B27792B0028C73B /* FirebaseFirestoreSwift */; };
+		36ADF96E2B2898100028C73B /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF96D2B2898100028C73B /* UserManager.swift */; };
+		36ADF9702B2899E80028C73B /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF96F2B2899E80028C73B /* AuthenticationManager.swift */; };
+		36ADF9732B28B8FB0028C73B /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADF9722B28B8FB0028C73B /* GoogleSignIn */; };
+		36ADF9752B28B8FB0028C73B /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADF9742B28B8FB0028C73B /* GoogleSignInSwift */; };
+		36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9782B29BCB60028C73B /* Utilities.swift */; };
+		36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */; };
+		36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9802B29D5730028C73B /* ProfileModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,8 +87,13 @@
 		36ADF9542B2618730028C73B /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		36ADF9572B2626770028C73B /* ClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubView.swift; sourceTree = "<group>"; };
 		36ADF9622B274B660028C73B /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
-		36ADF9652B274EFF0028C73B /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		36ADF9682B2771610028C73B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		36ADF96D2B2898100028C73B /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		36ADF96F2B2899E80028C73B /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
+		36ADF9762B28B9250028C73B /* Sport-Scheduler-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Sport-Scheduler-Info.plist"; sourceTree = SOURCE_ROOT; };
+		36ADF9782B29BCB60028C73B /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInResultModel.swift; sourceTree = "<group>"; };
+		36ADF9802B29D5730028C73B /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +101,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36ADF9752B28B8FB0028C73B /* GoogleSignInSwift in Frameworks */,
 				36ADF95D2B2743EC0028C73B /* FirebaseAuth in Frameworks */,
+				36ADF9732B28B8FB0028C73B /* GoogleSignIn in Frameworks */,
 				36ADF95F2B2743EC0028C73B /* FirebaseFirestore in Frameworks */,
 				36ADF96C2B27792B0028C73B /* FirebaseFirestoreSwift in Frameworks */,
 			);
@@ -137,8 +150,10 @@
 		36ADF9082B21AD690028C73B /* Sport Scheduler */ = {
 			isa = PBXGroup;
 			children = (
+				36ADF9762B28B9250028C73B /* Sport-Scheduler-Info.plist */,
 				36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */,
 				36ADF90B2B21AD690028C73B /* ContentView.swift */,
+				36ADF9772B29BCA90028C73B /* Utilities */,
 				36ADF9642B274EE10028C73B /* Data Manager */,
 				36ADF9352B21B3610028C73B /* Custom Components */,
 				36ADF94F2B26183F0028C73B /* Models */,
@@ -208,6 +223,8 @@
 				36ADF9502B2618570028C73B /* User.swift */,
 				36ADF9522B2618620028C73B /* Club.swift */,
 				36ADF9542B2618730028C73B /* Subscription.swift */,
+				36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */,
+				36ADF9802B29D5730028C73B /* ProfileModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -215,7 +232,8 @@
 		36ADF9642B274EE10028C73B /* Data Manager */ = {
 			isa = PBXGroup;
 			children = (
-				36ADF9652B274EFF0028C73B /* AppViewModel.swift */,
+				36ADF96D2B2898100028C73B /* UserManager.swift */,
+				36ADF96F2B2899E80028C73B /* AuthenticationManager.swift */,
 			);
 			path = "Data Manager";
 			sourceTree = "<group>";
@@ -225,6 +243,14 @@
 			children = (
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		36ADF9772B29BCA90028C73B /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				36ADF9782B29BCB60028C73B /* Utilities.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -247,6 +273,8 @@
 				36ADF95C2B2743EC0028C73B /* FirebaseAuth */,
 				36ADF95E2B2743EC0028C73B /* FirebaseFirestore */,
 				36ADF96B2B27792B0028C73B /* FirebaseFirestoreSwift */,
+				36ADF9722B28B8FB0028C73B /* GoogleSignIn */,
+				36ADF9742B28B8FB0028C73B /* GoogleSignInSwift */,
 			);
 			productName = "Sport Scheduler";
 			productReference = 36ADF9062B21AD690028C73B /* Sport Scheduler.app */;
@@ -322,6 +350,7 @@
 			mainGroup = 36ADF8FD2B21AD690028C73B;
 			packageReferences = (
 				36ADF95B2B2743EC0028C73B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				36ADF9712B28B8FB0028C73B /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 36ADF9072B21AD690028C73B /* Products */;
 			projectDirPath = "";
@@ -368,13 +397,15 @@
 			files = (
 				36ADF9462B24D8C60028C73B /* TextErrorView.swift in Sources */,
 				36ADF94D2B2616430028C73B /* ProfileView.swift in Sources */,
-				36ADF9662B274EFF0028C73B /* AppViewModel.swift in Sources */,
 				36ADF9342B21B0E50028C73B /* LoginView.swift in Sources */,
 				36ADF94B2B2616280028C73B /* WorkoutsView.swift in Sources */,
 				36ADF9422B224B1F0028C73B /* UserClubsView.swift in Sources */,
 				36ADF9402B21E2950028C73B /* LoginModel.swift in Sources */,
 				36ADF9582B2626770028C73B /* ClubView.swift in Sources */,
+				36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */,
 				36ADF93C2B21B5650028C73B /* RegisterView.swift in Sources */,
+				36ADF9702B2899E80028C73B /* AuthenticationManager.swift in Sources */,
+				36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */,
 				36ADF9372B21B3A00028C73B /* SignInButton.swift in Sources */,
 				36ADF9552B2618730028C73B /* Subscription.swift in Sources */,
 				36ADF9512B2618570028C73B /* User.swift in Sources */,
@@ -383,7 +414,9 @@
 				36ADF9632B274B660028C73B /* WelcomeView.swift in Sources */,
 				36ADF9482B2614F30028C73B /* MainView.swift in Sources */,
 				36ADF90A2B21AD690028C73B /* Sport_SchedulerApp.swift in Sources */,
+				36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */,
 				36ADF93E2B21BD4E0028C73B /* LabeledTextField.swift in Sources */,
+				36ADF96E2B2898100028C73B /* UserManager.swift in Sources */,
 				36ADF9442B22F4CD0028C73B /* RegisterModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -551,6 +584,7 @@
 				DEVELOPMENT_TEAM = RDVA332VHN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Sport-Scheduler-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -580,6 +614,7 @@
 				DEVELOPMENT_TEAM = RDVA332VHN;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Sport-Scheduler-Info.plist";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -724,6 +759,14 @@
 				minimumVersion = 10.19.0;
 			};
 		};
+		36ADF9712B28B8FB0028C73B /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -741,6 +784,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36ADF95B2B2743EC0028C73B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		36ADF9722B28B8FB0028C73B /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36ADF9712B28B8FB0028C73B /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		36ADF9742B28B8FB0028C73B /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36ADF9712B28B8FB0028C73B /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -11,7 +11,7 @@ import Foundation
 class Club: Identifiable, Codable {
     var name: String
     var picture = "ClubPlaceholder"
-    var members: [User] = []
+    var members: [UserModel] = []
     
     init(name: String) {
         self.name = name

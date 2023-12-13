@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserClubsView: View {
-    @EnvironmentObject var viewModel: AppViewModel
+    @State private var exampleUser = UserModel(name: "Spas")
     
     var body: some View {
         NavigationStack {
@@ -17,7 +17,7 @@ struct UserClubsView: View {
                 Section("Joined") {
                     ScrollView(.horizontal) {
                         HStack {
-                            ForEach(viewModel.user!.joinedClubs) { club in
+                            ForEach(exampleUser.joinedClubs) { club in
                                 NavigationLink(value: club) {
                                     VStack {
                                         Image(club.picture)
@@ -55,7 +55,7 @@ struct UserClubsView: View {
                 Section("Owned") {
                     ScrollView(.horizontal) {
                         HStack {
-                            ForEach(viewModel.user!.ownedClubs) { club in
+                            ForEach(exampleUser.ownedClubs) { club in
                                 NavigationLink(value: club) {
                                     VStack {
                                         Image(club.picture)
@@ -91,10 +91,10 @@ struct UserClubsView: View {
                     }
                 }
                 Button("Add Clubs") {
-                    viewModel.user!.joinedClubs.append(Club(name: "Gym"))
-                    viewModel.user!.joinedClubs.append(Club(name: "Tennis Club"))
-                    viewModel.user!.ownedClubs.append(Club(name: "Gym"))
-                    viewModel.user!.ownedClubs.append(Club(name: "Tennis Club"))
+                    exampleUser.joinedClubs.append(Club(name: "Gym"))
+                    exampleUser.joinedClubs.append(Club(name: "Tennis Club"))
+                    exampleUser.ownedClubs.append(Club(name: "Gym"))
+                    exampleUser.ownedClubs.append(Club(name: "Tennis Club"))
                 }
                 .buttonStyle(.borderedProminent)
             }

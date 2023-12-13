@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import GoogleSignIn
+import GoogleSignInSwift
 
 struct LoginView: View {
-    @State private var loginModel = LoginModel()
-    @EnvironmentObject var viewModel: AppViewModel
-    @Environment(\.dismiss) var dismiss
+    @StateObject private var loginModel = LoginModel()
+    @Binding var showSignInView: Bool
     
     var body: some View {
         VStack(spacing: 50) {
@@ -23,7 +24,14 @@ struct LoginView: View {
             VStack(spacing: 15) {
                 
                 Button {
-                    viewModel.login(email: loginModel.email, password: loginModel.password)
+                    Task {
+                        do {
+                            try await loginModel.login()
+                            showSignInView = false
+                        } catch {
+                            print("Error signing in!")
+                        }
+                    }
                 } label: {
                     SignInButton(text: "Sign in", color: .blue)
                 }
@@ -31,28 +39,17 @@ struct LoginView: View {
                 Rectangle()
                     .frame(maxWidth: 350, maxHeight: 2)
                 
-                Button {
-                    // isShwoingUserClubsScreen = true
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.white)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke()
-                            }
-                        HStack {
-                            Image("Google icon")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxHeight: 50)
-                            Text("Sign in with Google")
-                                .foregroundStyle(.black)
-                                .font(.title3)
+                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
+                    Task {
+                        do {
+                            try await loginModel.signInGoogle()
+                                showSignInView = false
+                        } catch {
+                            print(error)
                         }
                     }
-                    .frame(maxWidth:280, maxHeight: 60)
                 }
+                .padding(.vertical)
             }
             .padding(.bottom)
             .navigationTitle("Sign in")
@@ -62,5 +59,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView(showSignInView: .constant(false))
 }

@@ -7,27 +7,43 @@
 
 import SwiftUI
 
+
 struct ProfileView: View {
-    @EnvironmentObject var viewModel: AppViewModel
+    @StateObject private var profileModel = ProfileModel()
+    @Binding var showSignInView: Bool
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Profile View")
-                
+            List {
+                if let user = profileModel.user {
+                    Text("UserID: \(user.uid)")
+                }
+            }
+            .onAppear{
+                try? profileModel.laodCurrentUser()
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Sign Out") {
-                        viewModel.signOut()
+                        Task {
+                            do {
+                                try profileModel.signOut()
+                                showSignInView = true
+                            } catch {
+                                print(error)
+                            }
+                        }
                     }
                 }
             }
-            .navigationTitle(viewModel.user!.name)
+            .navigationTitle("Profile")
         }
+        
     }
 }
 
 #Preview {
-    ProfileView()
+    NavigationStack {
+        ProfileView(showSignInView: .constant(false))
+    }
 }

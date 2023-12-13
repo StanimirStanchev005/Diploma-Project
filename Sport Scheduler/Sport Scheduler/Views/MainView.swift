@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainView: View {
+    @Binding var showSignInView: Bool
     var body: some View {
         TabView {
             UserClubsView()
@@ -20,7 +21,7 @@ struct MainView: View {
                     Label("Workouts", systemImage: "figure.run.square.stack.fill")
                 }
             
-            ProfileView()
+            ProfileView(showSignInView: $showSignInView)
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
@@ -29,5 +30,5 @@ struct MainView: View {
 }
 
 #Preview {
-    MainView()
+    MainView(showSignInView: .constant(false))
 }

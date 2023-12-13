@@ -8,11 +8,11 @@
 import Foundation
 import Firebase
 
-@Observable
-class RegisterModel {
-    var fullName = ""
-    var email = ""
-    var password = ""
+@MainActor
+final class RegisterModel: ObservableObject {
+    @Published var fullName = ""
+    @Published var email = ""
+    @Published var password = ""
     
     var isFullNameValid: Bool {
         !fullName.isEmpty
@@ -28,6 +28,13 @@ class RegisterModel {
     
     var isInputValid: Bool {
         isFullNameValid && isEmailValid && isPasswordValid
+    }
+    
+    func register() async throws {
+        guard isInputValid else { return }
+    
+        try await AuthenticationManager.shared.createUser(email: email, password: password)
+               
     }
 }
 

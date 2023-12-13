@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @State private var registerModel = RegisterModel()
-    @EnvironmentObject var viewModel: AppViewModel
-    @Environment(\.dismiss) var dismiss
+    @StateObject private var registerModel = RegisterModel()
+    @Binding var showSignInView: Bool
     
     var body: some View {
         VStack(spacing: 20) {
@@ -32,7 +31,14 @@ struct RegisterView: View {
             }
             VStack(spacing: 10) {
                 Button {
-                    viewModel.register(name: registerModel.fullName, email: registerModel.email, password: registerModel.password)
+                    Task {
+                        do {
+                            try await registerModel.register()
+                            showSignInView = false
+                        } catch {
+                            print("Error while registering")
+                        }
+                    }
                 } label: {
                     SignInButton(text: "Sign up", color: registerModel.isInputValid ? .blue : .gray)
                 }
@@ -72,5 +78,5 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    RegisterView(showSignInView: .constant(false))
 }

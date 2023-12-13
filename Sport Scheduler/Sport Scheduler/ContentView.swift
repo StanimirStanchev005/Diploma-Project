@@ -8,19 +8,21 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var viewModel: AppViewModel
+    @State private var showSignInView = false
     
     var body: some View {
-        VStack {
-            if viewModel.isSignedInAndSynced {
-                MainView()
-            } else {
-                WelcomeView()
+        ZStack {
+            if !showSignInView{
+                MainView(showSignInView: $showSignInView)
             }
-            
         }
-        
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear() {
+            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
+            self.showSignInView = authUser == nil
+        }
+        .fullScreenCover(isPresented: $showSignInView) {
+            WelcomeView(showSignInView: $showSignInView)
+        }
     }
 }
 

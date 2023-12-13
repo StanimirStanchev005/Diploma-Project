@@ -7,8 +7,8 @@
 
 import Foundation
 
-class User: Codable {
-    
+class UserModel: Codable {
+
     var name: String
     var picture = "UserPlaceholder"
     var joinedClubs: [Club] = []
@@ -21,7 +21,7 @@ class User: Codable {
     }
 }
 
-extension User: Hashable {
+extension UserModel: Hashable {
     var identifier: String {
         return UUID().uuidString
     }
@@ -30,7 +30,7 @@ extension User: Hashable {
         return hasher.combine(identifier)
     }
     
-    public static func == (lhs: User, rhs: User) -> Bool {
+    public static func == (lhs: UserModel, rhs: UserModel) -> Bool {
         return lhs.identifier == rhs.identifier
     }
 }
