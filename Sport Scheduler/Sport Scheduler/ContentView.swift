@@ -6,9 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct ContentView: View {
     @State private var showSignInView = false
+    
+    private var authenticationProvider: AuthenticationServiceProvidable
+    
+    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth()) {
+        self.authenticationProvider = authenticationProvider
+    }
     
     var body: some View {
         ZStack {
@@ -17,7 +24,7 @@ struct ContentView: View {
             }
         }
         .onAppear() {
-            let authUser = try? AuthenticationManager.shared.getAuthenticatedUser()
+            let authUser = try? authenticationProvider.getAuthenticatedUser()
             self.showSignInView = authUser == nil
         }
         .fullScreenCover(isPresented: $showSignInView) {

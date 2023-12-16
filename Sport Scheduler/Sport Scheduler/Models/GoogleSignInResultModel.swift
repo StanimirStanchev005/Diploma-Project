@@ -16,6 +16,12 @@ struct GoogleSignInResultModel {
 
 final class SignInGoogleHelper {
     
+    private var authenticationProvider: AuthenticationServiceProvidable
+    
+    init(authenticationProvider: AuthenticationServiceProvidable) {
+        self.authenticationProvider = authenticationProvider
+    }
+    
     @MainActor
     func signIn() async throws -> GoogleSignInResultModel {
         guard let topVC = Utilities.shared.topViewController() else {
@@ -31,7 +37,7 @@ final class SignInGoogleHelper {
         let accessToken: String = gidSignInResult.user.accessToken.tokenString
         
         let tokens = GoogleSignInResultModel(idToken: idToken, accessToken: accessToken)
-        try await AuthenticationManager.shared.signInWithGoogle(tokens: tokens)
+        let _ = try await authenticationProvider.signInWithGoogle(tokens: tokens)
         return tokens
     }
 }

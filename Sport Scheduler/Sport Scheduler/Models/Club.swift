@@ -11,23 +11,25 @@ import Foundation
 class Club: Identifiable, Codable {
     var name: String
     var picture = "ClubPlaceholder"
-    var members: [UserModel] = []
+    var members: [DBUser] = []
     
     init(name: String) {
         self.name = name
     }
+    
+    var identifier: String {
+        UUID().uuidString
+    }
 }
 
 extension Club: Hashable {
-    var identifier: String {
-        return UUID().uuidString
-    }
+    
     public func hash(into hasher: inout Hasher) {
-        return hasher.combine(identifier)
+        hasher.combine(identifier)
     }
     
     public static func == (lhs: Club, rhs: Club) -> Bool {
-        return lhs.identifier == rhs.identifier
+        lhs.identifier == rhs.identifier
     }
 }
 

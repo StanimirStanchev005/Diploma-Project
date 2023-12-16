@@ -6,13 +6,22 @@
 //
 
 import Foundation
-import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 @MainActor
 final class RegisterModel: ObservableObject {
+    private var authenticationProvider: AuthenticationServiceProvidable
+    private var databaseProvider: DatabaseServiceProvidable
+    
     @Published var fullName = ""
     @Published var email = ""
     @Published var password = ""
+    
+    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: DatabaseServiceProvidable = Firestore.firestore()) {
+        self.authenticationProvider = authenticationProvider
+        self.databaseProvider = databaseProvider
+    }
     
     var isFullNameValid: Bool {
         !fullName.isEmpty
@@ -33,14 +42,23 @@ final class RegisterModel: ObservableObject {
     func register() async throws {
         guard isInputValid else { return }
     
-        try await AuthenticationManager.shared.createUser(email: email, password: password)
-               
+        let authDataResultModel = try await authenticationProvider.signUp(email: email, password: password)
+        let user = DBUser(userID: authDataResultModel.uid, name: fullName, email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
+        try databaseProvider.createUser(user: user)
+    }
+    
+    func signInGoogle() async throws {
+        let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
+        let tokens = try await helper.signIn()
+        let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
+        let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
+        try databaseProvider.createUser(user: user)
     }
 }
 
 extension RegisterModel {
     func validFullname() -> Bool {
-        if fullName.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 || fullName.isEmpty {
+        if fullName.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
             return false
         } else {
             return !isFullNameValid

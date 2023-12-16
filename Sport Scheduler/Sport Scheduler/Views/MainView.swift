@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainView: View {
     @Binding var showSignInView: Bool
+    
     var body: some View {
         TabView {
             UserClubsView()

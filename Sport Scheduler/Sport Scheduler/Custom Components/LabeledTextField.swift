@@ -29,10 +29,10 @@ struct LabeledTextField: View {
             }
             .padding(10)
             .overlay(
-                RoundedRectangle(cornerRadius: 14)
+                RoundedRectangle(cornerRadius: 7)
                     .stroke(Color.secondary, lineWidth: 1)
             )
-            .frame(maxWidth: 280, maxHeight: 50)
+            .frame(width: 280, height: 50)
             .overlay(
                 Button {
                     input = ""

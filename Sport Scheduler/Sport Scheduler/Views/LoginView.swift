@@ -10,6 +10,7 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 struct LoginView: View {
+    
     @StateObject private var loginModel = LoginModel()
     @Binding var showSignInView: Bool
     
@@ -17,9 +18,15 @@ struct LoginView: View {
         VStack(spacing: 50) {
             Spacer()
             VStack(spacing: 30) {
-                LabeledTextField(input: $loginModel.email, text: "Email", isCapitalized: false, isSecure: false, isUserValid: true)
-                    .keyboardType(.emailAddress)
-                LabeledTextField(input: $loginModel.password, text: "Password", isCapitalized: false, isSecure: true, isUserValid: true)
+                VStack(spacing: 0) {
+                    LabeledTextField(input: $loginModel.email, text: "Email", isCapitalized: false, isSecure: false, isUserValid: loginModel.isEmailValid)
+                        .keyboardType(.emailAddress)
+                    TextErrorView(error: "Please enter a valid email!", showingError: loginModel.validEmail())
+                }
+                VStack(spacing: 0) {
+                    LabeledTextField(input: $loginModel.password, text: "Password", isCapitalized: false, isSecure: true, isUserValid: loginModel.isPasswordValid)
+                    TextErrorView(error: "Password length must be > 8", showingError: loginModel.validPassword())
+                }
             }
             VStack(spacing: 15) {
                 
@@ -29,35 +36,36 @@ struct LoginView: View {
                             try await loginModel.login()
                             showSignInView = false
                         } catch {
-                            print("Error signing in!")
+                            loginModel.hasError = true
                         }
                     }
                 } label: {
-                    SignInButton(text: "Sign in", color: .blue)
+                    SignInButton(text: "Sign in", color: loginModel.isInputValid ? .blue : .gray)
                 }
+                .disabled(loginModel.isInputValid == false)
                 
                 Rectangle()
                     .frame(maxWidth: 350, maxHeight: 2)
                 
-                GoogleSignInButton(viewModel: GoogleSignInButtonViewModel(scheme: .dark, style: .wide, state: .normal)) {
+                Button {
                     Task {
                         do {
                             try await loginModel.signInGoogle()
-                                showSignInView = false
+                            showSignInView = false
                         } catch {
-                            print(error)
+                            print("Error signing in with Google!")
                         }
                     }
+                } label: {
+                    GoogleButton()
                 }
-                .padding(.vertical)
             }
-            .padding(.bottom)
+            .alert("Invalid email or password!", isPresented: $loginModel.hasError) { }
             .navigationTitle("Sign in")
             .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
-
 #Preview {
     LoginView(showSignInView: .constant(false))
 }

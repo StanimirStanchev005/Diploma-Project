@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct UserClubsView: View {
-    @State private var exampleUser = UserModel(name: "Spas")
+    @StateObject private var exampleUser = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: nil, dateCreated: Date())
     
     var body: some View {
         NavigationStack {
@@ -91,10 +91,10 @@ struct UserClubsView: View {
                     }
                 }
                 Button("Add Clubs") {
-                    exampleUser.joinedClubs.append(Club(name: "Gym"))
-                    exampleUser.joinedClubs.append(Club(name: "Tennis Club"))
-                    exampleUser.ownedClubs.append(Club(name: "Gym"))
-                    exampleUser.ownedClubs.append(Club(name: "Tennis Club"))
+                    exampleUser.joinedClubs.append(Club(name: "Joined Glub"))
+                    exampleUser.joinedClubs.append(Club(name: "Joined Tennis Club"))
+                    exampleUser.ownedClubs.append(Club(name: "Owned Gym"))
+                    exampleUser.ownedClubs.append(Club(name: "Owned Tennis Club"))
                 }
                 .buttonStyle(.borderedProminent)
             }

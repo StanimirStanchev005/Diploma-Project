@@ -22,7 +22,7 @@ struct RegisterView: View {
                 VStack(spacing: 0) {
                     LabeledTextField(input: $registerModel.email , text: "Email", isCapitalized: false, isSecure: false, isUserValid: registerModel.isEmailValid)
                         .keyboardType(.emailAddress)
-                    TextErrorView(error: "Enter a valid email!", showingError: registerModel.validEmail())
+                    TextErrorView(error: "Please enter a valid email!", showingError: registerModel.validEmail())
                 }
                 VStack(spacing: 0) {
                     LabeledTextField(input: $registerModel.password , text: "Password", isCapitalized: false, isSecure: true, isUserValid: registerModel.isPasswordValid)
@@ -45,29 +45,19 @@ struct RegisterView: View {
                 .disabled(registerModel.isInputValid == false)
                 
                 Rectangle()
-                    .frame(maxWidth: 350, maxHeight: 2)
+                    .frame(width: 350, height: 2)
                 
                 Button {
-                    //                    isShwoingUserClubsScreen.toggle()
-                } label: {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 10)
-                            .foregroundStyle(.white)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke()
-                            }
-                        HStack {
-                            Image("Google icon")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(maxHeight: 50)
-                            Text("Sign up with Google")
-                                .foregroundStyle(.black)
-                                .font(.title3)
+                    Task {
+                        do {
+                            try await registerModel.signInGoogle()
+                            showSignInView = false
+                        } catch {
+                            print("Error while registering")
                         }
                     }
-                    .frame(maxWidth: 280, maxHeight: 60)
+                } label: {
+                    GoogleButton()
                 }
             }
             .padding(.bottom)

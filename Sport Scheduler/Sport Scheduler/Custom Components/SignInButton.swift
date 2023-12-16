@@ -15,7 +15,7 @@ struct SignInButton: View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
                 .foregroundStyle(color)
-                .frame(maxWidth: 280, maxHeight: 60)
+                .frame(width: 280, height: 55)
             
             Text(text)
                 .foregroundStyle(.white)

@@ -9,12 +9,22 @@ import Foundation
 import FirebaseAuth
 import GoogleSignIn
 import GoogleSignInSwift
+import FirebaseFirestore
 
 @MainActor
 final class LoginModel: ObservableObject {
+    private var authenticationProvider: AuthenticationServiceProvidable
+    private var databaseProvider: DatabaseServiceProvidable
+    
     @Published var email = ""
     @Published var password = ""
-    let error = "Invalid email or password"
+    @Published var hasError = false
+    
+    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), 
+         databaseProvider: DatabaseServiceProvidable = Firestore.firestore()) {
+        self.authenticationProvider = authenticationProvider
+        self.databaseProvider = databaseProvider
+    }
     
     var isEmailValid: Bool {
         NSPredicate(format:"SELF MATCHES %@", "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}+").evaluate(with: email)
@@ -29,14 +39,35 @@ final class LoginModel: ObservableObject {
     }
     
     func login() async throws {
-        guard isInputValid else { return }
+        let _ = try await authenticationProvider.signIn(email: email, password: password)
         
-        try await AuthenticationManager.shared.signInUser(email: email, password: password)
     }
     
     func signInGoogle() async throws {
-        let helper = SignInGoogleHelper()
+        let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
-        try await AuthenticationManager.shared.signInWithGoogle(tokens: tokens)
+        let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
+        let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
+        try databaseProvider.createUser(user: user)
+    }
+}
+
+extension LoginModel {
+    
+    func validEmail() -> Bool {
+        if email.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
+            return false
+        } else {
+            return !isEmailValid
+        }
+    }
+    
+    func validPassword() -> Bool {
+        if password.trimmingCharacters(in: .whitespacesAndNewlines).count == 0 {
+            return false
+        } else {
+            return !isPasswordValid
+        }
+        
     }
 }

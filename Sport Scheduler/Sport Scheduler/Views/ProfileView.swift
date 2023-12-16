@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-
 struct ProfileView: View {
     @StateObject private var profileModel = ProfileModel()
+    //@StateObject private var user: DBUser
     @Binding var showSignInView: Bool
     
     var body: some View {
         NavigationStack {
             List {
                 if let user = profileModel.user {
-                    Text("UserID: \(user.uid)")
+                    Text("UserID: \(user.userID)")
                 }
             }
-            .onAppear{
-                try? profileModel.laodCurrentUser()
+            .task {
+                try? await profileModel.laodCurrentUser()
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -36,7 +36,7 @@ struct ProfileView: View {
                     }
                 }
             }
-            .navigationTitle("Profile")
+            .navigationTitle(profileModel.user?.name ?? "Profile")
         }
         
     }

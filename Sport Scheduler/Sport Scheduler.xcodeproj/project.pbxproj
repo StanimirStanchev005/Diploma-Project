@@ -25,7 +25,7 @@
 		36ADF9482B2614F30028C73B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9472B2614F30028C73B /* MainView.swift */; };
 		36ADF94B2B2616280028C73B /* WorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF94A2B2616280028C73B /* WorkoutsView.swift */; };
 		36ADF94D2B2616430028C73B /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF94C2B2616430028C73B /* ProfileView.swift */; };
-		36ADF9512B2618570028C73B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9502B2618570028C73B /* User.swift */; };
+		36ADF9512B2618570028C73B /* DBUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9502B2618570028C73B /* DBUser.swift */; };
 		36ADF9532B2618620028C73B /* Club.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9522B2618620028C73B /* Club.swift */; };
 		36ADF9552B2618730028C73B /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9542B2618730028C73B /* Subscription.swift */; };
 		36ADF9582B2626770028C73B /* ClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9572B2626770028C73B /* ClubView.swift */; };
@@ -41,6 +41,7 @@
 		36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9782B29BCB60028C73B /* Utilities.swift */; };
 		36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */; };
 		36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9802B29D5730028C73B /* ProfileModel.swift */; };
+		36ADF9832B2B3E250028C73B /* GoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9822B2B3E250028C73B /* GoogleButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,7 +83,7 @@
 		36ADF9472B2614F30028C73B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		36ADF94A2B2616280028C73B /* WorkoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsView.swift; sourceTree = "<group>"; };
 		36ADF94C2B2616430028C73B /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		36ADF9502B2618570028C73B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		36ADF9502B2618570028C73B /* DBUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBUser.swift; sourceTree = "<group>"; };
 		36ADF9522B2618620028C73B /* Club.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Club.swift; sourceTree = "<group>"; };
 		36ADF9542B2618730028C73B /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		36ADF9572B2626770028C73B /* ClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubView.swift; sourceTree = "<group>"; };
@@ -94,6 +95,7 @@
 		36ADF9782B29BCB60028C73B /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInResultModel.swift; sourceTree = "<group>"; };
 		36ADF9802B29D5730028C73B /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
+		36ADF9822B2B3E250028C73B /* GoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 				36ADF9362B21B3A00028C73B /* SignInButton.swift */,
 				36ADF93D2B21BD4E0028C73B /* LabeledTextField.swift */,
 				36ADF9452B24D8C60028C73B /* TextErrorView.swift */,
+				36ADF9822B2B3E250028C73B /* GoogleButton.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -220,7 +223,7 @@
 			children = (
 				36ADF93F2B21E2950028C73B /* LoginModel.swift */,
 				36ADF9432B22F4CD0028C73B /* RegisterModel.swift */,
-				36ADF9502B2618570028C73B /* User.swift */,
+				36ADF9502B2618570028C73B /* DBUser.swift */,
 				36ADF9522B2618620028C73B /* Club.swift */,
 				36ADF9542B2618730028C73B /* Subscription.swift */,
 				36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */,
@@ -408,7 +411,7 @@
 				36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */,
 				36ADF9372B21B3A00028C73B /* SignInButton.swift in Sources */,
 				36ADF9552B2618730028C73B /* Subscription.swift in Sources */,
-				36ADF9512B2618570028C73B /* User.swift in Sources */,
+				36ADF9512B2618570028C73B /* DBUser.swift in Sources */,
 				36ADF9532B2618620028C73B /* Club.swift in Sources */,
 				36ADF90C2B21AD690028C73B /* ContentView.swift in Sources */,
 				36ADF9632B274B660028C73B /* WelcomeView.swift in Sources */,
@@ -417,6 +420,7 @@
 				36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */,
 				36ADF93E2B21BD4E0028C73B /* LabeledTextField.swift in Sources */,
 				36ADF96E2B2898100028C73B /* UserManager.swift in Sources */,
+				36ADF9832B2B3E250028C73B /* GoogleButton.swift in Sources */,
 				36ADF9442B22F4CD0028C73B /* RegisterModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
