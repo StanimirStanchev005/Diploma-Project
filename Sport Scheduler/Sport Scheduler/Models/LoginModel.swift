@@ -14,14 +14,14 @@ import FirebaseFirestore
 @MainActor
 final class LoginModel: ObservableObject {
     private var authenticationProvider: AuthenticationServiceProvidable
-    private var databaseProvider: DatabaseServiceProvidable
+    private var databaseProvider: UserRepository
     
     @Published var email = ""
     @Published var password = ""
     @Published var hasError = false
     
     init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), 
-         databaseProvider: DatabaseServiceProvidable = Firestore.firestore()) {
+         databaseProvider: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider
         self.databaseProvider = databaseProvider
     }
@@ -48,7 +48,7 @@ final class LoginModel: ObservableObject {
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
         let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-        try databaseProvider.createUser(user: user)
+        try databaseProvider.create(user: user)
     }
 }
 

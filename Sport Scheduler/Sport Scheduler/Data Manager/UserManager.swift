@@ -9,13 +9,13 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-protocol DatabaseServiceProvidable {
-    func createUser(user: DBUser) throws
+protocol UserRepository {
+    func create(user: DBUser) throws
     func getUser(userId: String) async throws -> DBUser
 }
 
-extension Firestore: DatabaseServiceProvidable {
-    func createUser(user: DBUser) throws {
+extension Firestore: UserRepository {
+    func create(user: DBUser) throws {
         try collection("users").document(user.userID).setData(from: user, merge: false)
     }
     
@@ -26,14 +26,14 @@ extension Firestore: DatabaseServiceProvidable {
 
 final class UserManager {
     
-    var databaseProvider: DatabaseServiceProvidable
+    var databaseProvider: UserRepository
     
-    init(databaseProvider: DatabaseServiceProvidable = Firestore.firestore()) {
+    init(databaseProvider: UserRepository = Firestore.firestore()) {
         self.databaseProvider = databaseProvider
     }
         
     func createNewUser(user: DBUser) throws {
-        try databaseProvider.createUser(user: user)
+        try databaseProvider.create(user: user)
     }
     
     func getUser(userId: String) async throws -> DBUser {

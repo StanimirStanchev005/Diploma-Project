@@ -12,13 +12,13 @@ import FirebaseFirestore
 @MainActor
 final class RegisterModel: ObservableObject {
     private var authenticationProvider: AuthenticationServiceProvidable
-    private var databaseProvider: DatabaseServiceProvidable
+    private var databaseProvider: UserRepository
     
     @Published var fullName = ""
     @Published var email = ""
     @Published var password = ""
     
-    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: DatabaseServiceProvidable = Firestore.firestore()) {
+    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider
         self.databaseProvider = databaseProvider
     }
@@ -44,7 +44,7 @@ final class RegisterModel: ObservableObject {
     
         let authDataResultModel = try await authenticationProvider.signUp(email: email, password: password)
         let user = DBUser(userID: authDataResultModel.uid, name: fullName, email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-        try databaseProvider.createUser(user: user)
+        try databaseProvider.create(user: user)
     }
     
     func signInGoogle() async throws {
@@ -52,7 +52,7 @@ final class RegisterModel: ObservableObject {
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
         let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-        try databaseProvider.createUser(user: user)
+        try databaseProvider.create(user: user)
     }
 }
 
