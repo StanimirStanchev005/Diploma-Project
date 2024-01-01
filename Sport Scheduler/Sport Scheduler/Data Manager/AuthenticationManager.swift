@@ -8,6 +8,24 @@
 import Foundation
 import FirebaseAuth
 
+enum AuthError: Error {
+    case emailAlreadyInUse
+    case networkError
+    case invalidEmailOrPassword
+    
+    var localizedDescription: String {
+        switch self {
+            
+        case .emailAlreadyInUse:
+            "This email is already in use! Use a different email!"
+        case .invalidEmailOrPassword:
+            "Invalid email or password!"
+        case .networkError:
+            "Network connetion failed!"
+        }
+    }
+}
+
 protocol AuthenticationServiceProvidable {
     func signOut() throws
     func getAuthenticatedUser() throws -> AuthDataResultModel
@@ -25,18 +43,54 @@ extension Auth: AuthenticationServiceProvidable {
     }
     
     func signUp(email: String, password: String) async throws -> AuthDataResultModel {
-        let authDataResult = try await createUser(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
+        do {
+            let authDataResult = try await createUser(withEmail: email, password: password)
+            return AuthDataResultModel(user: authDataResult.user)
+        } catch {
+            let error = error as NSError
+            switch error.code {
+            case AuthErrorCode.emailAlreadyInUse.rawValue:
+                throw AuthError.emailAlreadyInUse
+            case AuthErrorCode.networkError.rawValue:
+                throw AuthError.networkError
+            default:
+                throw AuthError.networkError
+            }
+        }
     }
     
     func signIn(email: String, password: String) async throws -> AuthDataResultModel {
-        let authDataResult = try await signIn(withEmail: email, password: password)
-        return AuthDataResultModel(user: authDataResult.user)
+        do {
+            let authDataResult = try await signIn(withEmail: email, password: password)
+            return AuthDataResultModel(user: authDataResult.user)
+        } catch {
+            let error = error as NSError
+            switch error.code {
+            case AuthErrorCode.invalidEmail.rawValue:
+                throw AuthError.invalidEmailOrPassword
+            case AuthErrorCode.wrongPassword.rawValue:
+                throw AuthError.invalidEmailOrPassword
+            case AuthErrorCode.networkError.rawValue:
+                throw AuthError.networkError
+            default:
+                throw AuthError.invalidEmailOrPassword
+            }
+        }
     }
     
     func signIn(credential: AuthCredential) async throws -> AuthDataResultModel {
-        let authDataResult = try await signIn(with: credential)
-        return AuthDataResultModel(user: authDataResult.user)
+        do {
+            let authDataResult = try await signIn(with: credential)
+            return AuthDataResultModel(user: authDataResult.user)
+        } catch {
+            let error = error as NSError
+            switch error.code {
+            case AuthErrorCode.networkError.rawValue:
+                throw AuthError.networkError
+            default:
+                throw AuthError.networkError
+            }
+        }
     }
     
     func getAuthenticatedUser() throws -> AuthDataResultModel {

@@ -35,8 +35,9 @@ struct RegisterView: View {
                         do {
                             currentUser.user = try await registerModel.register()
                             currentUser.showSignInView = false
-                        } catch {
-                            print("Error while registering")
+                        } catch let error as AuthError {
+                            registerModel.hasError = true
+                            registerModel.localizedError = error.localizedDescription
                         }
                     }
                 } label: {
@@ -52,13 +53,21 @@ struct RegisterView: View {
                         do {
                             currentUser.user = try await registerModel.signInGoogle()
                             currentUser.showSignInView = false
-                        } catch {
-                            print("Error while registering")
+                        } catch let error as AuthError {
+                            registerModel.hasError = true
+                            registerModel.localizedError = error.localizedDescription
                         }
                     }
                 } label: {
                     GoogleButton()
                 }
+            }
+            .alert("Error", isPresented: $registerModel.hasError) {
+                Button("OK") {
+                    registerModel.hasError = false
+                }
+            } message: {
+                Text(registerModel.localizedError)
             }
             .padding(.bottom)
         }

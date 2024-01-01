@@ -19,8 +19,9 @@ final class LoginModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
     @Published var hasError = false
+    @Published var localizedError: String = "There was an error signing in!"
     
-    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), 
+    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(),
          databaseProvider: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider
         self.userRepository = databaseProvider

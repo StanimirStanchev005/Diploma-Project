@@ -17,6 +17,8 @@ final class RegisterModel: ObservableObject {
     @Published var fullName = ""
     @Published var email = ""
     @Published var password = ""
+    @Published var hasError = false
+    @Published var localizedError: String = "There was an error with signing up!"
     
     init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider

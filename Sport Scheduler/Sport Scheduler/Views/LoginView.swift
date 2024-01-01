@@ -34,8 +34,9 @@ struct LoginView: View {
                         do {
                             currentUser.user = try await loginModel.login()
                             currentUser.showSignInView = false
-                        } catch {
+                        } catch let error as AuthError {
                             loginModel.hasError = true
+                            loginModel.localizedError = error.localizedDescription
                         }
                     }
                 } label: {
@@ -51,15 +52,22 @@ struct LoginView: View {
                         do {
                             currentUser.user = try await loginModel.signInGoogle()
                             currentUser.showSignInView = false
-                        } catch {
-                            print("Error signing in with Google!")
+                        } catch let error as AuthError {
+                            loginModel.hasError = true
+                            loginModel.localizedError = error.localizedDescription
                         }
                     }
                 } label: {
                     GoogleButton()
                 }
             }
-            .alert("Invalid email or password!", isPresented: $loginModel.hasError) { }
+            .alert("Error", isPresented: $loginModel.hasError) {
+                Button("OK") {
+                    loginModel.hasError = false
+                }
+            } message: {
+                Text(loginModel.localizedError)
+            }
             .navigationTitle("Sign in")
             .navigationBarTitleDisplayMode(.inline)
         }
