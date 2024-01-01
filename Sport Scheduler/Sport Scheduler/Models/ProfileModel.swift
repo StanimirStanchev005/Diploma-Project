@@ -11,8 +11,6 @@ import FirebaseAuth
 @MainActor
 final class ProfileModel: ObservableObject {
     
-    @Published private(set) var user: DBUser? = nil
-    
     private var authenticationProvider: AuthenticationServiceProvidable
     private var databaseProvider: UserRepository
     
@@ -21,9 +19,9 @@ final class ProfileModel: ObservableObject {
         self.databaseProvider = databaseProvider
     }
     
-    func laodCurrentUser() async throws {
+    func laodCurrentUser() async throws -> DBUser {
         let authDataResult = try authenticationProvider.getAuthenticatedUser()
-        self.user = try await databaseProvider.getUser(userId: authDataResult.uid)
+        return try await databaseProvider.getUser(userId: authDataResult.uid)
     }
     
     func signOut() throws {

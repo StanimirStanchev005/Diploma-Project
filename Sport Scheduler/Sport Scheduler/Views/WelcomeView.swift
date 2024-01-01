@@ -9,7 +9,6 @@ import SwiftUI
 import Firebase
 
 struct WelcomeView: View {
-    @Binding var showSignInView: Bool
     
     var body: some View {
         NavigationStack {
@@ -17,12 +16,12 @@ struct WelcomeView: View {
                 Spacer()
                 
                 NavigationLink {
-                    LoginView(showSignInView: $showSignInView)
+                    LoginView()
                 } label: {
                     SignInButton(text: "Sign in", color: .black)
                 }
                 NavigationLink {
-                    RegisterView(showSignInView: $showSignInView)
+                    RegisterView()
                 } label: {
                     SignInButton(text: "Register", color: .black)
                 }
@@ -34,5 +33,5 @@ struct WelcomeView: View {
 }
 
 #Preview {
-    WelcomeView(showSignInView: .constant(false))
+    WelcomeView()
 }

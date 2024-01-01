@@ -7,28 +7,37 @@
 
 import SwiftUI
 import FirebaseAuth
+import FirebaseFirestore
 
 struct ContentView: View {
-    @State private var showSignInView = false
+    @EnvironmentObject var currentUser: CurrentUser
     
     private var authenticationProvider: AuthenticationServiceProvidable
+    private var userRepository: UserRepository
     
-    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth()) {
+    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), userRepository: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider
+        self.userRepository = userRepository
     }
     
     var body: some View {
         ZStack {
-            if !showSignInView{
-                MainView(showSignInView: $showSignInView)
+            if !currentUser.showSignInView {
+                MainView()
             }
         }
-        .onAppear() {
+        .task {
             let authUser = try? authenticationProvider.getAuthenticatedUser()
-            self.showSignInView = authUser == nil
+            guard authUser != nil else {
+                self.currentUser.showSignInView = true
+                return
+            }
+            self.currentUser.user = try? await userRepository.getUser(userId: authUser!.uid)
+            self.currentUser.showSignInView = false
+            
         }
-        .fullScreenCover(isPresented: $showSignInView) {
-            WelcomeView(showSignInView: $showSignInView)
+        .fullScreenCover(isPresented: $currentUser.showSignInView) {
+            WelcomeView()
         }
     }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */; };
+		366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */; };
 		36ADF90A2B21AD690028C73B /* Sport_SchedulerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */; };
 		36ADF90C2B21AD690028C73B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF90B2B21AD690028C73B /* ContentView.swift */; };
 		36ADF90E2B21AD6C0028C73B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36ADF90D2B21AD6C0028C73B /* Assets.xcassets */; };
@@ -19,7 +21,6 @@
 		36ADF93C2B21B5650028C73B /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF93B2B21B5650028C73B /* RegisterView.swift */; };
 		36ADF93E2B21BD4E0028C73B /* LabeledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF93D2B21BD4E0028C73B /* LabeledTextField.swift */; };
 		36ADF9402B21E2950028C73B /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF93F2B21E2950028C73B /* LoginModel.swift */; };
-		36ADF9422B224B1F0028C73B /* UserClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9412B224B1F0028C73B /* UserClubsView.swift */; };
 		36ADF9442B22F4CD0028C73B /* RegisterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9432B22F4CD0028C73B /* RegisterModel.swift */; };
 		36ADF9462B24D8C60028C73B /* TextErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9452B24D8C60028C73B /* TextErrorView.swift */; };
 		36ADF9482B2614F30028C73B /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9472B2614F30028C73B /* MainView.swift */; };
@@ -62,6 +63,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedClubsView.swift; sourceTree = "<group>"; };
+		366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedClubsView.swift; sourceTree = "<group>"; };
 		36ADF9062B21AD690028C73B /* Sport Scheduler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sport Scheduler.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport_SchedulerApp.swift; sourceTree = "<group>"; };
 		36ADF90B2B21AD690028C73B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -77,7 +80,6 @@
 		36ADF93B2B21B5650028C73B /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		36ADF93D2B21BD4E0028C73B /* LabeledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextField.swift; sourceTree = "<group>"; };
 		36ADF93F2B21E2950028C73B /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
-		36ADF9412B224B1F0028C73B /* UserClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserClubsView.swift; sourceTree = "<group>"; };
 		36ADF9432B22F4CD0028C73B /* RegisterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterModel.swift; sourceTree = "<group>"; };
 		36ADF9452B24D8C60028C73B /* TextErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextErrorView.swift; sourceTree = "<group>"; };
 		36ADF9472B2614F30028C73B /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -211,9 +213,10 @@
 				36ADF93B2B21B5650028C73B /* RegisterView.swift */,
 				36ADF9472B2614F30028C73B /* MainView.swift */,
 				36ADF9572B2626770028C73B /* ClubView.swift */,
-				36ADF9412B224B1F0028C73B /* UserClubsView.swift */,
 				36ADF94A2B2616280028C73B /* WorkoutsView.swift */,
 				36ADF94C2B2616430028C73B /* ProfileView.swift */,
+				366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */,
+				366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -398,15 +401,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */,
 				36ADF9462B24D8C60028C73B /* TextErrorView.swift in Sources */,
 				36ADF94D2B2616430028C73B /* ProfileView.swift in Sources */,
 				36ADF9342B21B0E50028C73B /* LoginView.swift in Sources */,
 				36ADF94B2B2616280028C73B /* WorkoutsView.swift in Sources */,
-				36ADF9422B224B1F0028C73B /* UserClubsView.swift in Sources */,
 				36ADF9402B21E2950028C73B /* LoginModel.swift in Sources */,
 				36ADF9582B2626770028C73B /* ClubView.swift in Sources */,
 				36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */,
 				36ADF93C2B21B5650028C73B /* RegisterView.swift in Sources */,
+				366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */,
 				36ADF9702B2899E80028C73B /* AuthenticationManager.swift in Sources */,
 				36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */,
 				36ADF9372B21B3A00028C73B /* SignInButton.swift in Sources */,

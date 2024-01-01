@@ -39,20 +39,20 @@ final class RegisterModel: ObservableObject {
         isFullNameValid && isEmailValid && isPasswordValid
     }
     
-    func register() async throws {
-        guard isInputValid else { return }
-    
+    func register() async throws -> DBUser {
         let authDataResultModel = try await authenticationProvider.signUp(email: email, password: password)
         let user = DBUser(userID: authDataResultModel.uid, name: fullName, email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
         try databaseProvider.create(user: user)
+        return user
     }
     
-    func signInGoogle() async throws {
+    func signInGoogle() async throws -> DBUser {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
         let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
         try databaseProvider.create(user: user)
+        return user
     }
 }
 

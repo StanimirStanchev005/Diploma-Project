@@ -14,7 +14,7 @@ import FirebaseFirestore
 @MainActor
 final class LoginModel: ObservableObject {
     private var authenticationProvider: AuthenticationServiceProvidable
-    private var databaseProvider: UserRepository
+    private var userRepository: UserRepository
     
     @Published var email = ""
     @Published var password = ""
@@ -23,7 +23,7 @@ final class LoginModel: ObservableObject {
     init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), 
          databaseProvider: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider
-        self.databaseProvider = databaseProvider
+        self.userRepository = databaseProvider
     }
     
     var isEmailValid: Bool {
@@ -38,17 +38,16 @@ final class LoginModel: ObservableObject {
         isEmailValid && isPasswordValid
     }
     
-    func login() async throws {
-        let _ = try await authenticationProvider.signIn(email: email, password: password)
-        
+    func login() async throws -> DBUser {
+        let authDataResult = try await authenticationProvider.signIn(email: email, password: password)
+        return try await userRepository.getUser(userId: authDataResult.uid)
     }
     
-    func signInGoogle() async throws {
+    func signInGoogle() async throws -> DBUser {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
-        let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-        try databaseProvider.create(user: user)
+        return try await userRepository.getUser(userId: authDataResultModel.uid)
     }
 }
 

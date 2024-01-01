@@ -17,7 +17,7 @@ struct GoogleButton: View {
                         .stroke()
                 }
             HStack {
-                Image("Google icon")
+                Image("GoogleIcon")
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 50)

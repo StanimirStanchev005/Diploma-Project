@@ -7,15 +7,19 @@
 
 import SwiftUI
 import FirebaseCore
+import FirebaseAuth
+import FirebaseFirestore
 
 @main
 struct Sport_SchedulerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+    @StateObject var user: CurrentUser = CurrentUser()
+        
     var body: some Scene {
         WindowGroup {
             
             ContentView()
+                .environmentObject(user)
                 .preferredColorScheme(.light)
         }
     }

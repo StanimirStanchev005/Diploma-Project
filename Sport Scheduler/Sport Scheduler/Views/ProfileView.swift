@@ -9,26 +9,21 @@ import SwiftUI
 
 struct ProfileView: View {
     @StateObject private var profileModel = ProfileModel()
-    //@StateObject private var user: DBUser
-    @Binding var showSignInView: Bool
+    @EnvironmentObject var currentUser: CurrentUser
     
     var body: some View {
         NavigationStack {
             List {
-                if let user = profileModel.user {
-                    Text("UserID: \(user.userID)")
-                }
+                Text("UserID: \(currentUser.user!.userID)")
             }
-            .task {
-                try? await profileModel.laodCurrentUser()
-            }
+            .navigationTitle(currentUser.user!.name)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button("Sign Out") {
                         Task {
                             do {
                                 try profileModel.signOut()
-                                showSignInView = true
+                                currentUser.showSignInView = true
                             } catch {
                                 print(error)
                             }
@@ -36,14 +31,16 @@ struct ProfileView: View {
                     }
                 }
             }
-            .navigationTitle(profileModel.user?.name ?? "Profile")
         }
         
+        
     }
+    
 }
+
 
 #Preview {
     NavigationStack {
-        ProfileView(showSignInView: .constant(false))
+        ProfileView()
     }
 }

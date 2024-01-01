@@ -10,9 +10,8 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 struct LoginView: View {
-    
+    @EnvironmentObject var currentUser: CurrentUser
     @StateObject private var loginModel = LoginModel()
-    @Binding var showSignInView: Bool
     
     var body: some View {
         VStack(spacing: 50) {
@@ -33,8 +32,8 @@ struct LoginView: View {
                 Button {
                     Task {
                         do {
-                            try await loginModel.login()
-                            showSignInView = false
+                            currentUser.user = try await loginModel.login()
+                            currentUser.showSignInView = false
                         } catch {
                             loginModel.hasError = true
                         }
@@ -50,8 +49,8 @@ struct LoginView: View {
                 Button {
                     Task {
                         do {
-                            try await loginModel.signInGoogle()
-                            showSignInView = false
+                            currentUser.user = try await loginModel.signInGoogle()
+                            currentUser.showSignInView = false
                         } catch {
                             print("Error signing in with Google!")
                         }
@@ -67,5 +66,5 @@ struct LoginView: View {
     }
 }
 #Preview {
-    LoginView(showSignInView: .constant(false))
+    LoginView()
 }

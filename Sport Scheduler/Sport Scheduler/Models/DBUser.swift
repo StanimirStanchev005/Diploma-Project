@@ -54,3 +54,8 @@ final class DBUser: ObservableObject, Codable {
         
     }
 }
+
+final class CurrentUser: ObservableObject {
+    @Published var user: DBUser?
+    @Published var showSignInView = true
+}
