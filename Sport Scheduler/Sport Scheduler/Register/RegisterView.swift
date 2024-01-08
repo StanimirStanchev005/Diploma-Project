@@ -16,16 +16,16 @@ struct RegisterView: View {
             Spacer()
             VStack(spacing: 10) {
                 VStack(spacing: 0) {
-                    LabeledTextField(input: $registerModel.fullName , text: "Full name", isCapitalized: true, isSecure: false, isUserValid: registerModel.isFullNameValid)
+                    SigningTextField(input: $registerModel.fullName , text: "Full name", isCapitalized: true, isSecure: false, isUserValid: registerModel.isFullNameValid)
                     TextErrorView(error: "Enter your name!", showingError: registerModel.validFullname())
                 }
                 VStack(spacing: 0) {
-                    LabeledTextField(input: $registerModel.email , text: "Email", isCapitalized: false, isSecure: false, isUserValid: registerModel.isEmailValid)
+                    SigningTextField(input: $registerModel.email , text: "Email", isCapitalized: false, isSecure: false, isUserValid: registerModel.isEmailValid)
                         .keyboardType(.emailAddress)
                     TextErrorView(error: "Please enter a valid email!", showingError: registerModel.validEmail())
                 }
                 VStack(spacing: 0) {
-                    LabeledTextField(input: $registerModel.password , text: "Password", isCapitalized: false, isSecure: true, isUserValid: registerModel.isPasswordValid)
+                    SigningTextField(input: $registerModel.password , text: "Password", isCapitalized: false, isSecure: true, isUserValid: registerModel.isPasswordValid)
                     TextErrorView(error: "Password length must be > 8", showingError: registerModel.validPassword())
                 }
             }
@@ -46,7 +46,9 @@ struct RegisterView: View {
                 .disabled(registerModel.isInputValid == false)
                 
                 Rectangle()
-                    .frame(width: 350, height: 2)
+                    .stroke(Color(.lightBackground))
+                    .frame(width: 350, height: 1)
+                    
                 
                 Button {
                     Task {

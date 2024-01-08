@@ -18,12 +18,12 @@ struct WelcomeView: View {
                 NavigationLink {
                     LoginView()
                 } label: {
-                    SignInButton(text: "Sign in", color: .black)
+                    SignInButton(text: "Sign in", color: .lightBackground)
                 }
                 NavigationLink {
                     RegisterView()
                 } label: {
-                    SignInButton(text: "Register", color: .black)
+                    SignInButton(text: "Register", color: .lightBackground)
                 }
             }
             .padding(.bottom)

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct OwnedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
+    @State private var createClub = false
     
     var body: some View {
         NavigationStack {
@@ -41,10 +42,14 @@ struct OwnedClubsView: View {
             }
             .toolbar {
                 Button {
-                    
+                    createClub.toggle()
                 } label: {
                     Image(systemName: "plus")
                 }
+            }
+            .sheet(isPresented: $createClub) {
+                CreateClubView()
+                    .presentationDetents([.fraction(0.55)])
             }
             .navigationTitle("Owned Clubs")
         }

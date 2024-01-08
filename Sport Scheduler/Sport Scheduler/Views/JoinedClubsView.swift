@@ -39,14 +39,6 @@ struct JoinedClubsView: View {
                     }
                     
                 }
-                Button("Add Clubs") {
-                    exampleUser.joinedClubs.append(Club(name: "Joined Glub"))
-                    exampleUser.joinedClubs.append(Club(name: "Sofia City Breakers"))
-                    exampleUser.ownedClubs.append(Club(name: "Owned Gym"))
-                    exampleUser.ownedClubs.append(Club(name: "Owned Tennis Club"))
-                }
-                .buttonStyle(.borderedProminent)
-                .padding(.bottom)
             }
             .toolbar {
                 NavigationLink("Owned Clubs") {

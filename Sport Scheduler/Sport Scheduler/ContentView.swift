@@ -14,6 +14,7 @@ struct ContentView: View {
     
     private var authenticationProvider: AuthenticationServiceProvidable
     private var userRepository: UserRepository
+    @State private var isActive = false
     
     init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), userRepository: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider
@@ -21,23 +22,33 @@ struct ContentView: View {
     }
     
     var body: some View {
-        ZStack {
-            if !currentUser.showSignInView {
-                MainView()
+        if isActive {
+            ZStack {
+                if !currentUser.showSignInView {
+                    MainView()
+                }
             }
-        }
-        .task {
-            let authUser = try? authenticationProvider.getAuthenticatedUser()
-            guard authUser != nil else {
-                self.currentUser.showSignInView = true
-                return
+            .fullScreenCover(isPresented: $currentUser.showSignInView) {
+                WelcomeView()
             }
-            self.currentUser.user = try? await userRepository.getUser(userId: authUser!.uid)
-            self.currentUser.showSignInView = false
-            
-        }
-        .fullScreenCover(isPresented: $currentUser.showSignInView) {
-            WelcomeView()
+        } else {
+            SplashView()
+                .onAppear {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        withAnimation {
+                            self.isActive = true
+                        }
+                    }
+                }
+                .task {
+                    let authUser = try? authenticationProvider.getAuthenticatedUser()
+                    guard authUser != nil else {
+                        self.currentUser.showSignInView = true
+                        return
+                    }
+                    self.currentUser.user = try? await userRepository.getUser(userId: authUser!.uid)
+                    self.currentUser.showSignInView = false
+                }
         }
     }
 }

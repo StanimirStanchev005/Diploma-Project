@@ -23,20 +23,3 @@ extension Firestore: UserRepository {
         try await collection("users").document(userId).getDocument(as: DBUser.self)
     }
 }
-
-final class UserManager {
-    
-    var databaseProvider: UserRepository
-    
-    init(databaseProvider: UserRepository = Firestore.firestore()) {
-        self.databaseProvider = databaseProvider
-    }
-        
-    func createNewUser(user: DBUser) throws {
-        try databaseProvider.create(user: user)
-    }
-    
-    func getUser(userId: String) async throws -> DBUser {
-        try await databaseProvider.getUser(userId: userId)
-    }
-}

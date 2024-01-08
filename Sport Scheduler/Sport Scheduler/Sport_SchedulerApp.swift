@@ -20,7 +20,6 @@ struct Sport_SchedulerApp: App {
             
             ContentView()
                 .environmentObject(user)
-                .preferredColorScheme(.light)
         }
     }
 }

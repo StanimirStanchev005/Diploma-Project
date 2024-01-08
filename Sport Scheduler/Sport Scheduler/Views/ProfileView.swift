@@ -13,9 +13,7 @@ struct ProfileView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                Text("UserID: \(currentUser.user!.userID)")
-            }
+            VStack { }
             .navigationTitle(currentUser.user!.name)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {

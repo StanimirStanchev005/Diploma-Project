@@ -18,12 +18,12 @@ struct LoginView: View {
             Spacer()
             VStack(spacing: 30) {
                 VStack(spacing: 0) {
-                    LabeledTextField(input: $loginModel.email, text: "Email", isCapitalized: false, isSecure: false, isUserValid: loginModel.isEmailValid)
+                    SigningTextField(input: $loginModel.email, text: "Email", isCapitalized: false, isSecure: false, isUserValid: loginModel.isEmailValid)
                         .keyboardType(.emailAddress)
                     TextErrorView(error: "Please enter a valid email!", showingError: loginModel.validEmail())
                 }
                 VStack(spacing: 0) {
-                    LabeledTextField(input: $loginModel.password, text: "Password", isCapitalized: false, isSecure: true, isUserValid: loginModel.isPasswordValid)
+                    SigningTextField(input: $loginModel.password, text: "Password", isCapitalized: false, isSecure: true, isUserValid: loginModel.isPasswordValid)
                     TextErrorView(error: "Password length must be > 8", showingError: loginModel.validPassword())
                 }
             }
@@ -45,7 +45,8 @@ struct LoginView: View {
                 .disabled(loginModel.isInputValid == false)
                 
                 Rectangle()
-                    .frame(maxWidth: 350, maxHeight: 2)
+                    .stroke(Color(.lightBackground))
+                    .frame(maxWidth: 350, maxHeight: 1)
                 
                 Button {
                     Task {
