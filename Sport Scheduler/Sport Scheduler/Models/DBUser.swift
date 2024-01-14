@@ -16,8 +16,8 @@ final class DBUser: ObservableObject, Codable {
     @Published var name: String
     let email: String
     @Published var photoUrl: String?
-    @Published var joinedClubs: [Club] = []
-    @Published var ownedClubs: [Club] = []
+    @Published var joinedClubs: [UserClubModel] = []
+    @Published var ownedClubs: [UserClubModel] = []
     @Published var subscribed: Bool = false
     let dateCreated: Date
     
@@ -27,8 +27,8 @@ final class DBUser: ObservableObject, Codable {
         userID = try container.decode(String.self, forKey: .userID)
         email = try container.decode(String.self, forKey: .email)
         photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl) ?? "UserPlaceholder"
-        joinedClubs = try container.decodeIfPresent([Club].self, forKey: .joinedClubs) ?? []
-        ownedClubs = try container.decodeIfPresent([Club].self, forKey: .ownedClubs) ?? []
+        joinedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .joinedClubs) ?? []
+        ownedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .ownedClubs) ?? []
         subscribed = try container.decode(Bool.self, forKey: .subscribed)
         dateCreated = try container.decode(Date.self, forKey: .dateCreated)
     }
@@ -51,8 +51,16 @@ final class DBUser: ObservableObject, Codable {
         try container.encode(ownedClubs, forKey: .ownedClubs)
         try container.encode(subscribed, forKey: .subscribed)
         try container.encode(dateCreated, forKey: .dateCreated)
-        
     }
+    
+    func addOwnedClub(club: Club) {
+        self.ownedClubs.append(UserClubModel(name: club.clubName, picture: club.picture))
+    }
+}
+
+struct UserClubModel: Codable {
+    let name: String
+    let picture: String
 }
 
 final class CurrentUser: ObservableObject {

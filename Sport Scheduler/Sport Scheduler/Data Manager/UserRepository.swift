@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 protocol UserRepository {
     func create(user: DBUser) throws
     func getUser(userId: String) async throws -> DBUser
+    func save(user: DBUser) throws
 }
 
 extension Firestore: UserRepository {
@@ -21,5 +22,9 @@ extension Firestore: UserRepository {
     
     func getUser(userId: String) async throws -> DBUser {
         try await collection("users").document(userId).getDocument(as: DBUser.self)
+    }
+    
+    func save(user: DBUser) throws {
+        try collection("users").document(user.userID).setData(from: user, merge: true)
     }
 }

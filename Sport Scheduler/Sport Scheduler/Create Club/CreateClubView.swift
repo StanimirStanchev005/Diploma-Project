@@ -7,20 +7,9 @@
 
 import SwiftUI
 
-class CreateClubModel: ObservableObject {
-    @Published var sports = ["Archery", "Athletics", "Badminton", "Basketball", "Boxing", "BreakDance", "Canoeing", "Cycling", "Diving", "Equestrian", "Fencing", "Football", "Golf", "Gymnastics", "Handball", "Hockey", "Judo", "Modern Pentathlon", "Rowing", "Rugby Sevens", "Sailing", "Shooting", "Swimming", "Synchronized Swimming", "Table Tennis", "Taekwondo", "Tennis", "Triathlon", "Volleyball", "Water Polo", "Weightlifting", "Wrestling"]
-    @Published var name = ""
-    @Published var description = ""
-    @Published var isValidRepresenter = false
-    @Published var selectedSport: String = "Football"
-    
-    var isInputValid: Bool {
-        isValidRepresenter && !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-}
-
 struct CreateClubView: View {
     @Environment(\.dismiss) var dismiss
+    @EnvironmentObject var currentUser: CurrentUser
     @StateObject private var createClubModel = CreateClubModel()
     
     var body: some View {
@@ -77,7 +66,17 @@ struct CreateClubView: View {
                 }
                 
                 Button {
-                    
+                    Task {
+                        let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
+                        
+                        try await createClubModel.create(club: club, for: currentUser.user!)
+                        
+                        guard createClubModel.hasError == false else {
+                            return
+                        }
+                        
+                        dismiss()
+                    }
                 } label: {
                     SignInButton(text: "Create", color: createClubModel.isInputValid ? .pink : .gray)
                 }
@@ -86,6 +85,13 @@ struct CreateClubView: View {
             }
         }
         .padding()
+        .alert("Error", isPresented: $createClubModel.hasError) {
+            Button("OK") {
+                createClubModel.hasError = false
+            }
+        } message: {
+            Text(createClubModel.localizedError)
+        }
     }
 }
 

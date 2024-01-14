@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClubView: View {
-    let club: Club
+   let club: UserClubModel
     
     var body: some View {
         Text("Club \(club.name)")
@@ -16,5 +16,5 @@ struct ClubView: View {
 }
 
 #Preview {
-    ClubView(club: Club(name: ""))
+    ClubView(club: UserClubModel(name: "", picture: ""))
 }

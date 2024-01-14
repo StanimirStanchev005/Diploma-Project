@@ -12,47 +12,39 @@ struct OwnedClubsView: View {
     @State private var createClub = false
     
     var body: some View {
-        NavigationStack {
-            VStack {
-                List {
-                    ForEach(currentUser.user!.joinedClubs) { club in
-                        NavigationLink(value: club) {
-                            HStack {
-                                VStack {
-                                    Text(club.name)
-                                        .bold()
-                                        .foregroundStyle(.black)
-                                    Text("Members: \(club.members.count)")
-                                        .foregroundStyle(.black)
-                                }
-                                
-                                Image(club.picture)
-                                    .resizable()
-                                    .clipShape(.circle)
-                                    .scaledToFit()
+        VStack {
+            List {
+                ForEach(currentUser.user!.ownedClubs, id: \.name.self) { club in
+                    NavigationLink(destination: ClubView(club: club)) {
+                        HStack {
+                            VStack {
+                                Text(club.name)
+                                    .bold()
+                                    .foregroundStyle(.black)
                             }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .navigationDestination(for: Club.self) {_ in
-                            ClubView(club: club)
+                            
+                            Image(club.picture)
+                                .resizable()
+                                .clipShape(.circle)
+                                .scaledToFit()
                         }
                     }
-                    
+                    .frame(maxWidth: .infinity)
                 }
             }
-            .toolbar {
-                Button {
-                    createClub.toggle()
-                } label: {
-                    Image(systemName: "plus")
-                }
-            }
-            .sheet(isPresented: $createClub) {
-                CreateClubView()
-                    .presentationDetents([.fraction(0.55)])
-            }
-            .navigationTitle("Owned Clubs")
         }
+        .toolbar {
+            Button {
+                createClub.toggle()
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
+        .sheet(isPresented: $createClub) {
+            CreateClubView()
+                .presentationDetents([.fraction(0.55)])
+        }
+        .navigationTitle("Owned Clubs")
     }
 }
 

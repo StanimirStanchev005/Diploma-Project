@@ -9,20 +9,17 @@ import SwiftUI
 
 struct JoinedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
-    @StateObject private var exampleUser = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: nil, dateCreated: Date())
     
     var body: some View {
         NavigationStack {
             VStack {
                 List {
-                    ForEach(currentUser.user!.joinedClubs) { club in
-                        NavigationLink(value: club) {
+                    ForEach(currentUser.user!.joinedClubs, id: \.name.self) { club in
+                        NavigationLink(destination: ClubView(club: club)) {
                             HStack {
                                 VStack {
                                     Text(club.name)
                                         .bold()
-                                        .foregroundStyle(.black)
-                                    Text("Members: \(club.members.count)")
                                         .foregroundStyle(.black)
                                 }
                                 
@@ -33,11 +30,7 @@ struct JoinedClubsView: View {
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .navigationDestination(for: Club.self) {_ in
-                            ClubView(club: club)
-                        }
                     }
-                    
                 }
             }
             .toolbar {

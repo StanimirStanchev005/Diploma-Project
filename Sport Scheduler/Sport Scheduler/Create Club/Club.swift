@@ -9,12 +9,18 @@ import Foundation
 
 
 class Club: Identifiable, Codable {
-    var name: String
+    let ownerId: String
+    var clubName: String
+    var description: String
+    var category: String
     var picture = "ClubPlaceholder"
     var members: [DBUser] = []
     
-    init(name: String) {
-        self.name = name
+    init(clubName: String, description: String, category: String, ownerId: String) {
+        self.clubName = clubName
+        self.description = description
+        self.category = category
+        self.ownerId = ownerId
     }
     
     var identifier: String {
