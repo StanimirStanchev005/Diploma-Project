@@ -12,8 +12,10 @@ struct RegisterView: View {
     @StateObject private var registerModel = RegisterModel()
     
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 15) {
+            
             Spacer()
+            
             VStack(spacing: 10) {
                 VStack(spacing: 0) {
                     SigningTextField(input: $registerModel.fullName , text: "Full name", isCapitalized: true, isSecure: false, isUserValid: registerModel.isFullNameValid)
@@ -48,7 +50,7 @@ struct RegisterView: View {
                 Rectangle()
                     .stroke(Color(.lightBackground))
                     .frame(width: 350, height: 1)
-                    
+                
                 
                 Button {
                     Task {

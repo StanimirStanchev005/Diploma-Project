@@ -11,59 +11,53 @@ struct CreateClubView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject private var createClubModel = CreateClubModel()
+    @State private var showTermsOfService = false
     
     var body: some View {
         NavigationStack {
             VStack {
-                VStack(spacing: 5) {
-                    HStack {
-                        Text("Create Club")
-                            .font(.largeTitle)
-                            .foregroundStyle(.lightBackground)
+                
+                Spacer()
+                
+                Image("ClubPlaceholder")
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Circle())
+                    .frame(width: 300)
+                
+                Spacer()
+                
+                VStack(spacing: 15) {
+                    
+                    LabeledTextField(input: $createClubModel.name, text: "Club name")
+                    LabeledTextField(input: $createClubModel.description, text: "Description")
+                    
+                    HStack{
+                        Text("Select sport")
                         
                         Spacer()
                         
-                        Button(role: .destructive) {
-                            dismiss()
-                        } label: {
-                            Image(systemName: "xmark.circle")
-                                .imageScale(.large)
-                                .foregroundStyle(.lightBackground)
+                        Picker("Sport", selection: $createClubModel.selectedSport) {
+                            ForEach(createClubModel.sports, id: \.self) { sport in
+                                Text(sport)
+                            }
                         }
+                        .pickerStyle(.menu)
                     }
                     
-                    VStack(spacing: 15) {
-                        
-                        LabeledTextField(input: $createClubModel.name, text: "Club name")
-                        LabeledTextField(input: $createClubModel.description, text: "Description")
-                        
-                        HStack{
-                            Text("Select sport")
-                            
-                            Spacer()
-                            
-                            Picker("Sport", selection: $createClubModel.selectedSport) {
-                                ForEach(createClubModel.sports, id: \.self) { sport in
-                                    Text(sport)
-                                }
-                            }
-                            .pickerStyle(.menu)
+                    HStack {
+                        Button("Terms of service") {
+                            showTermsOfService.toggle()
                         }
                         
-                        HStack {
-                            NavigationLink("Terms of service") {
-                                Text("I verify that I am an authorized representative of this organization and have the right to act on its behalf in the creation and management of this page. The organization and I agree to the additional terms for Pages.")
-                                    .font(.title3)
-                                    .padding()
-                            }
-                            
-                            Toggle("", isOn: $createClubModel.isValidRepresenter)
-                                .toggleStyle(.switch)
-                                .tint(.pink)
-                        }
+                        Toggle("", isOn: $createClubModel.isValidRepresenter)
+                            .toggleStyle(.switch)
+                            .tint(.pink)
                     }
-                    .padding(.horizontal)
                 }
+                .padding(.horizontal)
+                
+                Spacer()
                 
                 Button {
                     Task {
@@ -92,6 +86,11 @@ struct CreateClubView: View {
         } message: {
             Text(createClubModel.localizedError)
         }
+        .sheet(isPresented: $showTermsOfService) {
+            TermsOfServiceView()
+                .presentationDetents([.medium])
+        }
+        .navigationTitle("Create Club")
     }
 }
 

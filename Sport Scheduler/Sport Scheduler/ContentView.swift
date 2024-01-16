@@ -41,8 +41,7 @@ struct ContentView: View {
                     }
                 }
                 .task {
-                    var authUser = try? authenticationProvider.getAuthenticatedUser()
-                    authUser = nil
+                    let authUser = try? authenticationProvider.getAuthenticatedUser()
                     guard authUser != nil else {
                         self.currentUser.showSignInView = true
                         return

@@ -16,7 +16,7 @@ struct LoginView: View {
     var body: some View {
         VStack(spacing: 50) {
             Spacer()
-            VStack(spacing: 30) {
+            VStack(spacing: 15) {
                 VStack(spacing: 0) {
                     SigningTextField(input: $loginModel.email, text: "Email", isCapitalized: false, isSecure: false, isUserValid: loginModel.isEmailValid)
                         .keyboardType(.emailAddress)
@@ -27,6 +27,7 @@ struct LoginView: View {
                     TextErrorView(error: "Password length must be > 8", showingError: loginModel.validPassword())
                 }
             }
+            
             VStack(spacing: 15) {
                 
                 Button {

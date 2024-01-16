@@ -34,15 +34,9 @@ struct OwnedClubsView: View {
             }
         }
         .toolbar {
-            Button {
-                createClub.toggle()
-            } label: {
+            NavigationLink(destination: CreateClubView()) {
                 Image(systemName: "plus")
             }
-        }
-        .sheet(isPresented: $createClub) {
-            CreateClubView()
-                .presentationDetents([.fraction(0.55)])
         }
         .navigationTitle("Owned Clubs")
     }
