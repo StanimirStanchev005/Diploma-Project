@@ -49,6 +49,8 @@
 		36CA9D972B4C1123002A7E57 /* ClubRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D962B4C1123002A7E57 /* ClubRepository.swift */; };
 		36CA9D9A2B4C18A7002A7E57 /* CreateClubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D992B4C18A7002A7E57 /* CreateClubModel.swift */; };
 		36CA9D9C2B56855A002A7E57 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D9B2B56855A002A7E57 /* TermsOfServiceView.swift */; };
+		36CA9D9E2B5C1688002A7E57 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D9D2B5C1688002A7E57 /* AddWorkoutView.swift */; };
+		36CA9DA02B5C1AF1002A7E57 /* CustomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D9F2B5C1AF1002A7E57 /* CustomRow.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,6 +112,8 @@
 		36CA9D962B4C1123002A7E57 /* ClubRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRepository.swift; sourceTree = "<group>"; };
 		36CA9D992B4C18A7002A7E57 /* CreateClubModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateClubModel.swift; sourceTree = "<group>"; };
 		36CA9D9B2B56855A002A7E57 /* TermsOfServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceView.swift; sourceTree = "<group>"; };
+		36CA9D9D2B5C1688002A7E57 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
+		36CA9D9F2B5C1AF1002A7E57 /* CustomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRow.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -236,6 +240,7 @@
 				36ADF9452B24D8C60028C73B /* TextErrorView.swift */,
 				36ADF9822B2B3E250028C73B /* GoogleButton.swift */,
 				366412BE2B46A3C400ACBFC4 /* LabeledTextField.swift */,
+				36CA9D9F2B5C1AF1002A7E57 /* CustomRow.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -250,6 +255,7 @@
 				36ADF94C2B2616430028C73B /* ProfileView.swift */,
 				366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */,
 				366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */,
+				36CA9D9D2B5C1688002A7E57 /* AddWorkoutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -445,6 +451,7 @@
 			files = (
 				36CA9D9C2B56855A002A7E57 /* TermsOfServiceView.swift in Sources */,
 				366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */,
+				36CA9DA02B5C1AF1002A7E57 /* CustomRow.swift in Sources */,
 				36ADF9462B24D8C60028C73B /* TextErrorView.swift in Sources */,
 				36ADF94D2B2616430028C73B /* ProfileView.swift in Sources */,
 				366412BF2B46A3C400ACBFC4 /* LabeledTextField.swift in Sources */,
@@ -457,6 +464,7 @@
 				366412BD2B4699DB00ACBFC4 /* SplashView.swift in Sources */,
 				36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */,
 				36ADF93C2B21B5650028C73B /* RegisterView.swift in Sources */,
+				36CA9D9E2B5C1688002A7E57 /* AddWorkoutView.swift in Sources */,
 				36CA9D9A2B4C18A7002A7E57 /* CreateClubModel.swift in Sources */,
 				366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */,
 				36ADF9702B2899E80028C73B /* AuthenticationManager.swift in Sources */,
