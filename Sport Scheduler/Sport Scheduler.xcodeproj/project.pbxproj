@@ -51,6 +51,11 @@
 		36CA9D9C2B56855A002A7E57 /* TermsOfServiceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D9B2B56855A002A7E57 /* TermsOfServiceView.swift */; };
 		36CA9D9E2B5C1688002A7E57 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D9D2B5C1688002A7E57 /* AddWorkoutView.swift */; };
 		36CA9DA02B5C1AF1002A7E57 /* CustomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9D9F2B5C1AF1002A7E57 /* CustomRow.swift */; };
+		36CA9DA32B5ECF3B002A7E57 /* AddWorkoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA22B5ECF3B002A7E57 /* AddWorkoutModel.swift */; };
+		36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA42B5ED07C002A7E57 /* Workout.swift */; };
+		36CA9DA82B5EE0C8002A7E57 /* ClubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */; };
+		36CA9DAA2B601027002A7E57 /* WorkoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA92B601027002A7E57 /* WorkoutRow.swift */; };
+		36F005B42B60210200FA9458 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B32B60210200FA9458 /* WorkoutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -114,6 +119,11 @@
 		36CA9D9B2B56855A002A7E57 /* TermsOfServiceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsOfServiceView.swift; sourceTree = "<group>"; };
 		36CA9D9D2B5C1688002A7E57 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
 		36CA9D9F2B5C1AF1002A7E57 /* CustomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRow.swift; sourceTree = "<group>"; };
+		36CA9DA22B5ECF3B002A7E57 /* AddWorkoutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutModel.swift; sourceTree = "<group>"; };
+		36CA9DA42B5ED07C002A7E57 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
+		36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModel.swift; sourceTree = "<group>"; };
+		36CA9DA92B601027002A7E57 /* WorkoutRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRow.swift; sourceTree = "<group>"; };
+		36F005B32B60210200FA9458 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -198,6 +208,8 @@
 				366412B82B4439BD00ACBFC4 /* Login */,
 				366412B92B4439EC00ACBFC4 /* Register */,
 				36CA9D982B4C1854002A7E57 /* Create Club */,
+				36CA9DA62B5EE0A4002A7E57 /* Clubs */,
+				36CA9DA12B5ECF12002A7E57 /* Workouts */,
 				36ADF94F2B26183F0028C73B /* Models */,
 				36ADF94E2B2617D10028C73B /* Views */,
 				36ADF90D2B21AD6C0028C73B /* Assets.xcassets */,
@@ -241,6 +253,7 @@
 				36ADF9822B2B3E250028C73B /* GoogleButton.swift */,
 				366412BE2B46A3C400ACBFC4 /* LabeledTextField.swift */,
 				36CA9D9F2B5C1AF1002A7E57 /* CustomRow.swift */,
+				36CA9DA92B601027002A7E57 /* WorkoutRow.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -250,12 +263,9 @@
 			children = (
 				36ADF9622B274B660028C73B /* WelcomeView.swift */,
 				36ADF9472B2614F30028C73B /* MainView.swift */,
-				36ADF9572B2626770028C73B /* ClubView.swift */,
-				36ADF94A2B2616280028C73B /* WorkoutsView.swift */,
 				36ADF94C2B2616430028C73B /* ProfileView.swift */,
 				366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */,
 				366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */,
-				36CA9D9D2B5C1688002A7E57 /* AddWorkoutView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -301,10 +311,31 @@
 			children = (
 				36CA9D992B4C18A7002A7E57 /* CreateClubModel.swift */,
 				366412BA2B443A6300ACBFC4 /* CreateClubView.swift */,
-				36ADF9522B2618620028C73B /* Club.swift */,
 				36CA9D9B2B56855A002A7E57 /* TermsOfServiceView.swift */,
 			);
 			path = "Create Club";
+			sourceTree = "<group>";
+		};
+		36CA9DA12B5ECF12002A7E57 /* Workouts */ = {
+			isa = PBXGroup;
+			children = (
+				36CA9DA22B5ECF3B002A7E57 /* AddWorkoutModel.swift */,
+				36CA9D9D2B5C1688002A7E57 /* AddWorkoutView.swift */,
+				36ADF94A2B2616280028C73B /* WorkoutsView.swift */,
+				36CA9DA42B5ED07C002A7E57 /* Workout.swift */,
+				36F005B32B60210200FA9458 /* WorkoutView.swift */,
+			);
+			path = Workouts;
+			sourceTree = "<group>";
+		};
+		36CA9DA62B5EE0A4002A7E57 /* Clubs */ = {
+			isa = PBXGroup;
+			children = (
+				36ADF9572B2626770028C73B /* ClubView.swift */,
+				36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */,
+				36ADF9522B2618620028C73B /* Club.swift */,
+			);
+			path = Clubs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,8 +483,11 @@
 				36CA9D9C2B56855A002A7E57 /* TermsOfServiceView.swift in Sources */,
 				366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */,
 				36CA9DA02B5C1AF1002A7E57 /* CustomRow.swift in Sources */,
+				36CA9DAA2B601027002A7E57 /* WorkoutRow.swift in Sources */,
+				36F005B42B60210200FA9458 /* WorkoutView.swift in Sources */,
 				36ADF9462B24D8C60028C73B /* TextErrorView.swift in Sources */,
 				36ADF94D2B2616430028C73B /* ProfileView.swift in Sources */,
+				36CA9DA32B5ECF3B002A7E57 /* AddWorkoutModel.swift in Sources */,
 				366412BF2B46A3C400ACBFC4 /* LabeledTextField.swift in Sources */,
 				36ADF9342B21B0E50028C73B /* LoginView.swift in Sources */,
 				36ADF94B2B2616280028C73B /* WorkoutsView.swift in Sources */,
@@ -469,8 +503,10 @@
 				366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */,
 				36ADF9702B2899E80028C73B /* AuthenticationManager.swift in Sources */,
 				36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */,
+				36CA9DA82B5EE0C8002A7E57 /* ClubModel.swift in Sources */,
 				36ADF9372B21B3A00028C73B /* SignInButton.swift in Sources */,
 				36ADF9552B2618730028C73B /* Subscription.swift in Sources */,
+				36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */,
 				36ADF9512B2618570028C73B /* DBUser.swift in Sources */,
 				36ADF9532B2618620028C73B /* Club.swift in Sources */,
 				36ADF90C2B21AD690028C73B /* ContentView.swift in Sources */,

@@ -7,35 +7,9 @@
 
 import SwiftUI
 
-import FirebaseFirestore
-
-final class ClubModel: ObservableObject {
-    private var clubRepository: ClubRepository
-    private var userRepository: UserRepository
-    
-    @Published var club: Club?
-    
-    init(clubRepository: ClubRepository = Firestore.firestore(),
-         userRepository: UserRepository = Firestore.firestore()) {
-        self.clubRepository = clubRepository
-        self.userRepository = userRepository
-    }
-    
-    func fetchData(for clubId: String) async throws {
-        let fetchedClub = try await clubRepository.getClub(clubId: clubId)
-        
-        Task {
-            await MainActor.run {
-                self.club = fetchedClub
-            }
-        }
-        
-    }
-    
-}
-
 struct ClubView: View {
     @State private var showAddWorkoutScreen = false
+    @State private var selectedDate = Date()
     @StateObject private var clubModel = ClubModel()
     @EnvironmentObject var currentUser: CurrentUser
     
@@ -47,28 +21,44 @@ struct ClubView: View {
                 ProgressView()
                     .controlSize(.large)
             } else {
-                VStack(spacing: 10) {
-                    Image(clubModel.club!.picture)
-                        .resizable()
-                        .frame(width: 100)
-                        .clipShape(Circle())
-                        .frame(width: 100, height: 100)
-                        .padding()
-                    
-                    Text("Members: \(clubModel.club!.members.count)")
-                        .font(.headline)
-                    
-                    Text(clubModel.club!.description)
-                        .font(.title3)
-                        .padding([.leading, .trailing], 15)
-                    
-                    Divider()
-                    
-                    Spacer()
-                    
+                ScrollView {
+                    VStack(spacing: 10) {
+                        Image(clubModel.club!.picture)
+                            .resizable()
+                            .frame(width: 100)
+                            .clipShape(Circle())
+                            .frame(width: 100, height: 100)
+                            .padding()
+                        
+                        Text("Members: \(clubModel.club!.members.count)")
+                            .font(.headline)
+                        
+                        Text(clubModel.club!.description)
+                            .font(.title3)
+                            .padding([.leading, .trailing], 15)
+                        
+                        Divider()
+                        
+                        Spacer()
+                        
+                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
+                            .padding()
+                        
+                        
+                        VStack(spacing: 10) {
+                            ForEach(clubModel.workouts, id:\.workoutId) { workout in
+                                NavigationLink(destination: WorkoutView(workout: workout)) {
+                                    WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                        
+                        Spacer()
+                    }
                 }
                 .sheet(isPresented: $showAddWorkoutScreen) {
-                    AddWorkoutView()
+                    AddWorkoutView(clubID: club.name)
                 }
                 .navigationTitle(clubModel.club!.clubName)
                 .toolbar {
@@ -83,13 +73,18 @@ struct ClubView: View {
         .task {
             do {
                 try await clubModel.fetchData(for: club.name)
+                try await clubModel.fetchWorkouts(for: club.name, on: Date())
             } catch {
                 print(error)
             }
         }
+        .onChange(of: selectedDate) {
+            Task {
+                try await clubModel.fetchWorkouts(for: club.name, on: selectedDate)
+            }
+        }
     }
 }
-
 #Preview {
     NavigationStack {
         ClubView(club: UserClubModel(name: "Sofia City breakers", picture: "ClubPlaceholder"))

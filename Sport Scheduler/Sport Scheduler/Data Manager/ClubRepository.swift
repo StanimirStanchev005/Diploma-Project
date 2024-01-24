@@ -26,16 +26,17 @@ enum ClubRepositoryError: Error {
 protocol ClubRepository {
     func create(club: Club) async throws
     func getClub(clubId: String) async throws -> Club
+    func addWorkout(for clubId: String, workout: Workout) throws
+    func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
 }
 
 extension Firestore: ClubRepository {
     func create(club: Club) async throws {
-        let clubReference = collection("clubs").document(club.clubName)
         do {
-            if try await clubReference.getDocument().exists {
+            if try await collection("clubs").document(club.clubName).getDocument().exists {
                 throw ClubRepositoryError.alreadyExists
             }
-            try await clubReference.setData(from: club, merge: false)
+            try await collection("clubs").document(club.clubName).setData(from: club, merge: false)
         } catch {
             let error = error as NSError
             
@@ -51,6 +52,24 @@ extension Firestore: ClubRepository {
     
     func getClub(clubId: String) async throws -> Club {
         try await collection("clubs").document(clubId).getDocument(as: Club.self)
+    }
+    
+    func addWorkout(for clubId: String, workout: Workout) throws {
+        try collection("clubs").document(clubId).collection("workouts").document(workout.workoutId).setData(from: workout, merge: true)
+    }
+        
+    func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout] {
+        let startDate = Calendar.current.startOfDay(for: date)
+        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+
+        let querySnapshot = try await collection("clubs").document(clubId).collection("workouts")
+            .whereField("date", isGreaterThanOrEqualTo: startDate)
+            .whereField("date", isLessThanOrEqualTo: endDate)
+            .getDocuments()
+        
+        return try querySnapshot.documents.compactMap { document in
+            try document.data(as: Workout.self)
+        }
     }
 }
 

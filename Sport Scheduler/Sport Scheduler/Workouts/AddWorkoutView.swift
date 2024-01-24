@@ -7,46 +7,22 @@
 
 import SwiftUI
 
-final class AddWorkoutModel: ObservableObject {
-    @Published var workoutDate = Date()
-    @Published var workoutTime = Date()
-    @Published var workoutTitle = ""
-    @Published var workoutDescription = ""
-    @Published var isRepeating = false
-    
-    private var formattedDateTime: String {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            return formatter.string(from: mergedDate())
-        }
-
-        private func mergedDate() -> Date {
-            let calendar = Calendar.current
-            let dateComponents = calendar.dateComponents([.year, .month, .day], from: workoutDate)
-            let timeComponents = calendar.dateComponents([.hour, .minute], from: workoutTime)
-
-            return calendar.date(bySettingHour: timeComponents.hour ?? 0, minute: timeComponents.minute ?? 0, second: 0, of: calendar.date(from: dateComponents) ?? Date()) ?? Date()
-        }
-}
-
 struct AddWorkoutView: View {
     @Environment(\.dismiss) var dismiss
     @StateObject var addWorkoutModel = AddWorkoutModel()
+    let clubID: String
     
     var body: some View {
         NavigationStack{
             VStack(spacing: 0) {
                 Form {
-                    DatePicker("Date", selection: $addWorkoutModel.workoutTime, in: Date.now..., displayedComponents: .date)
+                    DatePicker("Date", selection: $addWorkoutModel.workoutDate, in: Date.now...)
 
-                    DatePicker("Time", selection: $addWorkoutModel.workoutTime, displayedComponents: .hourAndMinute)
-                   
                     CustomRow(label: "Title", placeholder: "Title", text: $addWorkoutModel.workoutTitle)
                     
                     CustomRow(label: "Description", placeholder: "Description", text: $addWorkoutModel.workoutDescription)
                     
-                    Toggle("Repeat", isOn: $addWorkoutModel.isRepeating)
+                    Toggle("Add for a Month", isOn: $addWorkoutModel.isRepeating)
                 }
             }
             .navigationTitle("Add Workout")
@@ -60,7 +36,12 @@ struct AddWorkoutView: View {
                 
                 ToolbarItem(placement: .topBarTrailing ) {
                     Button("Save") {
-                        dismiss()
+                        do {
+                            try addWorkoutModel.save(for: clubID, title: addWorkoutModel.workoutTitle, description: addWorkoutModel.workoutDescription, date: addWorkoutModel.workoutDate, time: addWorkoutModel.workoutTime, isRepeating: addWorkoutModel.isRepeating)
+                            dismiss()
+                        } catch {
+                            print(error)
+                        }
                     }
                 }
             }
@@ -70,6 +51,6 @@ struct AddWorkoutView: View {
 
 #Preview {
     NavigationStack {
-        AddWorkoutView()
+        AddWorkoutView(clubID: "")
     }
 }

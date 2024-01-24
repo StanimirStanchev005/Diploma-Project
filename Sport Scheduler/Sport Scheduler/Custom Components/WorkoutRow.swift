@@ -8,11 +8,39 @@
 import SwiftUI
 
 struct WorkoutRow: View {
+    let title: String
+    let description: String
+    let participants: [Participants]
+    let date: Date
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            VStack {
+                Text(title)
+                    .font(.headline)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+                Text(description)
+                    .font(.subheadline)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+            }
+            
+            Spacer()
+            
+            VStack {
+                Text("Participants: \(participants.count)")
+                Text(date.formatted())
+            }
+        }
+        .padding()
+        .overlay {
+            RoundedRectangle(cornerRadius: 12)
+                .stroke()
+                
+        }
     }
 }
 
 #Preview {
-    WorkoutRow()
+    WorkoutRow(title: "Example workout", description: "Some random text for example description", participants: [], date: Date())
 }

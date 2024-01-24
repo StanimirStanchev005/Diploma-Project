@@ -17,19 +17,21 @@ struct JoinedClubsView: View {
                     ForEach(currentUser.user!.joinedClubs, id: \.name.self) { club in
                         NavigationLink(destination: ClubView(club: club)) {
                             HStack {
-                                VStack {
-                                    Text(club.name)
-                                        .bold()
-                                        .foregroundStyle(.black)
-                                }
+                                Text(club.name)
+                                    .bold()
+                                    .foregroundStyle(.black)
+                                
+                                Spacer()
                                 
                                 Image(club.picture)
                                     .resizable()
-                                    .clipShape(.circle)
-                                    .scaledToFit()
+                                    .frame(width: 100)
+                                    .clipShape(Circle())
+                                    .frame(width: 100, height: 100)
                             }
                         }
                         .frame(maxWidth: .infinity)
+                        .padding(.horizontal)
                     }
                 }
             }
