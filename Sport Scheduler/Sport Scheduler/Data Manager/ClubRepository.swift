@@ -29,6 +29,7 @@ protocol ClubRepository {
     func addWorkout(for clubId: String, workout: Workout) throws
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
     func deleteWorkout(for clubId: String, with workoutId: String) throws
+    func updateWorkout(for clubId: String, with workout: Workout) throws
 }
 
 extension Firestore: ClubRepository {
@@ -58,11 +59,11 @@ extension Firestore: ClubRepository {
     func addWorkout(for clubId: String, workout: Workout) throws {
         try collection("clubs").document(clubId).collection("workouts").document(workout.workoutId).setData(from: workout, merge: true)
     }
-        
+    
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout] {
         let startDate = Calendar.current.startOfDay(for: date)
         let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
-
+        
         let querySnapshot = try await collection("clubs").document(clubId).collection("workouts")
             .whereField("date", isGreaterThanOrEqualTo: startDate)
             .whereField("date", isLessThanOrEqualTo: endDate)
@@ -75,6 +76,14 @@ extension Firestore: ClubRepository {
     
     func deleteWorkout(for clubId: String, with workoutId: String) throws {
         collection("clubs").document(clubId).collection("workouts").document(workoutId).delete()
+    }
+    
+    func updateWorkout(for clubId: String, with workout: Workout) throws {
+        collection("clubs").document(clubId).collection("workouts").document(workout.workoutId).updateData([
+            "title": workout.title,
+            "description": workout.description,
+            "date": workout.date            
+        ])
     }
 }
 

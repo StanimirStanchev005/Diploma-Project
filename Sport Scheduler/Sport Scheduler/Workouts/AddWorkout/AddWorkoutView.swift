@@ -37,7 +37,7 @@ struct AddWorkoutView: View {
                 ToolbarItem(placement: .topBarTrailing ) {
                     Button("Save") {
                         do {
-                            try addWorkoutModel.save(for: clubID, title: addWorkoutModel.workoutTitle, description: addWorkoutModel.workoutDescription, date: addWorkoutModel.workoutDate, time: addWorkoutModel.workoutTime, isRepeating: addWorkoutModel.isRepeating)
+                            try addWorkoutModel.save(for: clubID, title: addWorkoutModel.workoutTitle, description: addWorkoutModel.workoutDescription, date: addWorkoutModel.workoutDate, isRepeating: addWorkoutModel.isRepeating)
                             dismiss()
                         } catch {
                             print(error)

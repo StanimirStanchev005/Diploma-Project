@@ -47,6 +47,11 @@ struct ClubView: View {
                             NavigationLink(destination: WorkoutView(workout: workout)) {
                                 WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
                             }
+                            .swipeActions(edge: .leading) {
+                                NavigationLink(destination: EditWorkoutView(workout: workout, clubID: club.name)) {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+                            }
                         }
                         .onDelete(perform: clubModel.deletedWorkout)
                     }
@@ -56,6 +61,14 @@ struct ClubView: View {
                 .scrollContentBackground(.hidden)
                 
                 .sheet(isPresented: $showAddWorkoutScreen) {
+                    Task {
+                        do {
+                            try await clubModel.fetchWorkouts(for: club.name, on: selectedDate)
+                        } catch {
+                            print("Error fetching club's workouts: \(error)")
+                        }
+                    }
+                } content: {
                     AddWorkoutView(clubID: club.name)
                 }
                 .navigationTitle(clubModel.club!.clubName)
@@ -71,9 +84,9 @@ struct ClubView: View {
         .task {
             do {
                 try await clubModel.fetchData(for: club.name)
-                try await clubModel.fetchWorkouts(for: club.name, on: Date())
+                try await clubModel.fetchWorkouts(for: club.name, on: selectedDate)
             } catch {
-                print(error)
+                print("Error fetching club's workouts: \(error)")
             }
         }
         .onChange(of: selectedDate) {
@@ -83,6 +96,7 @@ struct ClubView: View {
         }
     }
 }
+
 #Preview {
     NavigationStack {
         ClubView(club: UserClubModel(name: "Sofia City breakers", picture: "ClubPlaceholder"))

@@ -36,12 +36,6 @@ struct WorkoutRow: View {
                     .foregroundStyle(.lightBackground)
             }
         }
-        .padding()
-        .overlay {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke()
-                
-        }
     }
 }
 

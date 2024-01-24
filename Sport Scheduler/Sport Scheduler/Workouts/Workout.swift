@@ -12,15 +12,13 @@ final class Workout: Codable {
     var title: String
     var description: String
     var date: Date
-    var time: Date
     var participants: [Participants] = []
     var isRepeating: Bool
     
-    init(title: String, description: String, date: Date, time: Date, isRepeating: Bool) {
+    init(title: String, description: String = "", date: Date, isRepeating: Bool) {
         self.title = title
         self.description = description
         self.date = date
-        self.time = time
         self.isRepeating = isRepeating
     }
 }
