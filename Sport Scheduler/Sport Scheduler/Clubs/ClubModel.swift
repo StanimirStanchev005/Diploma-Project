@@ -31,12 +31,24 @@ final class ClubModel: ObservableObject {
         }
     }
     
-    func fetchWorkouts(for clubId:String, on date: Date) async throws {
+    func fetchWorkouts(for clubId: String, on date: Date) async throws {
         let fetchedWorkouts = try await clubRepository.getWorkouts(for: clubId, on: date)
         
         Task {
             await MainActor.run {
                 self.workouts = fetchedWorkouts
+            }
+        }
+    }
+    
+    func deletedWorkout(at offsets: IndexSet)  {
+        let deletedWorkouts = offsets.map { workouts[$0] }
+        
+        for deletedWorkout in deletedWorkouts {
+            do {
+                try clubRepository.deleteWorkout(for: self.club!.clubName, with: deletedWorkout.workoutId)
+            } catch {
+                print("Error deleting workout: \(error)")
             }
         }
     }

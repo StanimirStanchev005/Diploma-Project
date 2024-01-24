@@ -34,6 +34,7 @@ struct JoinedClubsView: View {
                         .padding(.horizontal)
                     }
                 }
+                .scrollContentBackground(.hidden)
             }
             .toolbar {
                 NavigationLink("Owned Clubs") {

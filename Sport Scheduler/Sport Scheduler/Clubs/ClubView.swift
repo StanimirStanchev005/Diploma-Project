@@ -21,42 +21,40 @@ struct ClubView: View {
                 ProgressView()
                     .controlSize(.large)
             } else {
-                ScrollView {
-                    VStack(spacing: 10) {
-                        Image(clubModel.club!.picture)
-                            .resizable()
-                            .frame(width: 100)
-                            .clipShape(Circle())
-                            .frame(width: 100, height: 100)
-                            .padding()
-                        
-                        Text("Members: \(clubModel.club!.members.count)")
-                            .font(.headline)
-                        
-                        Text(clubModel.club!.description)
-                            .font(.title3)
-                            .padding([.leading, .trailing], 15)
-                        
-                        Divider()
-                        
-                        Spacer()
-                        
-                        DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
-                            .padding()
-                        
-                        
-                        VStack(spacing: 10) {
-                            ForEach(clubModel.workouts, id:\.workoutId) { workout in
-                                NavigationLink(destination: WorkoutView(workout: workout)) {
-                                    WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
-                                }
+                
+                VStack(spacing: 10) {
+                    Image(clubModel.club!.picture)
+                        .resizable()
+                        .frame(width: 100)
+                        .clipShape(Circle())
+                        .frame(width: 100, height: 100)
+                        .padding()
+                    
+                    Text("Members: \(clubModel.club!.members.count)")
+                        .font(.headline)
+                    
+                    Text(clubModel.club!.description)
+                        .font(.title3)
+                        .padding([.leading, .trailing], 15)
+                    
+                    Divider()
+                    
+                    DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
+                        .labelsHidden()
+                    
+                    List {
+                        ForEach(clubModel.workouts, id:\.workoutId) { workout in
+                            NavigationLink(destination: WorkoutView(workout: workout)) {
+                                WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
                             }
                         }
-                        .padding(.horizontal)
-                        
-                        Spacer()
+                        .onDelete(perform: clubModel.deletedWorkout)
                     }
+                    
+                    Spacer()
                 }
+                .scrollContentBackground(.hidden)
+                
                 .sheet(isPresented: $showAddWorkoutScreen) {
                     AddWorkoutView(clubID: club.name)
                 }

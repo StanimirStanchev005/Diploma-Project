@@ -28,6 +28,7 @@ protocol ClubRepository {
     func getClub(clubId: String) async throws -> Club
     func addWorkout(for clubId: String, workout: Workout) throws
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
+    func deleteWorkout(for clubId: String, with workoutId: String) throws
 }
 
 extension Firestore: ClubRepository {
@@ -70,6 +71,10 @@ extension Firestore: ClubRepository {
         return try querySnapshot.documents.compactMap { document in
             try document.data(as: Workout.self)
         }
+    }
+    
+    func deleteWorkout(for clubId: String, with workoutId: String) throws {
+        collection("clubs").document(clubId).collection("workouts").document(workoutId).delete()
     }
 }
 

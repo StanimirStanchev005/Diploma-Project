@@ -19,17 +19,21 @@ struct WorkoutRow: View {
                     .font(.headline)
                     .lineLimit(1)
                     .truncationMode(.tail)
+                    .foregroundStyle(.lightBackground)
                 Text(description)
                     .font(.subheadline)
                     .lineLimit(1)
                     .truncationMode(.tail)
+                    .foregroundStyle(.lightBackground)
             }
             
             Spacer()
             
             VStack {
                 Text("Participants: \(participants.count)")
+                    .foregroundStyle(.lightBackground)
                 Text(date.formatted())
+                    .foregroundStyle(.lightBackground)
             }
         }
         .padding()
