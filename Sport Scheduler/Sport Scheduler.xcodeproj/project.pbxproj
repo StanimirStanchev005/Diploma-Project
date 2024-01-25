@@ -354,8 +354,8 @@
 		36F005B82B614AC600FA9458 /* EditWorkout */ = {
 			isa = PBXGroup;
 			children = (
-				36F005B52B61421100FA9458 /* EditWorkoutView.swift */,
 				36F005B92B614ADF00FA9458 /* EditWorkoutModel.swift */,
+				36F005B52B61421100FA9458 /* EditWorkoutView.swift */,
 			);
 			path = EditWorkout;
 			sourceTree = "<group>";

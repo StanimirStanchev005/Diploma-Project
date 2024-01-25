@@ -16,7 +16,7 @@ struct EditWorkoutView: View {
     var body: some View {
         VStack(spacing: 0) {
             Form {
-                DatePicker("Date", selection: $workout.date, in: Date.now...)
+                DatePicker("Date", selection: $workout.date)
                 
                 CustomRow(label: "Title", placeholder: "Title", text: $workout.title)
                 

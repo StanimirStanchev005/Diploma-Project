@@ -16,6 +16,10 @@ final class AddWorkoutModel: ObservableObject {
     
     private var clubRepository: ClubRepository
     
+    var isValidInput: Bool {
+        workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
     init(clubRepository: ClubRepository = Firestore.firestore()) {
         self.clubRepository = clubRepository
     }
@@ -38,9 +42,9 @@ final class AddWorkoutModel: ObservableObject {
         
         for _ in 1...4 {
             try saveWorkout(for: club, title: title, description: description, date: currentDate, isRepeating: isRepeating)
-
+            
             currentDate = Calendar.current.date(byAdding: .day, value: 7, to: currentDate)!
-    
+            
             if currentDate > endDate {
                 break
             }

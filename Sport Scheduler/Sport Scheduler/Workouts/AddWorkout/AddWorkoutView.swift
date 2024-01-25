@@ -13,11 +13,11 @@ struct AddWorkoutView: View {
     let clubID: String
     
     var body: some View {
-        NavigationStack{
+        NavigationStack {
             VStack(spacing: 0) {
                 Form {
                     DatePicker("Date", selection: $addWorkoutModel.workoutDate, in: Date.now...)
-
+                    
                     CustomRow(label: "Title", placeholder: "Title", text: $addWorkoutModel.workoutTitle)
                     
                     CustomRow(label: "Description", placeholder: "Description", text: $addWorkoutModel.workoutDescription)
@@ -43,6 +43,7 @@ struct AddWorkoutView: View {
                             print(error)
                         }
                     }
+                    .disabled(addWorkoutModel.isValidInput)
                 }
             }
         }
