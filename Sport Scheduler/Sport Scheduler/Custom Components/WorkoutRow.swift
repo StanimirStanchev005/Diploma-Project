@@ -34,6 +34,8 @@ struct WorkoutRow: View {
                     .foregroundStyle(.lightBackground)
                 Text(date.formatted())
                     .foregroundStyle(.lightBackground)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
             }
         }
     }
