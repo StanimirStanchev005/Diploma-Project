@@ -61,7 +61,7 @@ struct CreateClubView: View {
                 
                 Button {
                     Task {
-                        let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
+                        let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID, searchName: createClubModel.createSearchName())
                         
                         try await createClubModel.create(club: club, for: currentUser.user!)
                         

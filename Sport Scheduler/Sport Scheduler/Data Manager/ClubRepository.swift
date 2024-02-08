@@ -26,6 +26,7 @@ enum ClubRepositoryError: Error {
 protocol ClubRepository {
     func create(club: Club) async throws
     func getClub(clubId: String) async throws -> Club
+    func searchClub(searchText: String) async throws -> [UserClubModel]
     func addWorkout(for clubId: String, workout: Workout) throws
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
     func deleteWorkout(for clubId: String, with workoutId: String) throws
@@ -38,7 +39,7 @@ extension Firestore: ClubRepository {
             if try await collection("clubs").document(club.clubName).getDocument().exists {
                 throw ClubRepositoryError.alreadyExists
             }
-            try await collection("clubs").document(club.clubName).setData(from: club, merge: false)
+            try collection("clubs").document(club.clubName).setData(from: club, merge: false)
         } catch {
             let error = error as NSError
             
@@ -54,6 +55,16 @@ extension Firestore: ClubRepository {
     
     func getClub(clubId: String) async throws -> Club {
         try await collection("clubs").document(clubId).getDocument(as: Club.self)
+    }
+    
+    func searchClub(searchText: String) async throws -> [UserClubModel] {
+        let querySnapshot = try await collection("clubs").whereField("searchName", arrayContains: searchText.lowercased()).getDocuments()
+        
+        return try querySnapshot.documents.compactMap { document in
+            let club = try document.data(as: Club.self)
+            return UserClubModel(name: club.clubName, picture: club.picture)
+        }
+        
     }
     
     func addWorkout(for clubId: String, workout: Workout) throws {
@@ -82,7 +93,7 @@ extension Firestore: ClubRepository {
         collection("clubs").document(clubId).collection("workouts").document(workout.workoutId).updateData([
             "title": workout.title,
             "description": workout.description,
-            "date": workout.date            
+            "date": workout.date
         ])
     }
 }

@@ -9,9 +9,28 @@ import SwiftUI
 
 struct JoinedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
+    @StateObject var joinedClubsModel = JoinedClubsModel()
     
     var body: some View {
         NavigationStack {
+            List {
+                ForEach(joinedClubsModel.filteredClubs, id: \.name.self) { club in
+                    HStack {
+                        Image(club.picture)
+                            .resizable()
+                            .frame(width: 50)
+                            .clipShape(Circle())
+                            .frame(width: 50, height: 50)
+                        
+                        Text(club.name)
+                            .bold()
+                            .foregroundStyle(.lightBackground)
+                            .padding(.horizontal)
+                    }
+                }
+            }
+            .scrollContentBackground(.hidden)
+            
             VStack {
                 List {
                     ForEach(currentUser.user!.joinedClubs, id: \.name.self) { club in
@@ -19,7 +38,7 @@ struct JoinedClubsView: View {
                             HStack {
                                 Text(club.name)
                                     .bold()
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.lightBackground)
                                 
                                 Spacer()
                                 
@@ -42,10 +61,18 @@ struct JoinedClubsView: View {
                 }
             }
             .navigationTitle("Joined Clubs")
+            .searchable(text: $joinedClubsModel.searchedClub, placement: .navigationBarDrawer, prompt: Text("Search club to join..."))
+        }
+        
+        .onChange(of: joinedClubsModel.searchedClub) {
+            joinedClubsModel.applyFilterWithDebounce()
+        }
+        
+        .onSubmit {
+            joinedClubsModel.applyFilterWithDebounce()
         }
     }
 }
-
 
 #Preview {
     JoinedClubsView()

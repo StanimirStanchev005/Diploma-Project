@@ -26,9 +26,20 @@ final class CreateClubModel: ObservableObject {
     @Published var selectedSport: String = "Football"
     @Published var hasError = false
     @Published var localizedError: String = "There was an error creating the club! Please try again!"
-    
+
     var isInputValid: Bool {
         isValidRepresenter && !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
+    func createSearchName() -> [String] {
+        var resultArray: [String] = []
+        
+        for index in self.name.indices {
+            let substring = String(self.name[..<self.name.index(after: index)]).lowercased()
+            resultArray.append(substring)
+        }
+        
+        return resultArray
     }
     
     func create(club: Club, for user: DBUser) async throws {

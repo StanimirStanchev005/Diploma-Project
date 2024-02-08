@@ -9,7 +9,6 @@ import SwiftUI
 
 struct OwnedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
-    @State private var createClub = false
     
     var body: some View {
         VStack {

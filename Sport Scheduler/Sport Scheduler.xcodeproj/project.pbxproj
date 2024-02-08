@@ -58,6 +58,7 @@
 		36F005B42B60210200FA9458 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B32B60210200FA9458 /* WorkoutView.swift */; };
 		36F005B62B61421100FA9458 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B52B61421100FA9458 /* EditWorkoutView.swift */; };
 		36F005BA2B614ADF00FA9458 /* EditWorkoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B92B614ADF00FA9458 /* EditWorkoutModel.swift */; };
+		36F005BD2B74CE8300FA9458 /* JoinedClubsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005BC2B74CE8300FA9458 /* JoinedClubsModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,6 +129,7 @@
 		36F005B32B60210200FA9458 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		36F005B52B61421100FA9458 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		36F005B92B614ADF00FA9458 /* EditWorkoutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutModel.swift; sourceTree = "<group>"; };
+		36F005BC2B74CE8300FA9458 /* JoinedClubsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedClubsModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +216,7 @@
 				36CA9D982B4C1854002A7E57 /* Create Club */,
 				36CA9DA62B5EE0A4002A7E57 /* Clubs */,
 				36CA9DA12B5ECF12002A7E57 /* Workouts */,
+				36F005BB2B74CE3600FA9458 /* Joined Clubs */,
 				36ADF94F2B26183F0028C73B /* Models */,
 				36ADF94E2B2617D10028C73B /* Views */,
 				36ADF90D2B21AD6C0028C73B /* Assets.xcassets */,
@@ -268,7 +271,6 @@
 				36ADF9622B274B660028C73B /* WelcomeView.swift */,
 				36ADF9472B2614F30028C73B /* MainView.swift */,
 				36ADF94C2B2616430028C73B /* ProfileView.swift */,
-				366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */,
 				366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */,
 			);
 			path = Views;
@@ -358,6 +360,15 @@
 				36F005B52B61421100FA9458 /* EditWorkoutView.swift */,
 			);
 			path = EditWorkout;
+			sourceTree = "<group>";
+		};
+		36F005BB2B74CE3600FA9458 /* Joined Clubs */ = {
+			isa = PBXGroup;
+			children = (
+				366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */,
+				36F005BC2B74CE8300FA9458 /* JoinedClubsModel.swift */,
+			);
+			path = "Joined Clubs";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -518,6 +529,7 @@
 				36ADF9402B21E2950028C73B /* LoginModel.swift in Sources */,
 				366412BB2B443A6300ACBFC4 /* CreateClubView.swift in Sources */,
 				36ADF9582B2626770028C73B /* ClubView.swift in Sources */,
+				36F005BD2B74CE8300FA9458 /* JoinedClubsModel.swift in Sources */,
 				366412BD2B4699DB00ACBFC4 /* SplashView.swift in Sources */,
 				36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */,
 				36F005B62B61421100FA9458 /* EditWorkoutView.swift in Sources */,
