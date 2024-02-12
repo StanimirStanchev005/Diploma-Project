@@ -63,14 +63,6 @@ struct JoinedClubsView: View {
             .navigationTitle("Joined Clubs")
             .searchable(text: $joinedClubsModel.searchedClub, placement: .navigationBarDrawer, prompt: Text("Search club to join..."))
         }
-        
-        .onChange(of: joinedClubsModel.searchedClub) {
-            joinedClubsModel.applyFilterWithDebounce()
-        }
-        
-        .onSubmit {
-            joinedClubsModel.applyFilterWithDebounce()
-        }
     }
 }
 
