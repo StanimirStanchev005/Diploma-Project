@@ -21,10 +21,13 @@ struct GoogleButton: View {
                     .resizable()
                     .scaledToFit()
                     .frame(maxHeight: 50)
-                Text("Sign up with Google")
+                Text("Continue with Google")
                     .foregroundStyle(.black)
                     .font(.title3)
+                
+                Spacer()
             }
+            .padding([.leading, .trailing], 5)
         }
         .frame(width: 280, height: 55)
     }

@@ -39,7 +39,7 @@ final class JoinedClubsModel: ObservableObject {
         Task {
             do {
                 let filteredClubs = try await clubRepository.searchClub(searchText: searchText.lowercased())
-                DispatchQueue.main.async {
+                await MainActor.run {
                     self.filteredClubs = filteredClubs
                 }
             } catch {

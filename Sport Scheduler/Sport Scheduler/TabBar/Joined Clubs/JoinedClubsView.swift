@@ -15,17 +15,19 @@ struct JoinedClubsView: View {
         NavigationStack {
             List {
                 ForEach(joinedClubsModel.filteredClubs, id: \.name.self) { club in
-                    HStack {
-                        Image(club.picture)
-                            .resizable()
-                            .frame(width: 50)
-                            .clipShape(Circle())
-                            .frame(width: 50, height: 50)
-                        
-                        Text(club.name)
-                            .bold()
-                            .foregroundStyle(.lightBackground)
-                            .padding(.horizontal)
+                    NavigationLink(destination: ClubView(club: club)) {
+                        HStack {
+                            Image(club.picture)
+                                .resizable()
+                                .frame(width: 50)
+                                .clipShape(Circle())
+                                .frame(width: 50, height: 50)
+                            
+                            Text(club.name)
+                                .bold()
+                                .foregroundStyle(.lightBackground)
+                                .padding(.horizontal)
+                        }
                     }
                 }
             }
@@ -62,6 +64,7 @@ struct JoinedClubsView: View {
             }
             .navigationTitle("Joined Clubs")
             .searchable(text: $joinedClubsModel.searchedClub, placement: .navigationBarDrawer, prompt: Text("Search club to join..."))
+            .autocorrectionDisabled(true)
         }
     }
 }
