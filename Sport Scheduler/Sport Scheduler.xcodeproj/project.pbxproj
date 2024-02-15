@@ -379,8 +379,8 @@
 		36F005C22B7DFFAA00FA9458 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
-				36F005BB2B74CE3600FA9458 /* Joined Clubs */,
 				36ADF9472B2614F30028C73B /* MainView.swift */,
+				36F005BB2B74CE3600FA9458 /* Joined Clubs */,
 				36ADF94A2B2616280028C73B /* WorkoutsView.swift */,
 				36ADF94C2B2616430028C73B /* ProfileView.swift */,
 			);
