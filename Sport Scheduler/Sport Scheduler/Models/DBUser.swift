@@ -9,7 +9,7 @@ import Foundation
 
 final class DBUser: ObservableObject, Codable {
     enum CodingKeys: CodingKey {
-        case userID, name, email, photoUrl, joinedClubs, ownedClubs, subscribed, dateCreated
+        case userID, name, email, photoUrl, joinedClubs, ownedClubs, requests, dateCreated
     }
     
     let userID: String
@@ -19,6 +19,7 @@ final class DBUser: ObservableObject, Codable {
     @Published var joinedClubs: [UserClubModel] = []
     @Published var ownedClubs: [UserClubModel] = []
     @Published var subscribed: Bool = false
+    var requests: [UserRequestModel] = []
     let dateCreated: Date
     
     init(from decoder: Decoder) throws {
@@ -29,7 +30,7 @@ final class DBUser: ObservableObject, Codable {
         photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl) ?? "UserPlaceholder"
         joinedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .joinedClubs) ?? []
         ownedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .ownedClubs) ?? []
-        subscribed = try container.decode(Bool.self, forKey: .subscribed)
+        requests = try container.decode([UserRequestModel].self, forKey: .requests) 
         dateCreated = try container.decode(Date.self, forKey: .dateCreated)
     }
     
@@ -49,12 +50,8 @@ final class DBUser: ObservableObject, Codable {
         try container.encode(photoUrl, forKey: .photoUrl)
         try container.encode(joinedClubs, forKey: .joinedClubs)
         try container.encode(ownedClubs, forKey: .ownedClubs)
-        try container.encode(subscribed, forKey: .subscribed)
+        try container.encode(requests, forKey: .requests)
         try container.encode(dateCreated, forKey: .dateCreated)
-    }
-    
-    func addOwnedClub(club: Club) {
-        self.ownedClubs.append(UserClubModel(name: club.clubName, picture: club.picture))
     }
 }
 
@@ -63,7 +60,21 @@ struct UserClubModel: Codable {
     let picture: String
 }
 
+struct UserRequestModel: Codable {
+    let requestID: String
+    let clubID: String
+    var status: String = RequestStatus.pending.rawValue
+}
+
 final class CurrentUser: ObservableObject {
     @Published var user: DBUser?
     @Published var showSignInView = true
+    
+    func addOwnedClub(club: Club) {
+        self.user!.ownedClubs.append(UserClubModel(name: club.clubName, picture: club.picture))
+    }
+    
+    func addRequest(requestID: String, clubID: String) {
+        self.user!.requests.append(UserRequestModel(requestID: requestID, clubID: clubID))
+    }
 }

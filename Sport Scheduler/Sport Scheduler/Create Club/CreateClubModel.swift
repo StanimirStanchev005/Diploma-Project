@@ -42,11 +42,10 @@ final class CreateClubModel: ObservableObject {
         return resultArray
     }
     
-    func create(club: Club, for user: DBUser) async throws {
+    func create(club: Club, for userID: String) async throws {
         do {
             try await clubRepository.create(club: club)
-            user.addOwnedClub(club: club)
-            try userRepository.save(user: user)
+            try userRepository.addClub(for: userID, clubName: club.clubName, clubPicture: club.picture)
            } catch let error as ClubRepositoryError {
                DispatchQueue.main.async {
                    self.hasError = true

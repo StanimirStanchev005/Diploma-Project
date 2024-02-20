@@ -52,7 +52,7 @@ final class RegisterModel: ObservableObject {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
-        var user: DBUser? = try await databaseProvider.getUser(userId: authDataResultModel.uid)
+        let user: DBUser? = try await databaseProvider.getUser(userId: authDataResultModel.uid)
         if user == nil {
             let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
             try databaseProvider.create(user: user)

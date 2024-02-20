@@ -14,6 +14,7 @@ final class ClubModel: ObservableObject {
     
     @Published var club: Club?
     @Published var workouts: [Workout] = []
+    @Published var userRequests: [ClubRequestModel] = []
     
     init(clubRepository: ClubRepository = Firestore.firestore(),
          userRepository: UserRepository = Firestore.firestore()) {
@@ -51,5 +52,13 @@ final class ClubModel: ObservableObject {
                 print("Error deleting workout: \(error)")
             }
         }
+    }
+    
+    func getRequests() async throws {
+        let requests = try await clubRepository.getRequests(for: club!.clubName)
+        await MainActor.run {
+            self.userRequests = requests
+        }
+        
     }
 }

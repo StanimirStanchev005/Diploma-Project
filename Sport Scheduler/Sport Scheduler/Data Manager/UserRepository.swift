@@ -13,6 +13,7 @@ protocol UserRepository {
     func create(user: DBUser) throws
     func getUser(userId: String) async throws -> DBUser
     func save(user: DBUser) throws
+    func addClub(for userID: String, clubName: String, clubPicture: String) throws
 }
 
 extension Firestore: UserRepository {
@@ -26,5 +27,13 @@ extension Firestore: UserRepository {
     
     func save(user: DBUser) throws {
         try collection("users").document(user.userID).setData(from: user, merge: true)
+    }
+    
+    func addClub(for userID: String, clubName: String, clubPicture: String) throws {
+        let club = ["name": clubName,
+                    "picture": clubPicture]
+        try collection("users").document(userID).updateData([
+            "ownedClubs": FieldValue.arrayUnion([club])
+        ])
     }
 }

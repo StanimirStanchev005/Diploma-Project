@@ -7,33 +7,17 @@
 
 import SwiftUI
 
+final class OwnedClubsModel: ObservableObject {
+    @Published var ownedClubs: [UserClubModel] = []
+}
+
 struct OwnedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
+    @StateObject var ownedClubsModel = OwnedClubsModel()
     
     var body: some View {
         VStack {
-            List {
-                ForEach(currentUser.user!.ownedClubs, id: \.name.self) { club in
-                    NavigationLink(destination: ClubView(club: club)) {
-                        HStack {
-                            Text(club.name)
-                                .bold()
-                                .foregroundStyle(.black)
-                            
-                            Spacer()
-                            
-                            Image(club.picture)
-                                .resizable()
-                                .frame(width: 100)
-                                .clipShape(Circle())
-                                .frame(width: 100, height: 100)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal)
-                }
-            }
-            .scrollContentBackground(.hidden)
+            ClubList(clubs: ownedClubsModel.ownedClubs)
         }
         .toolbar {
             NavigationLink(destination: CreateClubView()) {
@@ -41,6 +25,9 @@ struct OwnedClubsView: View {
             }
         }
         .navigationTitle("Owned Clubs")
+        .onAppear() {
+            ownedClubsModel.ownedClubs = currentUser.user!.ownedClubs
+        }
     }
 }
 

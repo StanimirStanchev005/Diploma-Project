@@ -10,6 +10,7 @@ import Combine
 final class JoinedClubsModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var cancellables = Set<AnyCancellable>()
+    @Published var joinedClubs: [UserClubModel] = []
     @Published var searchedClub: String = ""
     @Published private(set) var filteredClubs: [UserClubModel] = []
     
@@ -46,5 +47,9 @@ final class JoinedClubsModel: ObservableObject {
                 throw error
             }
         }
+    }
+    
+    func fetchJoinedClubs(for user: DBUser) {
+       
     }
 }

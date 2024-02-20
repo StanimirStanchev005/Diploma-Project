@@ -12,28 +12,26 @@ struct OwnedClubView: View {
     @State private var selectedDate = Date()
     @StateObject var clubModel: ClubModel
     @EnvironmentObject var currentUser: CurrentUser
-
+    
     var body: some View {
         VStack(spacing: 10) {
-            Image(clubModel.club!.picture)
-                .resizable()
-                .frame(width: 100)
-                .clipShape(Circle())
-                .frame(width: 100, height: 100)
-                .padding()
             
-            Text("Members: \(clubModel.club!.members.count)")
-                .font(.headline)
-            
-            Text(clubModel.club!.description)
-                .font(.title3)
-                .padding([.leading, .trailing], 15)
+            ClubHeader(picture: clubModel.club!.picture, members: clubModel.club!.members.count, description: clubModel.club!.description)
             
             Divider()
             
-            DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
-                .labelsHidden()
-            
+            HStack(spacing: 10) {
+                
+                HStack {
+                    DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
+                        .labelsHidden()
+                    NavigationLink("Join Requests", destination: ClubRequestsView(clubModel: clubModel))
+                        .foregroundStyle(.black)
+                        .tint(.gray.opacity(0.2))
+                        .buttonStyle(.borderedProminent)
+                    
+                }
+            }
             List {
                 ForEach(clubModel.workouts, id:\.workoutId) { workout in
                     NavigationLink(destination: WorkoutView(workout: workout)) {

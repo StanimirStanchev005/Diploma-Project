@@ -29,4 +29,8 @@ final class LockedClubModel: ObservableObject {
             }
         }
     }
+    
+    func sendJoinRequest(for clubId: String, request: ClubRequestModel) throws {
+        try clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
+    }
 }

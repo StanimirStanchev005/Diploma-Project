@@ -34,28 +34,7 @@ struct JoinedClubsView: View {
             .scrollContentBackground(.hidden)
             
             VStack {
-                List {
-                    ForEach(currentUser.user!.joinedClubs, id: \.name.self) { club in
-                        NavigationLink(destination: ClubView(club: club)) {
-                            HStack {
-                                Text(club.name)
-                                    .bold()
-                                    .foregroundStyle(.lightBackground)
-                                
-                                Spacer()
-                                
-                                Image(club.picture)
-                                    .resizable()
-                                    .frame(width: 100)
-                                    .clipShape(Circle())
-                                    .frame(width: 100, height: 100)
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal)
-                    }
-                }
-                .scrollContentBackground(.hidden)
+                ClubList(clubs: currentUser.user!.joinedClubs)
             }
             .toolbar {
                 NavigationLink("Owned Clubs") {

@@ -41,13 +41,17 @@ struct ContentView: View {
                     }
                 }
                 .task {
-                    let authUser = try? authenticationProvider.getAuthenticatedUser()
-                    guard authUser != nil else {
-                        self.currentUser.showSignInView = true
-                        return
+                    do {
+                        let authUser: AuthDataResultModel? = try authenticationProvider.getAuthenticatedUser()
+                        guard authUser != nil else {
+                            self.currentUser.showSignInView = true
+                            return
+                        }
+                        self.currentUser.user = try await userRepository.getUser(userId: authUser!.uid)
+                        self.currentUser.showSignInView = false
+                    } catch {
+                        print("Error signing into your account \(error)")
                     }
-                    self.currentUser.user = try? await userRepository.getUser(userId: authUser!.uid)
-                    self.currentUser.showSignInView = false
                 }
         }
     }

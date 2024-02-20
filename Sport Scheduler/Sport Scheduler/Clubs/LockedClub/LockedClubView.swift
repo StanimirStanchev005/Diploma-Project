@@ -11,62 +11,52 @@ struct LockedClubView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject var lockedClubModel = LockedClubModel()
     @StateObject var clubModel: ClubModel
-    
+    @State private var isRequestSend = false
+
     var body: some View {
-        ZStack {
-            if lockedClubModel.club == nil {
-                ProgressView()
-                    .controlSize(.large)
-            } else {
-                VStack(spacing: 10) {
-                    Image(lockedClubModel.club!.picture)
-                        .resizable()
-                        .frame(width: 100)
-                        .clipShape(Circle())
-                        .frame(width: 100, height: 100)
-                        .padding()
-                    
-                    Text("Members: \(lockedClubModel.club!.members.count)")
-                        .font(.headline)
-                    
-                    Text(lockedClubModel.club!.description)
-                        .font(.title3)
-                        .padding([.leading, .trailing], 15)
-                    
-                    Divider()
-                    
-                    Image(systemName: "lock")
-                        .font(.system(size: 50))
-                        .padding()
-                    
-                    Text("Join to see the club's workout schedule")
-                        .multilineTextAlignment(.center)
-                        .font(.title3)
-                        .padding([.leading, .trailing], 30)
-                    Spacer()
-                }
-                .toolbar {
-                    Button {
-                        // Add Action for applying to join club
-                        
-                        
-                    } label: {
-                        Text("Apply")
-                    }
-                }
-                .navigationTitle(lockedClubModel.club!.clubName)
-            }
+        VStack(spacing: 10) {
+            ClubHeader(picture: clubModel.club!.picture, members: clubModel.club!.members.count, description: clubModel.club!.description)
+            
+            Divider()
+            
+            Image(systemName: "lock")
+                .font(.system(size: 50))
+                .padding()
+            
+            Text("Join to see the club's workout schedule")
+                .multilineTextAlignment(.center)
+                .font(.title3)
+                .padding([.leading, .trailing], 30)
+            Spacer()
         }
+        .toolbar {
+            Button {
+                do {
+                    let request = ClubRequestModel(userID: currentUser.user!.userID, userName: currentUser.user!.name)
+                    try lockedClubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
+                    currentUser.addRequest(requestID: request.requestID, clubID: clubModel.club!.clubName)
+                    isRequestSend = true
+                } catch {
+                    print("Error while sending join request: \(error)")
+                }
+            } label: {
+                Text("Apply")
+            }
+            .disabled(currentUser.user!.requests.contains(where: { request in
+                request.clubID == clubModel.club!.clubName &&
+                request.status == RequestStatus.pending.rawValue
+            }))
+        }
+        
+        .alert("Success", isPresented: $isRequestSend) {
+            Button("OK") { }
+        } message: {
+            Text("Request to join was sent successfully")
+        }
+        .navigationTitle(clubModel.club!.clubName)
         .onAppear {
             lockedClubModel.club = clubModel.club
         }
-//        .task {
-//            do {
-//                try await lockedClubModel.fetchData(for: club.name)
-//            } catch {
-//                print("Error fetching club: \(error)")
-//            }
-//        }
     }
 }
 

@@ -11,6 +11,7 @@ struct CreateClubView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject private var createClubModel = CreateClubModel()
+    @State private var clubCreationSuccess = false
     @State private var showTermsOfService = false
     
     var body: some View {
@@ -63,13 +64,14 @@ struct CreateClubView: View {
                     Task {
                         let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID, searchName: createClubModel.createSearchName())
                         
-                        try await createClubModel.create(club: club, for: currentUser.user!)
+                        try await createClubModel.create(club: club, for: currentUser.user!.userID)
                         
                         guard createClubModel.hasError == false else {
                             return
                         }
                         
-                        dismiss()
+                        currentUser.addOwnedClub(club: club)
+                        clubCreationSuccess = true
                     }
                 } label: {
                     SignInButton(text: "Create", color: createClubModel.isInputValid ? .pink : .gray)
@@ -79,6 +81,7 @@ struct CreateClubView: View {
             }
         }
         .padding()
+        
         .alert("Error", isPresented: $createClubModel.hasError) {
             Button("OK") {
                 createClubModel.hasError = false
@@ -86,6 +89,15 @@ struct CreateClubView: View {
         } message: {
             Text(createClubModel.localizedError)
         }
+        
+        .alert("Success", isPresented: $clubCreationSuccess) {
+            Button("OK") { 
+                dismiss()
+            }
+        } message: {
+            Text("Congrats! Club was created successfully")
+        }
+        
         .sheet(isPresented: $showTermsOfService) {
             TermsOfServiceView()
                 .presentationDetents([.medium])

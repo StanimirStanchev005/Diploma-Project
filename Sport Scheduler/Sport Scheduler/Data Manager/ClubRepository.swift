@@ -31,6 +31,8 @@ protocol ClubRepository {
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
     func deleteWorkout(for clubId: String, with workoutId: String) throws
     func updateWorkout(for clubId: String, with workout: Workout) throws
+    func sendJoinRequest(for clubId: String, from userId: String, with name: String) throws
+    func getRequests(for clubId: String) async throws -> [ClubRequestModel]
 }
 
 extension Firestore: ClubRepository {
@@ -96,5 +98,29 @@ extension Firestore: ClubRepository {
             "date": workout.date
         ])
     }
+    
+    func sendJoinRequest(for clubId: String, from userId: String, with name: String) throws {
+        let request = ClubRequestModel(userID: userId, userName: name)
+        let userRequest = [
+            "requestID": request.requestID,
+            "clubID": clubId,
+            "status": RequestStatus.pending.rawValue
+        ]
+        try collection("clubs").document(clubId).collection("requests").document(request.requestID).setData(from: request, merge: false)
+        collection("users").document(userId).updateData([
+            "requests": FieldValue.arrayUnion([userRequest])
+        ])
+    }
+    
+    func getRequests(for clubId: String) async throws -> [ClubRequestModel] {
+        let querySnapshot = try await collection("clubs").document(clubId).collection("requests")
+            .whereField("status", isEqualTo: "Pending")
+            .getDocuments()
+        
+        return try querySnapshot.documents.compactMap { document in
+            try document.data(as: ClubRequestModel.self)
+        }
+    }
 }
+
 
