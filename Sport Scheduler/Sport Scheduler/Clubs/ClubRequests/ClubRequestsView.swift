@@ -41,8 +41,12 @@ struct ClubRequestsView: View {
                         .buttonStyle(.borderless)
                         
                         Button(role: .destructive) {
-                            //Add action for rejecting join requests
-                            print("Rejected")
+                            do {
+                                try clubModel.reject(request: request)
+                                print("Rejected")
+                            } catch {
+                                print("Error rejecting request: \(error)")
+                            }
                         } label: {
                             VStack {
                                 Image(systemName: "xmark")
@@ -51,6 +55,7 @@ struct ClubRequestsView: View {
                             .foregroundStyle(.red)
                         }
                         .buttonStyle(.borderless)
+                        .padding(.horizontal, 5)
                     }
                 }
             }

@@ -63,5 +63,13 @@ final class ClubModel: ObservableObject {
     
     func accept(request: ClubRequestModel) throws {
         try clubRepository.accept(request: request, from: club!)
+        let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
+        userRequests[index].status = RequestStatus.accepted.rawValue
+    }
+    
+    func reject(request: ClubRequestModel) throws {
+        try clubRepository.reject(request: request, from: club!)
+        let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
+        userRequests.remove(at: index)
     }
 }

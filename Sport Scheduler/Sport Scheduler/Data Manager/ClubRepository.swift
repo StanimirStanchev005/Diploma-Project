@@ -35,6 +35,7 @@ protocol ClubRepository {
     func sendJoinRequest(for clubId: String, from userId: String, with name: String) throws
     func getRequests(for clubId: String) async throws -> [ClubRequestModel]
     func accept(request: ClubRequestModel, from club: Club) throws
+    func reject(request: ClubRequestModel, from club: Club) throws
 }
 
 extension Firestore: ClubRepository {
@@ -149,6 +150,17 @@ extension Firestore: ClubRepository {
             "joinedClubs": FieldValue.arrayUnion([joinedClub]),
             "requests": FieldValue.arrayRemove([requestToRemove])
         ])
+    }
+    
+    func reject(request: ClubRequestModel, from club: Club) throws {
+        let requestToRemove = [
+            "requestID": request.requestID,
+            "clubID": request.clubID
+        ]
+        collection("users").document(request.userID).updateData([
+            "requests": FieldValue.arrayRemove([requestToRemove])
+        ])
+        collection("clubs").document(request.clubID).collection("requests").document(request.requestID).delete()
     }
 }
 

@@ -19,14 +19,8 @@ struct LockedClubView: View {
             
             Divider()
             
-            Image(systemName: "lock")
-                .font(.system(size: 50))
-                .padding()
+            ContentUnavailableView("Club is locked", systemImage: "lock", description: Text("Join this club to see their workouts"))
             
-            Text("Join to see the club's workout schedule")
-                .multilineTextAlignment(.center)
-                .font(.title3)
-                .padding([.leading, .trailing], 30)
             Spacer()
         }
         .toolbar {

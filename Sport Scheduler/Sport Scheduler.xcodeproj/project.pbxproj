@@ -17,6 +17,8 @@
 		3693DE182B823DE700D4C808 /* ClubRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE172B823DE700D4C808 /* ClubRequestModel.swift */; };
 		3693DE1A2B84BEF700D4C808 /* ClubList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE192B84BEF700D4C808 /* ClubList.swift */; };
 		3693DE1F2B87301C00D4C808 /* JoinedClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE1E2B87301C00D4C808 /* JoinedClubView.swift */; };
+		3693DE222B892B4400D4C808 /* WorkoutsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE212B892B4400D4C808 /* WorkoutsModel.swift */; };
+		3693DE242B892BDE00D4C808 /* UserWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE232B892BDE00D4C808 /* UserWorkout.swift */; };
 		36ADF90A2B21AD690028C73B /* Sport_SchedulerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */; };
 		36ADF90C2B21AD690028C73B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF90B2B21AD690028C73B /* ContentView.swift */; };
 		36ADF90E2B21AD6C0028C73B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36ADF90D2B21AD6C0028C73B /* Assets.xcassets */; };
@@ -97,6 +99,8 @@
 		3693DE172B823DE700D4C808 /* ClubRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRequestModel.swift; sourceTree = "<group>"; };
 		3693DE192B84BEF700D4C808 /* ClubList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubList.swift; sourceTree = "<group>"; };
 		3693DE1E2B87301C00D4C808 /* JoinedClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedClubView.swift; sourceTree = "<group>"; };
+		3693DE212B892B4400D4C808 /* WorkoutsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsModel.swift; sourceTree = "<group>"; };
+		3693DE232B892BDE00D4C808 /* UserWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserWorkout.swift; sourceTree = "<group>"; };
 		36ADF9062B21AD690028C73B /* Sport Scheduler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sport Scheduler.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport_SchedulerApp.swift; sourceTree = "<group>"; };
 		36ADF90B2B21AD690028C73B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -211,6 +215,16 @@
 				3693DE142B82387500D4C808 /* ClubRequestsView.swift */,
 			);
 			path = ClubRequests;
+			sourceTree = "<group>";
+		};
+		3693DE202B892B1600D4C808 /* Workouts */ = {
+			isa = PBXGroup;
+			children = (
+				36ADF94A2B2616280028C73B /* WorkoutsView.swift */,
+				3693DE212B892B4400D4C808 /* WorkoutsModel.swift */,
+				3693DE232B892BDE00D4C808 /* UserWorkout.swift */,
+			);
+			path = Workouts;
 			sourceTree = "<group>";
 		};
 		36ADF8FD2B21AD690028C73B = {
@@ -411,9 +425,9 @@
 			isa = PBXGroup;
 			children = (
 				36ADF9472B2614F30028C73B /* MainView.swift */,
-				3693DE162B823D9B00D4C808 /* Profile */,
+				3693DE202B892B1600D4C808 /* Workouts */,
 				36F005BB2B74CE3600FA9458 /* Joined Clubs */,
-				36ADF94A2B2616280028C73B /* WorkoutsView.swift */,
+				3693DE162B823D9B00D4C808 /* Profile */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -569,9 +583,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3693DE242B892BDE00D4C808 /* UserWorkout.swift in Sources */,
 				36CA9D9C2B56855A002A7E57 /* TermsOfServiceView.swift in Sources */,
 				366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */,
 				36CA9DA02B5C1AF1002A7E57 /* CustomRow.swift in Sources */,
+				3693DE222B892B4400D4C808 /* WorkoutsModel.swift in Sources */,
 				36F005BA2B614ADF00FA9458 /* EditWorkoutModel.swift in Sources */,
 				3693DE132B8233D400D4C808 /* ClubHeader.swift in Sources */,
 				36CA9DAA2B601027002A7E57 /* WorkoutRow.swift in Sources */,

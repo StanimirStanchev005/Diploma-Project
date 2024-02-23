@@ -13,28 +13,32 @@ struct JoinedClubsView: View {
     
     var body: some View {
         NavigationStack {
-            List {
-                ForEach(joinedClubsModel.filteredClubs, id: \.name.self) { club in
-                    NavigationLink(destination: ClubView(club: club)) {
-                        HStack {
-                            Image(club.picture)
-                                .resizable()
-                                .frame(width: 50)
-                                .clipShape(Circle())
-                                .frame(width: 50, height: 50)
-                            
-                            Text(club.name)
-                                .bold()
-                                .foregroundStyle(.lightBackground)
-                                .padding(.horizontal)
+            ZStack {
+                if !joinedClubsModel.searchedClub.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    List {
+                        ForEach(joinedClubsModel.filteredClubs, id: \.name.self) { club in
+                            NavigationLink(destination: ClubView(club: club)) {
+                                HStack {
+                                    Image(club.picture)
+                                        .resizable()
+                                        .frame(width: 50)
+                                        .clipShape(Circle())
+                                        .frame(width: 50, height: 50)
+                                    
+                                    Text(club.name)
+                                        .bold()
+                                        .foregroundStyle(.lightBackground)
+                                        .padding(.horizontal)
+                                }
+                            }
                         }
                     }
+                    .scrollContentBackground(.hidden)
+                } else {
+                    VStack {
+                        ClubList(clubs: currentUser.user!.joinedClubs)
+                    }
                 }
-            }
-            .scrollContentBackground(.hidden)
-            
-            VStack {
-                ClubList(clubs: currentUser.user!.joinedClubs)
             }
             .toolbar {
                 NavigationLink("Owned Clubs") {

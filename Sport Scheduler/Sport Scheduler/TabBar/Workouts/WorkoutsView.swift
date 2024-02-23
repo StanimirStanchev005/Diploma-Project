@@ -7,50 +7,16 @@
 
 import SwiftUI
 
-import FirebaseFirestore
-
-final class WorkoutsModel: ObservableObject {
-    private var clubRepository: ClubRepository
-    @Published var workouts: [UserWorkout] = []
-    @State var selectedDate = Date()
-    
-    init(clubRepository: ClubRepository = Firestore.firestore()) {
-        self.clubRepository = clubRepository
-    }
-    
-    func fetchWokrouts(for user: DBUser, on date: Date) {
-        Task {
-            do {
-                let fetchedWorkouts = try await clubRepository.getAllWokrouts(for: user, on: date)
-                await MainActor.run {
-                    var userWorkouts: [UserWorkout] = []
-                    for workout in fetchedWorkouts {
-                        userWorkouts.append(UserWorkout(workoutId: workout.workoutId, club: workout.clubId, tilte: workout.title, description: workout.description, date: workout.date))
-                    }
-                    self.workouts = userWorkouts
-                }
-            } catch {
-                print("Error fetching clubs: \(error)")
-            }
-        }
-    }
-}
-
-struct UserWorkout {
-    let workoutId: String
-    let club: String
-    let tilte: String
-    let description: String
-    let date: Date
-}
-
 struct WorkoutsView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject var workoutsModel = WorkoutsModel()
     
-    
     var body: some View {
         NavigationStack {
+            DatePicker("Select Date", selection: $workoutsModel.selectedDate, displayedComponents: .date)
+                .labelsHidden()
+                .datePickerStyle(.compact)
+            
             List {
                 ForEach(workoutsModel.workouts, id: \.workoutId.self) { workout in
                     HStack {
