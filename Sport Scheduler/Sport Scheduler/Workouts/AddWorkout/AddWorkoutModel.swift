@@ -33,7 +33,7 @@ final class AddWorkoutModel: ObservableObject {
     }
     
     func saveWorkout(for club: String, title: String, description: String, date: Date, isRepeating: Bool) throws {
-        try clubRepository.addWorkout(for: club, workout: Workout(title: title, description: description, date: date, isRepeating: isRepeating))
+        try clubRepository.addWorkout(for: club, workout: Workout(clubId: club, title: title, description: description, date: date, isRepeating: isRepeating))
     }
     
     func saveWorkouts(for club: String, title: String, description: String, date: Date, isRepeating: Bool) throws {

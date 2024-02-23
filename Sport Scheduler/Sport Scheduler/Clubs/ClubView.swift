@@ -23,6 +23,10 @@ struct ClubView: View {
                 }
             } else if clubModel.club!.ownerId == currentUser.user!.userID {
                 OwnedClubView(clubModel: clubModel)
+            } else if currentUser.user!.joinedClubs.contains(where: { club in
+                club.name == clubModel.club!.clubName })
+            {
+                JoinedClubView(clubModel: clubModel)
             } else {
                 LockedClubView(clubModel: clubModel)
             }

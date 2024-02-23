@@ -59,6 +59,9 @@ final class ClubModel: ObservableObject {
         await MainActor.run {
             self.userRequests = requests
         }
-        
+    }
+    
+    func accept(request: ClubRequestModel) throws {
+        try clubRepository.accept(request: request, from: club!)
     }
 }

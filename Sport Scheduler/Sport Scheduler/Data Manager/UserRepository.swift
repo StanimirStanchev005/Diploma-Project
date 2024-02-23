@@ -32,7 +32,7 @@ extension Firestore: UserRepository {
     func addClub(for userID: String, clubName: String, clubPicture: String) throws {
         let club = ["name": clubName,
                     "picture": clubPicture]
-        try collection("users").document(userID).updateData([
+        collection("users").document(userID).updateData([
             "ownedClubs": FieldValue.arrayUnion([club])
         ])
     }

@@ -16,5 +16,5 @@ struct WorkoutView: View {
 }
 
 #Preview {
-    WorkoutView(workout: Workout(title: "Title", date: Date(), isRepeating: true))
+    WorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date(), isRepeating: true))
 }

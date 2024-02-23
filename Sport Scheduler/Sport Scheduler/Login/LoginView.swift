@@ -62,6 +62,7 @@ struct LoginView: View {
                 } label: {
                     GoogleButton()
                 }
+                .padding(.bottom)
             }
             .alert("Error", isPresented: $loginModel.hasError) {
                 Button("OK") {

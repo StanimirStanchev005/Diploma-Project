@@ -41,5 +41,5 @@ struct EditWorkoutView: View {
 }
 
 #Preview {
-    EditWorkoutView(workout: Workout(title: "Title", date: Date(),  isRepeating: true), clubID: "")
+    EditWorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date(),  isRepeating: true), clubID: "")
 }

@@ -29,10 +29,12 @@ protocol ClubRepository {
     func searchClub(searchText: String) async throws -> [UserClubModel]
     func addWorkout(for clubId: String, workout: Workout) throws
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
+    func getAllWokrouts(for user: DBUser, on date: Date) async throws -> [Workout]
     func deleteWorkout(for clubId: String, with workoutId: String) throws
     func updateWorkout(for clubId: String, with workout: Workout) throws
     func sendJoinRequest(for clubId: String, from userId: String, with name: String) throws
     func getRequests(for clubId: String) async throws -> [ClubRequestModel]
+    func accept(request: ClubRequestModel, from club: Club) throws
 }
 
 extension Firestore: ClubRepository {
@@ -87,6 +89,14 @@ extension Firestore: ClubRepository {
         }
     }
     
+    func getAllWokrouts(for user: DBUser, on date: Date) async throws -> [Workout] {
+        var workouts: [Workout] = []
+        for club in user.joinedClubs {
+            workouts.append(contentsOf: try await getWorkouts(for: club.name, on: date))
+        }
+        return workouts
+    }
+    
     func deleteWorkout(for clubId: String, with workoutId: String) throws {
         collection("clubs").document(clubId).collection("workouts").document(workoutId).delete()
     }
@@ -100,7 +110,7 @@ extension Firestore: ClubRepository {
     }
     
     func sendJoinRequest(for clubId: String, from userId: String, with name: String) throws {
-        let request = ClubRequestModel(userID: userId, userName: name)
+        let request = ClubRequestModel(clubID: clubId, userID: userId, userName: name)
         let userRequest = [
             "requestID": request.requestID,
             "clubID": clubId,
@@ -120,6 +130,25 @@ extension Firestore: ClubRepository {
         return try querySnapshot.documents.compactMap { document in
             try document.data(as: ClubRequestModel.self)
         }
+    }
+    
+    func accept(request: ClubRequestModel, from club: Club) throws {
+        collection("clubs").document(request.clubID).collection("requests").document(request.requestID).updateData([
+            "status" : RequestStatus.accepted.rawValue
+        ])
+        let joinedClub = [
+            "name": club.clubName,
+            "picture": club.picture
+        ]
+        let requestToRemove = [
+            "requestID": request.requestID,
+            "clubID": club.clubName,
+            "status": RequestStatus.pending.rawValue
+        ]
+        collection("users").document(request.userID).updateData([
+            "joinedClubs": FieldValue.arrayUnion([joinedClub]),
+            "requests": FieldValue.arrayRemove([requestToRemove])
+        ])
     }
 }
 

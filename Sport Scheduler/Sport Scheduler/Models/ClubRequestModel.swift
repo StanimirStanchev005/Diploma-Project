@@ -27,6 +27,7 @@ enum RequestStatus: String, CaseIterable {
 struct ClubRequestModel: Codable {
     var requestID = UUID().uuidString
     var status: String = RequestStatus.pending.rawValue
+    let clubID: String
     let userID: String
     let userName: String
     var date = Date()

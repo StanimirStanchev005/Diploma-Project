@@ -32,7 +32,7 @@ struct LockedClubView: View {
         .toolbar {
             Button {
                 do {
-                    let request = ClubRequestModel(userID: currentUser.user!.userID, userName: currentUser.user!.name)
+                    let request = ClubRequestModel(clubID: clubModel.club!.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
                     try lockedClubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
                     currentUser.addRequest(requestID: request.requestID, clubID: clubModel.club!.clubName)
                     isRequestSend = true

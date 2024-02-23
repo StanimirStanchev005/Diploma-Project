@@ -16,6 +16,7 @@
 		3693DE152B82387500D4C808 /* ClubRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE142B82387500D4C808 /* ClubRequestsView.swift */; };
 		3693DE182B823DE700D4C808 /* ClubRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE172B823DE700D4C808 /* ClubRequestModel.swift */; };
 		3693DE1A2B84BEF700D4C808 /* ClubList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE192B84BEF700D4C808 /* ClubList.swift */; };
+		3693DE1F2B87301C00D4C808 /* JoinedClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE1E2B87301C00D4C808 /* JoinedClubView.swift */; };
 		36ADF90A2B21AD690028C73B /* Sport_SchedulerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */; };
 		36ADF90C2B21AD690028C73B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF90B2B21AD690028C73B /* ContentView.swift */; };
 		36ADF90E2B21AD6C0028C73B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 36ADF90D2B21AD6C0028C73B /* Assets.xcassets */; };
@@ -95,6 +96,7 @@
 		3693DE142B82387500D4C808 /* ClubRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRequestsView.swift; sourceTree = "<group>"; };
 		3693DE172B823DE700D4C808 /* ClubRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRequestModel.swift; sourceTree = "<group>"; };
 		3693DE192B84BEF700D4C808 /* ClubList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubList.swift; sourceTree = "<group>"; };
+		3693DE1E2B87301C00D4C808 /* JoinedClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedClubView.swift; sourceTree = "<group>"; };
 		36ADF9062B21AD690028C73B /* Sport Scheduler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Sport Scheduler.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sport_SchedulerApp.swift; sourceTree = "<group>"; };
 		36ADF90B2B21AD690028C73B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -201,6 +203,14 @@
 				36ADF94C2B2616430028C73B /* ProfileView.swift */,
 			);
 			path = Profile;
+			sourceTree = "<group>";
+		};
+		3693DE1B2B85F9A300D4C808 /* ClubRequests */ = {
+			isa = PBXGroup;
+			children = (
+				3693DE142B82387500D4C808 /* ClubRequestsView.swift */,
+			);
+			path = ClubRequests;
 			sourceTree = "<group>";
 		};
 		36ADF8FD2B21AD690028C73B = {
@@ -359,11 +369,12 @@
 			isa = PBXGroup;
 			children = (
 				36F005C52B7E00BF00FA9458 /* LockedClub */,
+				3693DE1B2B85F9A300D4C808 /* ClubRequests */,
 				36ADF9572B2626770028C73B /* ClubView.swift */,
 				36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */,
 				36ADF9522B2618620028C73B /* Club.swift */,
 				36F005C02B7DF6F900FA9458 /* OwnedClubView.swift */,
-				3693DE142B82387500D4C808 /* ClubRequestsView.swift */,
+				3693DE1E2B87301C00D4C808 /* JoinedClubView.swift */,
 			);
 			path = Clubs;
 			sourceTree = "<group>";
@@ -592,6 +603,7 @@
 				36ADF9552B2618730028C73B /* Subscription.swift in Sources */,
 				36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */,
 				36ADF9512B2618570028C73B /* DBUser.swift in Sources */,
+				3693DE1F2B87301C00D4C808 /* JoinedClubView.swift in Sources */,
 				36ADF9532B2618620028C73B /* Club.swift in Sources */,
 				36F005BF2B7B3F9A00FA9458 /* LockedClubView.swift in Sources */,
 				36ADF90C2B21AD690028C73B /* ContentView.swift in Sources */,
