@@ -48,13 +48,12 @@ final class LoginModel: ObservableObject {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
-        let user: DBUser? = try await userRepository.getUser(userId: authDataResultModel.uid)
-        if user == nil {
+        if try await userRepository.checkIfUserExists(userId: authDataResultModel.uid) {
+            return try await userRepository.getUser(userId: authDataResultModel.uid)
+        } else {
             let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
             try userRepository.create(user: user)
             return user
-        } else {
-            return user!
         }
     }
 }

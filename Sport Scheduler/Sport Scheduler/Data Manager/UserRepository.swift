@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 protocol UserRepository {
     func create(user: DBUser) throws
     func getUser(userId: String) async throws -> DBUser
+    func checkIfUserExists(userId: String) async throws -> Bool
     func save(user: DBUser) throws
     func addClub(for userID: String, clubName: String, clubPicture: String) throws
 }
@@ -23,6 +24,17 @@ extension Firestore: UserRepository {
     
     func getUser(userId: String) async throws -> DBUser {
         try await collection("users").document(userId).getDocument(as: DBUser.self)
+    }
+    
+    func checkIfUserExists(userId: String) async throws -> Bool {
+        let querySnapshot = collection("users").document(userId)
+        do {
+            let document = try await querySnapshot.getDocument().data()
+            return document != nil
+          } catch {
+            print("Error fetching document: \(error)")
+            return false
+          }
     }
     
     func save(user: DBUser) throws {

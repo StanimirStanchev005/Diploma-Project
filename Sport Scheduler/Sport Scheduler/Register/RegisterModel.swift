@@ -12,7 +12,7 @@ import FirebaseFirestore
 @MainActor
 final class RegisterModel: ObservableObject {
     private var authenticationProvider: AuthenticationServiceProvidable
-    private var databaseProvider: UserRepository
+    private var userRepository: UserRepository
     
     @Published var fullName = ""
     @Published var email = ""
@@ -22,7 +22,7 @@ final class RegisterModel: ObservableObject {
     
     init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: UserRepository = Firestore.firestore()) {
         self.authenticationProvider = authenticationProvider
-        self.databaseProvider = databaseProvider
+        self.userRepository = databaseProvider
     }
     
     var isFullNameValid: Bool {
@@ -44,7 +44,7 @@ final class RegisterModel: ObservableObject {
     func register() async throws -> DBUser {
         let authDataResultModel = try await authenticationProvider.signUp(email: email, password: password)
         let user = DBUser(userID: authDataResultModel.uid, name: fullName, email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-        try databaseProvider.create(user: user)
+        try userRepository.create(user: user)
         return user
     }
     
@@ -52,13 +52,12 @@ final class RegisterModel: ObservableObject {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
-        let user: DBUser? = try await databaseProvider.getUser(userId: authDataResultModel.uid)
-        if user == nil {
-            let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-            try databaseProvider.create(user: user)
-            return user
+        if try await userRepository.checkIfUserExists(userId: authDataResultModel.uid) {
+            return try await userRepository.getUser(userId: authDataResultModel.uid)
         } else {
-            return user!
+            let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
+            try userRepository.create(user: user)
+            return user
         }
     }
 }
