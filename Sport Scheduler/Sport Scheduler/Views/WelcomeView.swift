@@ -12,23 +12,41 @@ struct WelcomeView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Spacer()
-                
-                NavigationLink {
-                    LoginView()
-                } label: {
-                    SignInButton(text: "Sign in", color: .lightBackground)
+            ZStack {
+                LinearGradient(gradient: Gradient(colors: [Color.cyan, Color.darkGreen]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
+                VStack {
+                    Spacer()
+                    
+                    Image("running")
+                        .resizable()
+                        .scaledToFit()
+                        .padding()
+                    
+                    Spacer()
+                    
+                    VStack {
+                        NavigationLink {
+                            LoginView()
+                        } label: {
+                            SignInButton(text: "Sign in", color: .blue)
+                        }
+                        NavigationLink {
+                            RegisterView()
+                        } label: {
+                            SignInButton(text: "Register", color: .blue)
+                        }
+                    }
+                    .frame(width: 360, height: 150)
+                    .padding(.vertical)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 25))
+                    .padding(.bottom)
                 }
-                NavigationLink {
-                    RegisterView()
-                } label: {
-                    SignInButton(text: "Register", color: .lightBackground)
-                }
+                .navigationTitle("Sport Scheduler")
             }
-            .padding(.bottom)
-            .navigationTitle("Sport Scheduler")
         }
+        .tint(.white)
     }
 }
 

@@ -8,13 +8,13 @@
 import Foundation
 
 
-class Club: Identifiable, Codable {
+final class Club: Identifiable, Codable {
     let ownerId: String
     var clubName: String
     var description: String
     var category: String
     var picture = "ClubPlaceholder"
-    var members: [DBUser] = []
+    var members: [ClubUserModel] = []
     var searchName: [String]
     
     init(clubName: String, description: String, category: String, ownerId: String, searchName: [String]) {
@@ -28,6 +28,11 @@ class Club: Identifiable, Codable {
     var identifier: String {
         UUID().uuidString
     }
+}
+
+struct ClubUserModel: Codable {
+    let userID: String
+    let name: String
 }
 
 extension Club: Hashable {

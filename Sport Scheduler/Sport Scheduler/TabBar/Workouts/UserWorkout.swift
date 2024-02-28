@@ -10,7 +10,7 @@ import Foundation
 struct UserWorkout {
     let workoutId: String
     let club: String
-    let tilte: String
+    let title: String
     let description: String
     let date: Date
 }

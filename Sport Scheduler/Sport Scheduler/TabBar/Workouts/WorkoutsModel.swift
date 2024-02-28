@@ -23,7 +23,7 @@ final class WorkoutsModel: ObservableObject {
                 await MainActor.run {
                     var userWorkouts: [UserWorkout] = []
                     for workout in fetchedWorkouts {
-                        userWorkouts.append(UserWorkout(workoutId: workout.workoutId, club: workout.clubId, tilte: workout.title, description: workout.description, date: workout.date))
+                        userWorkouts.append(UserWorkout(workoutId: workout.workoutId, club: workout.clubId, title: workout.title, description: workout.description, date: workout.date))
                     }
                     self.workouts = userWorkouts
                     workouts.sort { $0.date < $1.date }

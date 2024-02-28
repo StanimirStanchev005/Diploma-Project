@@ -137,6 +137,12 @@ extension Firestore: ClubRepository {
         collection("clubs").document(request.clubID).collection("requests").document(request.requestID).updateData([
             "status" : RequestStatus.accepted.rawValue
         ])
+        
+        let member = [
+            "userID": request.userID,
+            "name": request.userName
+        ]
+        
         let joinedClub = [
             "name": club.clubName,
             "picture": club.picture
@@ -146,6 +152,10 @@ extension Firestore: ClubRepository {
             "clubID": club.clubName,
             "status": RequestStatus.pending.rawValue
         ]
+        collection("clubs").document(request.clubID).updateData([
+            "members": FieldValue.arrayUnion([member])
+        ])
+        
         collection("users").document(request.userID).updateData([
             "joinedClubs": FieldValue.arrayUnion([joinedClub]),
             "requests": FieldValue.arrayRemove([requestToRemove])

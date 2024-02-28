@@ -62,6 +62,7 @@
 		36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA42B5ED07C002A7E57 /* Workout.swift */; };
 		36CA9DA82B5EE0C8002A7E57 /* ClubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */; };
 		36CA9DAA2B601027002A7E57 /* WorkoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA92B601027002A7E57 /* WorkoutRow.swift */; };
+		36E8E18F2B8F33FF00811EA1 /* TabBarWorkoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */; };
 		36F005B42B60210200FA9458 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B32B60210200FA9458 /* WorkoutView.swift */; };
 		36F005B62B61421100FA9458 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B52B61421100FA9458 /* EditWorkoutView.swift */; };
 		36F005BA2B614ADF00FA9458 /* EditWorkoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B92B614ADF00FA9458 /* EditWorkoutModel.swift */; };
@@ -143,6 +144,7 @@
 		36CA9DA42B5ED07C002A7E57 /* Workout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Workout.swift; sourceTree = "<group>"; };
 		36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModel.swift; sourceTree = "<group>"; };
 		36CA9DA92B601027002A7E57 /* WorkoutRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRow.swift; sourceTree = "<group>"; };
+		36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarWorkoutRow.swift; sourceTree = "<group>"; };
 		36F005B32B60210200FA9458 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		36F005B52B61421100FA9458 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		36F005B92B614ADF00FA9458 /* EditWorkoutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutModel.swift; sourceTree = "<group>"; };
@@ -263,8 +265,8 @@
 				36CA9D982B4C1854002A7E57 /* Create Club */,
 				36CA9DA62B5EE0A4002A7E57 /* Clubs */,
 				36CA9DA12B5ECF12002A7E57 /* Workouts */,
-				36ADF94F2B26183F0028C73B /* Models */,
 				36F005C22B7DFFAA00FA9458 /* TabBar */,
+				36ADF94F2B26183F0028C73B /* Models */,
 				36ADF94E2B2617D10028C73B /* Views */,
 				36ADF90D2B21AD6C0028C73B /* Assets.xcassets */,
 				36ADF9682B2771610028C73B /* GoogleService-Info.plist */,
@@ -310,6 +312,7 @@
 				36CA9DA92B601027002A7E57 /* WorkoutRow.swift */,
 				3693DE122B8233D400D4C808 /* ClubHeader.swift */,
 				3693DE192B84BEF700D4C808 /* ClubList.swift */,
+				36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -619,6 +622,7 @@
 				36ADF9552B2618730028C73B /* Subscription.swift in Sources */,
 				36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */,
 				36ADF9512B2618570028C73B /* DBUser.swift in Sources */,
+				36E8E18F2B8F33FF00811EA1 /* TabBarWorkoutRow.swift in Sources */,
 				3693DE1F2B87301C00D4C808 /* JoinedClubView.swift in Sources */,
 				36ADF9532B2618620028C73B /* Club.swift in Sources */,
 				36F005BF2B7B3F9A00FA9458 /* LockedClubView.swift in Sources */,
