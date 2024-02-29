@@ -6,15 +6,42 @@
 //
 
 import SwiftUI
+import CodeScanner
 
 struct WorkoutView: View {
     let workout: Workout
+    @StateObject var workoutViewModel = WorkoutViewModel()
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            List {
+                ForEach(workoutViewModel.workout.participants, id:\.userID) { participant in
+                    Text(participant.name)
+                }
+            }
+        }
+        .navigationTitle("Participants")
+        .toolbar {
+            Button("Scan", systemImage: "qrcode.viewfinder") {
+                workoutViewModel.isShowingScanner.toggle()
+            }
+        }
+        .sheet(isPresented: $workoutViewModel.isShowingScanner) {
+            CodeScannerView(codeTypes: [.qr], completion: workoutViewModel.handleScan)
+        }
+        .alert("Error", isPresented: $workoutViewModel.isShowingError) {
+            Button("OK") {}
+        } message: {
+            Text(workoutViewModel.errorMessage)
+        }
+        .onAppear() {
+            workoutViewModel.workout = self.workout
+        }
     }
 }
 
 #Preview {
-    WorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date(), isRepeating: true))
+    NavigationStack {
+        WorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date(), isRepeating: true))
+    }
 }

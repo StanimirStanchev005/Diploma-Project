@@ -27,7 +27,8 @@ protocol ClubRepository {
     func create(club: Club) async throws
     func getClub(clubId: String) async throws -> Club
     func searchClub(searchText: String) async throws -> [UserClubModel]
-    func addWorkout(for clubId: String, workout: Workout) throws
+    func add(workout: Workout, for clubId: String) throws
+    func add(participant: ClubUserModel, for workout: Workout) throws
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
     func getAllWokrouts(for user: DBUser, on date: Date) async throws -> [Workout]
     func deleteWorkout(for clubId: String, with workoutId: String) throws
@@ -72,7 +73,7 @@ extension Firestore: ClubRepository {
         
     }
     
-    func addWorkout(for clubId: String, workout: Workout) throws {
+    func add(workout: Workout, for clubId: String) throws {
         try collection("clubs").document(clubId).collection("workouts").document(workout.workoutId).setData(from: workout, merge: true)
     }
     
@@ -171,6 +172,16 @@ extension Firestore: ClubRepository {
             "requests": FieldValue.arrayRemove([requestToRemove])
         ])
         collection("clubs").document(request.clubID).collection("requests").document(request.requestID).delete()
+    }
+    
+    func add(participant: ClubUserModel, for workout: Workout) throws {
+        let participantToAdd = [
+            "userID": participant.userID,
+            "name": participant.name
+        ]
+        collection("clubs").document(workout.clubId).collection("workouts").document(workout.workoutId).updateData([
+            "participants": FieldValue.arrayUnion([participantToAdd])
+        ])
     }
 }
 

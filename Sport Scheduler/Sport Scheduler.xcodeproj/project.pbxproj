@@ -63,6 +63,8 @@
 		36CA9DA82B5EE0C8002A7E57 /* ClubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */; };
 		36CA9DAA2B601027002A7E57 /* WorkoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36CA9DA92B601027002A7E57 /* WorkoutRow.swift */; };
 		36E8E18F2B8F33FF00811EA1 /* TabBarWorkoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */; };
+		36E8E1942B908D7000811EA1 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 36E8E1932B908D7000811EA1 /* CodeScanner */; };
+		36E8E1962B90914800811EA1 /* WorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */; };
 		36F005B42B60210200FA9458 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B32B60210200FA9458 /* WorkoutView.swift */; };
 		36F005B62B61421100FA9458 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B52B61421100FA9458 /* EditWorkoutView.swift */; };
 		36F005BA2B614ADF00FA9458 /* EditWorkoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F005B92B614ADF00FA9458 /* EditWorkoutModel.swift */; };
@@ -145,6 +147,7 @@
 		36CA9DA72B5EE0C8002A7E57 /* ClubModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubModel.swift; sourceTree = "<group>"; };
 		36CA9DA92B601027002A7E57 /* WorkoutRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRow.swift; sourceTree = "<group>"; };
 		36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarWorkoutRow.swift; sourceTree = "<group>"; };
+		36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutViewModel.swift; sourceTree = "<group>"; };
 		36F005B32B60210200FA9458 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		36F005B52B61421100FA9458 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		36F005B92B614ADF00FA9458 /* EditWorkoutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutModel.swift; sourceTree = "<group>"; };
@@ -161,6 +164,7 @@
 			files = (
 				36ADF9752B28B8FB0028C73B /* GoogleSignInSwift in Frameworks */,
 				36ADF95D2B2743EC0028C73B /* FirebaseAuth in Frameworks */,
+				36E8E1942B908D7000811EA1 /* CodeScanner in Frameworks */,
 				36ADF9732B28B8FB0028C73B /* GoogleSignIn in Frameworks */,
 				36ADF95F2B2743EC0028C73B /* FirebaseFirestore in Frameworks */,
 				36ADF96C2B27792B0028C73B /* FirebaseFirestoreSwift in Frameworks */,
@@ -377,6 +381,7 @@
 				36F005B82B614AC600FA9458 /* EditWorkout */,
 				36F005B72B614AB000FA9458 /* AddWorkout */,
 				36F005B32B60210200FA9458 /* WorkoutView.swift */,
+				36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */,
 				36CA9DA42B5ED07C002A7E57 /* Workout.swift */,
 			);
 			path = Workouts;
@@ -466,6 +471,7 @@
 				36ADF96B2B27792B0028C73B /* FirebaseFirestoreSwift */,
 				36ADF9722B28B8FB0028C73B /* GoogleSignIn */,
 				36ADF9742B28B8FB0028C73B /* GoogleSignInSwift */,
+				36E8E1932B908D7000811EA1 /* CodeScanner */,
 			);
 			productName = "Sport Scheduler";
 			productReference = 36ADF9062B21AD690028C73B /* Sport Scheduler.app */;
@@ -542,6 +548,7 @@
 			packageReferences = (
 				36ADF95B2B2743EC0028C73B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				36ADF9712B28B8FB0028C73B /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				36E8E1922B908D7000811EA1 /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			productRefGroup = 36ADF9072B21AD690028C73B /* Products */;
 			projectDirPath = "";
@@ -619,6 +626,7 @@
 				36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */,
 				36CA9DA82B5EE0C8002A7E57 /* ClubModel.swift in Sources */,
 				36ADF9372B21B3A00028C73B /* SignInButton.swift in Sources */,
+				36E8E1962B90914800811EA1 /* WorkoutViewModel.swift in Sources */,
 				36ADF9552B2618730028C73B /* Subscription.swift in Sources */,
 				36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */,
 				36ADF9512B2618570028C73B /* DBUser.swift in Sources */,
@@ -805,6 +813,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Sport-Scheduler-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to scan QR Code.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -835,6 +844,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Sport-Scheduler-Info.plist";
+				INFOPLIST_KEY_NSCameraUsageDescription = "We need to scan QR Code.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -987,6 +997,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		36E8E1922B908D7000811EA1 /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1014,6 +1032,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36ADF9712B28B8FB0028C73B /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		36E8E1932B908D7000811EA1 /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36E8E1922B908D7000811EA1 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

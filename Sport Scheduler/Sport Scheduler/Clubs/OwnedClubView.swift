@@ -26,7 +26,7 @@ struct OwnedClubView: View {
                     DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
                         .labelsHidden()
                     NavigationLink("Join Requests", destination: ClubRequestsView(clubModel: clubModel))
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.lightBackground)
                         .tint(.gray.opacity(0.2))
                         .buttonStyle(.borderedProminent)
                     

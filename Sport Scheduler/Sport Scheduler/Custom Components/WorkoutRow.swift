@@ -10,7 +10,7 @@ import SwiftUI
 struct WorkoutRow: View {
     let title: String
     let description: String
-    let participants: [Participants]
+    let participants: [ClubUserModel]
     let date: Date
     var body: some View {
         HStack {

@@ -13,7 +13,7 @@ final class Workout: Codable {
     var title: String
     var description: String
     var date: Date
-    var participants: [Participants] = []
+    var participants: [ClubUserModel] = []
     var isRepeating: Bool
     
     init(clubId: String, title: String, description: String = "", date: Date, isRepeating: Bool) {
@@ -25,8 +25,3 @@ final class Workout: Codable {
     }
 }
 
-struct Participants: Codable {
-    let userId: String
-    let name: String
-    let image: String
-}

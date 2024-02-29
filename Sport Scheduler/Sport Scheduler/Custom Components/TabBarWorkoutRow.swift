@@ -23,6 +23,9 @@ struct TabBarWorkoutRow: View {
                     .truncationMode(.tail)
                     .font(.subheadline)
             }
+            
+            Spacer()
+            
             VStack(alignment: .leading) {
                 Text(club)
                     .font(.headline)
