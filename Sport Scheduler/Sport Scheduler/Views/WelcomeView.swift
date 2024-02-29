@@ -46,7 +46,7 @@ struct WelcomeView: View {
                 .navigationTitle("Sport Scheduler")
             }
         }
-        .tint(.white)
+        .tint(.black)
     }
 }
 
