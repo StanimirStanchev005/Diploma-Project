@@ -30,9 +30,11 @@ struct LoginView: View {
                         SigningTextField(input: $loginModel.password, text: "Password", isCapitalized: false, isSecure: true, isUserValid: loginModel.isPasswordValid)
                         TextErrorView(error: "Must be 8 symbols or more", showingError: loginModel.validPassword())
                     }
-    
+                    
                     Button {
                         Task {
+                            loginModel.isTaskInProgress = true
+                            defer { loginModel.isTaskInProgress = false }
                             do {
                                 currentUser.user = try await loginModel.login()
                                 currentUser.showSignInView = false
@@ -52,6 +54,8 @@ struct LoginView: View {
                     
                     Button {
                         Task {
+                            loginModel.isTaskInProgress = true
+                            defer { loginModel.isTaskInProgress = false }
                             do {
                                 currentUser.user = try await loginModel.signInGoogle()
                                 currentUser.showSignInView = false
@@ -80,9 +84,17 @@ struct LoginView: View {
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 25.0))
             .frame(height: 450)
+            
+            if loginModel.isTaskInProgress {
+                Color.black.opacity(0.2)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .controlSize(.large)
+            }
         }
     }
 }
+
 #Preview {
     NavigationStack {
         LoginView().environmentObject({ () -> CurrentUser in

@@ -34,9 +34,11 @@ struct RegisterView: View {
                         SigningTextField(input: $registerModel.password , text: "Password", isCapitalized: false, isSecure: true, isUserValid: registerModel.isPasswordValid)
                         TextErrorView(error: "Must be 8 symbols or more", showingError: registerModel.validPassword())
                     }
-        
+                    
                     Button {
                         Task {
+                            registerModel.isTaskInProgress = true
+                            defer { registerModel.isTaskInProgress = false }
                             do {
                                 currentUser.user = try await registerModel.register()
                                 currentUser.showSignInView = false
@@ -57,6 +59,8 @@ struct RegisterView: View {
                     
                     Button {
                         Task {
+                            registerModel.isTaskInProgress = true
+                            defer { registerModel.isTaskInProgress = false }
                             do {
                                 currentUser.user = try await registerModel.signInGoogle()
                                 currentUser.showSignInView = false
@@ -84,6 +88,13 @@ struct RegisterView: View {
             .frame(height: 450)
             .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.inline)
+            
+            if registerModel.isTaskInProgress {
+                Color.black.opacity(0.2)
+                    .ignoresSafeArea()
+                ProgressView()
+                    .controlSize(.large)
+            }
         }
     }
 }
