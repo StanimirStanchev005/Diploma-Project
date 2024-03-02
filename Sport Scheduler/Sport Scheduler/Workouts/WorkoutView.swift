@@ -11,6 +11,7 @@ import CodeScanner
 struct WorkoutView: View {
     let workout: Workout
     @StateObject var workoutViewModel = WorkoutViewModel()
+    @State private var hasError = false
     
     var body: some View {
         VStack {
@@ -27,9 +28,11 @@ struct WorkoutView: View {
             }
         }
         .sheet(isPresented: $workoutViewModel.isShowingScanner) {
+            hasError = workoutViewModel.isShowingError
+        } content: {
             CodeScannerView(codeTypes: [.qr], completion: workoutViewModel.handleScan)
         }
-        .alert("Error", isPresented: $workoutViewModel.isShowingError) {
+        .alert("Error", isPresented: $hasError) {
             Button("OK") {}
         } message: {
             Text(workoutViewModel.errorMessage)
