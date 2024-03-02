@@ -11,7 +11,7 @@ import FirebaseFirestore
 
 final class WorkoutViewModel: ObservableObject {
     private var clubRepository: ClubRepository
-    @Published var workout: Workout = Workout(clubId: "", title: "", date: Date(), isRepeating: false)
+    @Published var workout: Workout = Workout(clubId: "", title: "", date: Date())
     @Published var isShowingScanner = false
     @Published var isShowingError = false
     @Published var errorMessage = ""

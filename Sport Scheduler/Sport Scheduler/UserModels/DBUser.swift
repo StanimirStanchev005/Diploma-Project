@@ -55,26 +55,4 @@ final class DBUser: ObservableObject, Codable {
     }
 }
 
-struct UserClubModel: Codable {
-    let name: String
-    let picture: String
-}
 
-struct UserRequestModel: Codable {
-    let requestID: String
-    let clubID: String
-    var status: String = RequestStatus.pending.rawValue
-}
-
-final class CurrentUser: ObservableObject {
-    @Published var user: DBUser?
-    @Published var showSignInView = true
-    
-    func addOwnedClub(club: Club) {
-        self.user!.ownedClubs.append(UserClubModel(name: club.clubName, picture: club.picture))
-    }
-    
-    func addRequest(requestID: String, clubID: String) {
-        self.user!.requests.append(UserRequestModel(requestID: requestID, clubID: clubID))
-    }
-}

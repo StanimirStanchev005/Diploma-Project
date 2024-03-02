@@ -11,8 +11,14 @@ struct SplashView: View {
     
     var body: some View {
         VStack {
-            ProgressView()
-                .controlSize(.large)
+            Image("SplashViewIcon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 200, height: 200)
+            Text("Welcome to SportScheduler")
+                .font(.headline)
+            Text("Have all your workouts at one place")
+                .font(.subheadline)
         }
     }
 }

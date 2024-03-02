@@ -24,24 +24,24 @@ final class AddWorkoutModel: ObservableObject {
         self.clubRepository = clubRepository
     }
     
-    func save(for club: String, title: String, description: String, date: Date, isRepeating: Bool) throws {
+    func save(for club: String, title: String, description: String, date: Date) throws {
         if isRepeating {
-            try saveWorkouts(for: club, title: title, description: description, date: date, isRepeating: isRepeating)
+            try saveWorkouts(for: club, title: title, description: description, date: date)
         } else {
-            try saveWorkout(for: club, title: title, description: description, date: date, isRepeating: isRepeating)
+            try saveWorkout(for: club, title: title, description: description, date: date)
         }
     }
     
-    func saveWorkout(for club: String, title: String, description: String, date: Date, isRepeating: Bool) throws {
-        try clubRepository.add(workout: Workout(clubId: club, title: title, description: description, date: date, isRepeating: isRepeating), for: club)
+    func saveWorkout(for club: String, title: String, description: String, date: Date) throws {
+        try clubRepository.add(workout: Workout(clubId: club, title: title, description: description, date: date), for: club)
     }
     
-    func saveWorkouts(for club: String, title: String, description: String, date: Date, isRepeating: Bool) throws {
+    func saveWorkouts(for club: String, title: String, description: String, date: Date) throws {
         let endDate = Calendar.current.date(byAdding: .day, value: 27, to: date)!
         var currentDate = date
         
         for _ in 1...4 {
-            try saveWorkout(for: club, title: title, description: description, date: currentDate, isRepeating: isRepeating)
+            try saveWorkout(for: club, title: title, description: description, date: currentDate)
             
             currentDate = Calendar.current.date(byAdding: .day, value: 7, to: currentDate)!
             
