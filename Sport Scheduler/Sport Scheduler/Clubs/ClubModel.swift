@@ -16,10 +16,20 @@ final class ClubModel: ObservableObject {
     @Published var workouts: [Workout] = []
     @Published var userRequests: [ClubRequestModel] = []
     
-    init(clubRepository: ClubRepository = Firestore.firestore(),
-         userRepository: UserRepository = Firestore.firestore()) {
+    init(clubRepository: ClubRepository = FirestoreClubRepository(),
+         userRepository: UserRepository = FirestoreUserRepository()) {
         self.clubRepository = clubRepository
         self.userRepository = userRepository
+    }
+    
+    func triggerListeners() {
+        clubRepository.listenForRequestChanges(for: club!.clubName) { [weak self] requests in
+            guard let self = self else {
+                print("Unable to update userRequests")
+                return
+            }
+            self.userRequests = requests
+        }
     }
     
     func fetchData(for clubId: String) async throws {

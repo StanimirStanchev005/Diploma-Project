@@ -12,7 +12,7 @@ final class EditWorkoutModel: ObservableObject {
     
     private var clubRepository: ClubRepository
     
-    init(clubRepository: ClubRepository = Firestore.firestore()) {
+    init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
     }
     

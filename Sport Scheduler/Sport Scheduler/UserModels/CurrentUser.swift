@@ -18,4 +18,7 @@ final class CurrentUser: ObservableObject {
     func addRequest(requestID: String, clubID: String) {
         self.user!.requests.append(UserRequestModel(requestID: requestID, clubID: clubID))
     }
+    func updateUser(with newUser: DBUser) {
+        self.user = newUser
+    }
 }

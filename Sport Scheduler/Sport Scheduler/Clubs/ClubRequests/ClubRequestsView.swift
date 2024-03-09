@@ -12,11 +12,10 @@ struct ClubRequestsView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject var clubModel: ClubModel
     
-    
     var body: some View {
         VStack {
             List {
-                ForEach(clubModel.userRequests.filter{$0.status == RequestStatus.pending.rawValue }, id: \.self.requestID) { request in
+                ForEach(clubModel.userRequests.filter { $0.status == RequestStatus.pending.rawValue }, id: \.self.requestID) { request in
                     HStack {
                         VStack(alignment: .leading) {
                             Text(request.userName)
@@ -62,12 +61,8 @@ struct ClubRequestsView: View {
             .scrollContentBackground(.hidden)
             .navigationTitle("Requests")
         }
-        .task {
-            do {
-                try await clubModel.getRequests()
-            } catch {
-                print("Error fetching user requests: \(error)")
-            }
+        .onAppear() {
+            clubModel.triggerListeners()
         }
     }
 }

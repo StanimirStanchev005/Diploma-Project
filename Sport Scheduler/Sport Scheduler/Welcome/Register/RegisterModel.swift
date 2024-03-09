@@ -21,7 +21,7 @@ final class RegisterModel: ObservableObject {
     @Published var localizedError: String = "There was an error with signing up!"
     @Published var isTaskInProgress = false
     
-    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: UserRepository = Firestore.firestore()) {
+    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: UserRepository = FirestoreUserRepository()) {
         self.authenticationProvider = authenticationProvider
         self.userRepository = databaseProvider
     }

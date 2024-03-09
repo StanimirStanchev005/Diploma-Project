@@ -20,7 +20,7 @@ final class AddWorkoutModel: ObservableObject {
         workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
     
-    init(clubRepository: ClubRepository = Firestore.firestore()) {
+    init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
     }
     

@@ -24,7 +24,6 @@ struct ContentView: View {
                 MainView()
             }
         }
-        
         .task {
             await contentViewModel.checkUser(currentUser: currentUser)
         }

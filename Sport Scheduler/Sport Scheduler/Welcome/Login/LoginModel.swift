@@ -23,7 +23,7 @@ final class LoginModel: ObservableObject {
     @Published var isTaskInProgress = false
     
     init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(),
-         databaseProvider: UserRepository = Firestore.firestore()) {
+         databaseProvider: UserRepository = FirestoreUserRepository()) {
         self.authenticationProvider = authenticationProvider
         self.userRepository = databaseProvider
     }

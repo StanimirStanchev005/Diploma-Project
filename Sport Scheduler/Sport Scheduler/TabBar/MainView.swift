@@ -7,7 +7,27 @@
 
 import SwiftUI
 
+final class MainViewModel: ObservableObject {
+    private var userRepository: UserRepository
+    
+    init(userRepository: UserRepository = FirestoreUserRepository()) {
+        self.userRepository = userRepository
+    }
+    
+    func triggerListener(for user: CurrentUser) {
+        userRepository.listenForUserChanges(for: user.user!.userID) { [weak self] newUser in
+            guard let self = self else {
+                print("Unable to update user")
+                return
+            }
+            user.updateUser(with: newUser)
+        }
+    }
+}
+
 struct MainView: View {
+    @EnvironmentObject var currentUser: CurrentUser
+    @StateObject var mainViewModel = MainViewModel()
     
     var body: some View {
         TabView {
@@ -25,6 +45,9 @@ struct MainView: View {
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
+        }
+        .onAppear {
+            mainViewModel.triggerListener(for: currentUser)
         }
     }
 }

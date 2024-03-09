@@ -16,7 +16,7 @@ final class WorkoutViewModel: ObservableObject {
     @Published var isShowingError = false
     @Published var errorMessage = ""
     
-    init(clubRepository: ClubRepository = Firestore.firestore()) {
+    init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
     }
     

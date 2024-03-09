@@ -48,6 +48,9 @@ struct JoinedClubsView: View {
             .navigationTitle("Joined Clubs")
             .searchable(text: $joinedClubsModel.searchedClub, placement: .navigationBarDrawer, prompt: Text("Search club to join..."))
             .autocorrectionDisabled(true)
+            .onAppear {
+                joinedClubsModel.triggerListener()
+            }
         }
     }
 }

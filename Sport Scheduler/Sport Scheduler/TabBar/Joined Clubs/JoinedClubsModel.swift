@@ -11,13 +11,17 @@ final class JoinedClubsModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var cancellables = Set<AnyCancellable>()
     @Published var joinedClubs: [UserClubModel] = []
-    @Published var searchedClub: String = ""
+    @Published var searchedClub: String = "" // Rename to something like searchQuery or clubQuery
     @Published private(set) var filteredClubs: [UserClubModel] = []
     
-    init(clubRepository: ClubRepository = Firestore.firestore()) {
+    init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
         
         addSubscribers()
+    }
+    
+    func triggerListener() {
+        clubRepository.listenForClubChanges()
     }
     
     private func addSubscribers() {
@@ -25,9 +29,7 @@ final class JoinedClubsModel: ObservableObject {
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { searchedClub in
-                
                 self.filterClubs(searchText: searchedClub)
-                
             }
             .store(in: &cancellables)
     }

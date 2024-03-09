@@ -9,6 +9,9 @@ import Foundation
 
 
 final class Club: Identifiable, Codable {
+    var id: String {
+        clubName
+    }
     let ownerId: String
     var clubName: String
     var description: String
@@ -25,24 +28,19 @@ final class Club: Identifiable, Codable {
         self.searchName = searchName
     }
     
-    var identifier: String {
-        UUID().uuidString
+    enum CodingKeys: String, CodingKey {
+        case ownerId
+        case clubName
+        case description
+        case category
+        case picture
+        case members
+        case searchName
     }
 }
 
 struct ClubUserModel: Codable {
     let userID: String
     let name: String
-}
-
-extension Club: Hashable {
-    
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(identifier)
-    }
-    
-    public static func == (lhs: Club, rhs: Club) -> Bool {
-        lhs.identifier == rhs.identifier
-    }
 }
 

@@ -12,7 +12,7 @@ final class WorkoutsModel: ObservableObject {
     @Published var workouts: [UserWorkout] = []
     @Published var selectedDate = Date()
     
-    init(clubRepository: ClubRepository = Firestore.firestore()) {
+    init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
     }
     

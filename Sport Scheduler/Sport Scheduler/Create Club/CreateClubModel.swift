@@ -12,8 +12,8 @@ final class CreateClubModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
     
-    init(clubRepository: ClubRepository = Firestore.firestore(), 
-         userRepository: UserRepository = Firestore.firestore()) {
+    init(clubRepository: ClubRepository = FirestoreClubRepository(), 
+         userRepository: UserRepository = FirestoreUserRepository()) {
         self.clubRepository = clubRepository
         self.userRepository = userRepository
     }
