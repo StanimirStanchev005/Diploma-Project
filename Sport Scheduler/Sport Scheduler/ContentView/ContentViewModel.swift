@@ -14,7 +14,7 @@ final class ContentViewModel: ObservableObject {
     private var userRepository: UserRepository
     @Published var showSplashView = true
     
-    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), userRepository: UserRepository = FirestoreUserRepository()) {
+    init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(), userRepository: UserRepository = FirestoreUserRepository()) {
         self.authenticationProvider = authenticationProvider
         self.userRepository = userRepository
     }

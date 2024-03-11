@@ -11,8 +11,9 @@ final class JoinedClubsModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var cancellables = Set<AnyCancellable>()
     @Published var joinedClubs: [UserClubModel] = []
-    @Published var searchedClub: String = "" // Rename to something like searchQuery or clubQuery
+    @Published var searchQuery: String = ""
     @Published private(set) var filteredClubs: [UserClubModel] = []
+    private var clubs: [Club] = []
     
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
@@ -21,11 +22,21 @@ final class JoinedClubsModel: ObservableObject {
     }
     
     func triggerListener() {
-        clubRepository.listenForClubChanges()
+        clubRepository.listenForClubChanges { [weak self] clubs in
+            guard let self = self else {
+                print("Unable to update clubs")
+                return
+            }
+            guard self.clubs.count != clubs.count else {
+                print("A change in clubs is detected, but clubs count is unchanged")
+                return
+            }
+            self.clubs = clubs
+        }
     }
     
     private func addSubscribers() {
-        $searchedClub
+        $searchQuery
             .debounce(for: 0.3, scheduler: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { searchedClub in
@@ -34,24 +45,21 @@ final class JoinedClubsModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    func searchClub(searchText: String, clubs: [Club]) -> [UserClubModel] {
+        let searchText = searchText.lowercased()
+        return clubs.filter { club in
+            club.clubName.lowercased().contains(searchText)
+        }
+        .map { club in
+            UserClubModel(name: club.clubName, picture: club.picture)
+        }
+    }
+    
     private func filterClubs(searchText: String) {
         guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             filteredClubs = []
             return
         }
-        Task {
-            do {
-                let filteredClubs = try await clubRepository.searchClub(searchText: searchText.lowercased())
-                await MainActor.run {
-                    self.filteredClubs = filteredClubs
-                }
-            } catch {
-                throw error
-            }
-        }
-    }
-    
-    func fetchJoinedClubs(for user: DBUser) {
-       
+        filteredClubs = searchClub(searchText: searchText.lowercased(), clubs: clubs)
     }
 }

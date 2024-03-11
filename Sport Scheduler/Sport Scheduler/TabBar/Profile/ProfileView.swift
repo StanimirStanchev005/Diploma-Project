@@ -20,39 +20,49 @@ struct ProfileView: View {
                 Text("* Use your QR Code to validate that you participated in a workout")
                     .font(.subheadline)
                     .padding()
-                Spacer()
                 
                 ZStack {
-                    LinearGradient(colors: [Color.gray.opacity(0.3), Color.black.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    LinearGradient(colors: [Color.gold, Color.red.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
                     Image(uiImage: generateQRCode(from: "\(currentUser.user!.userID)\n\(currentUser.user!.name)"))
                         .interpolation(.none)
                         .resizable()
-                        .frame(width: 300, height: 300)
+                        .frame(maxWidth: 300, maxHeight: 300)
                         .scaledToFit()
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
-                .frame(width: 350, height: 350)
+                .frame(maxWidth: 320, maxHeight: 320)
                 .background(.ultraThinMaterial)
                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                 
+                Button() {
+                    
+                } label: {
+                    Text("Become Premium")
+                        .frame(minWidth: 300, minHeight: 30)
+                }
+                .buttonStyle(.borderedProminent)
+                .tint(.gold)
+                .padding()
                 
                 Spacer()
             }
-            .navigationTitle(currentUser.user!.name)
+            
             .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Sign Out") {
-                        Task {
-                            do {
-                                try profileModel.signOut()
+                Button("Sign Out", role: .destructive) {
+                    Task {
+                        do {
+                            try profileModel.signOut()
+                            withAnimation(.easeInOut) {
                                 currentUser.showSignInView = true
-                            } catch {
-                                print(error)
                             }
+                        } catch {
+                            print(error)
                         }
                     }
                 }
+                .tint(.red)
             }
+            .navigationTitle(currentUser.user!.name)
         }
     }
     func generateQRCode(from string: String) -> UIImage {

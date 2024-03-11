@@ -22,7 +22,7 @@ final class LoginModel: ObservableObject {
     @Published var localizedError: String = "There was an error signing in!"
     @Published var isTaskInProgress = false
     
-    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(),
+    init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(),
          databaseProvider: UserRepository = FirestoreUserRepository()) {
         self.authenticationProvider = authenticationProvider
         self.userRepository = databaseProvider

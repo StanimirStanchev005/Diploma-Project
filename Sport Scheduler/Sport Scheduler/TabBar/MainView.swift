@@ -16,7 +16,7 @@ final class MainViewModel: ObservableObject {
     
     func triggerListener(for user: CurrentUser) {
         userRepository.listenForUserChanges(for: user.user!.userID) { [weak self] newUser in
-            guard let self = self else {
+            guard self != nil else {
                 print("Unable to update user")
                 return
             }

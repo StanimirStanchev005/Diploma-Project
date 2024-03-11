@@ -62,15 +62,13 @@ struct CreateClubView: View {
                 
                 Button {
                     Task {
-                        let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID, searchName: createClubModel.createSearchName())
+                        let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
                         
                         try await createClubModel.create(club: club, for: currentUser.user!.userID)
                         
                         guard createClubModel.hasError == false else {
                             return
                         }
-                        
-                        currentUser.addOwnedClub(club: club)
                         clubCreationSuccess = true
                     }
                 } label: {

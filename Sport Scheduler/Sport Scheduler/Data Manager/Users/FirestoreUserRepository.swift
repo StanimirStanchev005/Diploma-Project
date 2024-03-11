@@ -1,23 +1,13 @@
 //
-//  UserManager.swift
+//  FirestoreUserRepository.swift
 //  Sport Scheduler
 //
-//  Created by Tumba Developer on 12.12.23.
+//  Created by Tumba Developer on 9.03.24.
 //
 
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-
-protocol UserRepository {
-    func create(user: DBUser) throws
-    func getUser(userId: String) async throws -> DBUser
-    func checkIfUserExists(userId: String) async throws -> Bool
-    func save(user: DBUser) throws
-    func addClub(for userID: String, clubName: String, clubPicture: String) throws
-    
-    func listenForUserChanges(for userID: String, onSuccess: @escaping (DBUser) -> Void)
-}
 
 class FirestoreUserRepository: UserRepository {
     private let db = Firestore.firestore()

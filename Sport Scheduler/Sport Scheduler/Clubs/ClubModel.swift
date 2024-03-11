@@ -15,6 +15,7 @@ final class ClubModel: ObservableObject {
     @Published var club: Club?
     @Published var workouts: [Workout] = []
     @Published var userRequests: [ClubRequestModel] = []
+    @Published var isTaskInProgress = true
     
     init(clubRepository: ClubRepository = FirestoreClubRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
@@ -48,6 +49,8 @@ final class ClubModel: ObservableObject {
         Task {
             await MainActor.run {
                 self.workouts = fetchedWorkouts
+                isTaskInProgress = false
+                print(workouts.count)
             }
         }
     }

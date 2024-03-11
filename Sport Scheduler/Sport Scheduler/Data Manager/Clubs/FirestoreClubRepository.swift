@@ -1,46 +1,13 @@
 //
-//  Club Repository.swift
+//  FirestoreClubsRepository.swift
 //  Sport Scheduler
 //
-//  Created by Tumba Developer on 8.01.24.
+//  Created by Tumba Developer on 9.03.24.
 //
 
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-
-enum ClubRepositoryError: Error {
-    case alreadyExists
-    case networkError
-    
-    var localizedDescription: String {
-        switch self {
-        case .alreadyExists:
-            "Club with this name already exists! Use a different name!"
-        case .networkError:
-            "Network connetion failed!"
-        }
-    }
-}
-
-protocol ClubRepository {
-    func create(club: Club) async throws
-    func getClub(clubId: String) async throws -> Club
-    func searchClub(searchText: String) async throws -> [UserClubModel]
-    func add(workout: Workout, for clubId: String) throws
-    func add(participant: ClubUserModel, for workout: Workout) throws
-    func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
-    func getAllWokrouts(for user: DBUser, on date: Date) async throws -> [Workout]
-    func deleteWorkout(for clubId: String, with workoutId: String) throws
-    func updateWorkout(for clubId: String, with workout: Workout) throws
-    func sendJoinRequest(for clubId: String, from userId: String, with name: String) throws
-    func getRequests(for clubId: String) async throws -> [ClubRequestModel]
-    func accept(request: ClubRequestModel, from club: Club) throws
-    func reject(request: ClubRequestModel, from club: Club) throws
-    
-    func listenForClubChanges()
-    func listenForRequestChanges(for club: String, onSuccess: @escaping ([ClubRequestModel]) -> Void)
-}
 
 class FirestoreClubRepository: ClubRepository {
     
@@ -69,7 +36,7 @@ class FirestoreClubRepository: ClubRepository {
         }
     }
     
-    func listenForClubChanges() {
+    func listenForClubChanges(onSuccess: @escaping ([Club]) -> Void) {
         _ = db.collection("clubs")
             .addSnapshotListener { clubsSnapshot, error in
                 guard let clubsSnapshot else {
@@ -87,18 +54,16 @@ class FirestoreClubRepository: ClubRepository {
                  Create a class that will be ClubsProvider (or smt similar (adapter is also suitable)). This class should be initialised with a ClubsRepository and will provide features to access clubs data. The class will hook a snapshot listener and will store the clubs locally to decreaes the amount of requests to Firestore (it's expensive dude).
                  The class should provide "CLUB" based access as this repository now does. This repo should provide the data instead. All decoding and data manipulation should happen in the Provider. This will allow to test this new class and verify that local data manipulation is done right.
                  */
+                let clubs = clubDocuments.compactMap { club in
+                    do {
+                        return try club.data(as: Club.self)
+                    } catch {
+                        print("Error decoding clubs")
+                        return nil
+                    }
+                }
+                onSuccess(clubs)
             }
-    }
-    
-    func searchClub(searchText: String) async throws -> [UserClubModel] {
-        let searchText = searchText.lowercased()
-        let clubs = try await getAllClubs()
-        return clubs.filter { club in
-            club.clubName.lowercased().contains(searchText)
-        }
-        .map { club in
-            UserClubModel(name: club.clubName, picture: club.picture)
-        }
     }
     
     func add(workout: Workout, for clubId: String) throws {
@@ -175,9 +140,6 @@ class FirestoreClubRepository: ClubRepository {
                 print("There are no request changes")
                 return
             }
-            print("Requests")
-            print(requestDocuments)
-            
             let requests = requestDocuments.compactMap { request in
                 do {
                     return try request.data(as: ClubRequestModel.self)

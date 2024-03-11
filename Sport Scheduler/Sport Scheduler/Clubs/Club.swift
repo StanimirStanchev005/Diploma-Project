@@ -18,14 +18,12 @@ final class Club: Identifiable, Codable {
     var category: String
     var picture = "ClubPlaceholder"
     var members: [ClubUserModel] = []
-    var searchName: [String]
     
-    init(clubName: String, description: String, category: String, ownerId: String, searchName: [String]) {
+    init(clubName: String, description: String, category: String, ownerId: String) {
         self.clubName = clubName
         self.description = description
         self.category = category
         self.ownerId = ownerId
-        self.searchName = searchName
     }
     
     enum CodingKeys: String, CodingKey {
@@ -35,7 +33,6 @@ final class Club: Identifiable, Codable {
         case category
         case picture
         case members
-        case searchName
     }
 }
 

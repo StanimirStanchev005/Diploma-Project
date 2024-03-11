@@ -11,15 +11,16 @@ final class WorkoutsModel: ObservableObject {
     private var clubRepository: ClubRepository
     @Published var workouts: [UserWorkout] = []
     @Published var selectedDate = Date()
+    @Published var isTaskInProgress = true
     
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
     }
     
-    func fetchWokrouts(for user: DBUser, on date: Date) {
+    func fetchWokrouts(for user: DBUser) {
         Task {
             do {
-                let fetchedWorkouts = try await clubRepository.getAllWokrouts(for: user, on: date)
+                let fetchedWorkouts = try await clubRepository.getAllWokrouts(for: user, on: selectedDate)
                 await MainActor.run {
                     var userWorkouts: [UserWorkout] = []
                     for workout in fetchedWorkouts {
@@ -27,9 +28,12 @@ final class WorkoutsModel: ObservableObject {
                     }
                     self.workouts = userWorkouts
                     workouts.sort { $0.date < $1.date }
+                    print(selectedDate)
+                    isTaskInProgress = false
                 }
             } catch {
                 print("Error fetching clubs: \(error)")
+                isTaskInProgress = false
             }
         }
     }

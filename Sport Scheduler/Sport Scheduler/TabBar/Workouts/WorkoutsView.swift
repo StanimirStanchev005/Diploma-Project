@@ -17,18 +17,34 @@ struct WorkoutsView: View {
                 DatePicker("Select Date", selection: $workoutsModel.selectedDate, displayedComponents: .date)
                     .labelsHidden()
                     .datePickerStyle(.compact)
-                ForEach(workoutsModel.workouts, id: \.workoutId.self) { workout in
-                    TabBarWorkoutRow(title: workout.title, description: workout.description, club: workout.club, date: workout.date)
+                if workoutsModel.isTaskInProgress {
+                    HStack() {
+                        Spacer()
+                        ProgressView()
+                            .controlSize(.large)
+                        Spacer()
+                    }
+                } else if workoutsModel.workouts.isEmpty && !workoutsModel.isTaskInProgress {
+                    Text("You've got no workouts for \(workoutsModel.selectedDate.formatted(date: .abbreviated, time: .omitted)).\nCongrats, you can rest!")
+                        .font(.title2)
+                        .padding()
+                        .multilineTextAlignment(.center)
+                } else {
+                    ForEach(workoutsModel.workouts, id: \.workoutId.self) { workout in
+                        TabBarWorkoutRow(title: workout.title, description: workout.description, club: workout.club, date: workout.date)
+                    }
                 }
             }
             .scrollContentBackground(.hidden)
             .navigationTitle("Workouts")
         }
-        .task {
-            workoutsModel.fetchWokrouts(for: currentUser.user!, on: workoutsModel.selectedDate)
+        .onAppear() {
+            Task {
+                workoutsModel.fetchWokrouts(for: currentUser.user!)
+            }
         }
         .onChange(of: workoutsModel.selectedDate) {
-            workoutsModel.fetchWokrouts(for: currentUser.user!, on: workoutsModel.selectedDate)
+            workoutsModel.fetchWokrouts(for: currentUser.user!)
         }
         
     }

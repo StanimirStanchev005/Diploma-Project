@@ -14,7 +14,7 @@ final class ProfileModel: ObservableObject {
     private var authenticationProvider: AuthenticationServiceProvidable
     private var databaseProvider: UserRepository
     
-    init(authenticationProvider: AuthenticationServiceProvidable = Auth.auth(), databaseProvider: UserRepository = FirestoreUserRepository()) {
+    init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(), databaseProvider: UserRepository = FirestoreUserRepository()) {
         self.authenticationProvider = authenticationProvider
         self.databaseProvider = databaseProvider
     }

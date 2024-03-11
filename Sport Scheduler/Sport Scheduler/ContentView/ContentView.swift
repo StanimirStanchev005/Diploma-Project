@@ -15,13 +15,17 @@ struct ContentView: View {
     
     
     var body: some View {
-        Group {
+        ZStack {
             if contentViewModel.showSplashView {
-                SplashView()
+                LoadingView()
             } else if currentUser.showSignInView {
-                WelcomeView()
+                withAnimation(.easeInOut) {
+                    WelcomeView()
+                }
             } else {
-                MainView()
+                withAnimation(.easeInOut) {
+                    MainView()
+                }
             }
         }
         .task {

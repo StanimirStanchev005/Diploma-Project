@@ -8,34 +8,9 @@
 import Foundation
 import FirebaseAuth
 
-enum AuthError: Error {
-    case emailAlreadyInUse
-    case networkError
-    case invalidEmailOrPassword
+class FirebaseAuthenticationProvider: AuthenticationServiceProvidable {
+    private let auth = Auth.auth()
     
-    var localizedDescription: String {
-        switch self {
-            
-        case .emailAlreadyInUse:
-            "This email is already in use! Use a different email!"
-        case .invalidEmailOrPassword:
-            "Invalid email or password!"
-        case .networkError:
-            "Network connetion failed!"
-        }
-    }
-}
-
-protocol AuthenticationServiceProvidable {
-    func signOut() throws
-    func getAuthenticatedUser() throws -> AuthDataResultModel
-    func signUp(email: String, password: String) async throws -> AuthDataResultModel
-    func signIn(email: String, password: String) async throws -> AuthDataResultModel
-    func signIn(credential: AuthCredential) async throws -> AuthDataResultModel
-    func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel
-}
-
-extension Auth: AuthenticationServiceProvidable {
     func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
         let credential = GoogleAuthProvider.credential(withIDToken: tokens.idToken,
                                                        accessToken: tokens.accessToken)
@@ -44,7 +19,7 @@ extension Auth: AuthenticationServiceProvidable {
     
     func signUp(email: String, password: String) async throws -> AuthDataResultModel {
         do {
-            let authDataResult = try await createUser(withEmail: email, password: password)
+            let authDataResult = try await auth.createUser(withEmail: email, password: password)
             return AuthDataResultModel(user: authDataResult.user)
         } catch {
             let error = error as NSError
@@ -61,7 +36,7 @@ extension Auth: AuthenticationServiceProvidable {
     
     func signIn(email: String, password: String) async throws -> AuthDataResultModel {
         do {
-            let authDataResult = try await signIn(withEmail: email, password: password)
+            let authDataResult = try await auth.signIn(withEmail: email, password: password)
             return AuthDataResultModel(user: authDataResult.user)
         } catch {
             let error = error as NSError
@@ -80,7 +55,7 @@ extension Auth: AuthenticationServiceProvidable {
     
     func signIn(credential: AuthCredential) async throws -> AuthDataResultModel {
         do {
-            let authDataResult = try await signIn(with: credential)
+            let authDataResult = try await auth.signIn(with: credential)
             return AuthDataResultModel(user: authDataResult.user)
         } catch {
             let error = error as NSError
@@ -94,23 +69,15 @@ extension Auth: AuthenticationServiceProvidable {
     }
     
     func getAuthenticatedUser() throws -> AuthDataResultModel {
-        guard let user = currentUser else {
+        guard let user = auth.currentUser else {
             throw URLError(.badServerResponse)
         }
         return AuthDataResultModel(user: user)
     }
-}
-
-struct AuthDataResultModel {
-    let uid: String
-    let name: String?
-    let email: String?
-    let photoUrl: String?
     
-    init(user: User) {
-        self.name = user.displayName
-        self.uid = user.uid
-        self.email = user.email
-        self.photoUrl = user.photoURL?.absoluteString
+    func signOut() throws {
+        try auth.signOut()
     }
 }
+
+

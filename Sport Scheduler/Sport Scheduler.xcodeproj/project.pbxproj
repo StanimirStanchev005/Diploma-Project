@@ -10,8 +10,15 @@
 		366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */; };
 		366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */; };
 		366412BB2B443A6300ACBFC4 /* CreateClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412BA2B443A6300ACBFC4 /* CreateClubView.swift */; };
-		366412BD2B4699DB00ACBFC4 /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412BC2B4699DB00ACBFC4 /* SplashView.swift */; };
+		366412BD2B4699DB00ACBFC4 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412BC2B4699DB00ACBFC4 /* LoadingView.swift */; };
 		366412BF2B46A3C400ACBFC4 /* LabeledTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412BE2B46A3C400ACBFC4 /* LabeledTextField.swift */; };
+		368FB41E2B9CC6BF009B5764 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 368FB41D2B9CC6BF009B5764 /* LaunchScreen.storyboard */; };
+		368FB4202B9CDAA8009B5764 /* FirestoreUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB41F2B9CDAA8009B5764 /* FirestoreUserRepository.swift */; };
+		368FB4222B9CDAE9009B5764 /* FirestoreClubRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4212B9CDAE9009B5764 /* FirestoreClubRepository.swift */; };
+		368FB4252B9CDB73009B5764 /* AuthenticationServiceProvidable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4242B9CDB73009B5764 /* AuthenticationServiceProvidable.swift */; };
+		368FB4272B9CDBA6009B5764 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4262B9CDBA6009B5764 /* AuthError.swift */; };
+		368FB4292B9CDBEE009B5764 /* AuthDataResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4282B9CDBEE009B5764 /* AuthDataResultModel.swift */; };
+		368FB42D2B9CDD6E009B5764 /* ClubRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB42C2B9CDD6E009B5764 /* ClubRepositoryError.swift */; };
 		3693DE132B8233D400D4C808 /* ClubHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE122B8233D400D4C808 /* ClubHeader.swift */; };
 		3693DE152B82387500D4C808 /* ClubRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE142B82387500D4C808 /* ClubRequestsView.swift */; };
 		3693DE182B823DE700D4C808 /* ClubRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE172B823DE700D4C808 /* ClubRequestModel.swift */; };
@@ -98,8 +105,15 @@
 		366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedClubsView.swift; sourceTree = "<group>"; };
 		366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedClubsView.swift; sourceTree = "<group>"; };
 		366412BA2B443A6300ACBFC4 /* CreateClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateClubView.swift; sourceTree = "<group>"; };
-		366412BC2B4699DB00ACBFC4 /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashView.swift; sourceTree = "<group>"; };
+		366412BC2B4699DB00ACBFC4 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		366412BE2B46A3C400ACBFC4 /* LabeledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledTextField.swift; sourceTree = "<group>"; };
+		368FB41D2B9CC6BF009B5764 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		368FB41F2B9CDAA8009B5764 /* FirestoreUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreUserRepository.swift; sourceTree = "<group>"; };
+		368FB4212B9CDAE9009B5764 /* FirestoreClubRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreClubRepository.swift; sourceTree = "<group>"; };
+		368FB4242B9CDB73009B5764 /* AuthenticationServiceProvidable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationServiceProvidable.swift; sourceTree = "<group>"; };
+		368FB4262B9CDBA6009B5764 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
+		368FB4282B9CDBEE009B5764 /* AuthDataResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDataResultModel.swift; sourceTree = "<group>"; };
+		368FB42C2B9CDD6E009B5764 /* ClubRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRepositoryError.swift; sourceTree = "<group>"; };
 		3693DE122B8233D400D4C808 /* ClubHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubHeader.swift; sourceTree = "<group>"; };
 		3693DE142B82387500D4C808 /* ClubRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRequestsView.swift; sourceTree = "<group>"; };
 		3693DE172B823DE700D4C808 /* ClubRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRequestModel.swift; sourceTree = "<group>"; };
@@ -212,6 +226,36 @@
 			path = Register;
 			sourceTree = "<group>";
 		};
+		368FB4232B9CDB58009B5764 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				36ADF96F2B2899E80028C73B /* AuthenticationManager.swift */,
+				368FB4242B9CDB73009B5764 /* AuthenticationServiceProvidable.swift */,
+				368FB4262B9CDBA6009B5764 /* AuthError.swift */,
+				368FB4282B9CDBEE009B5764 /* AuthDataResultModel.swift */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		368FB42A2B9CDC9A009B5764 /* Users */ = {
+			isa = PBXGroup;
+			children = (
+				36ADF96D2B2898100028C73B /* UserRepository.swift */,
+				368FB41F2B9CDAA8009B5764 /* FirestoreUserRepository.swift */,
+			);
+			path = Users;
+			sourceTree = "<group>";
+		};
+		368FB42B2B9CDCCA009B5764 /* Clubs */ = {
+			isa = PBXGroup;
+			children = (
+				36CA9D962B4C1123002A7E57 /* ClubRepository.swift */,
+				368FB4212B9CDAE9009B5764 /* FirestoreClubRepository.swift */,
+				368FB42C2B9CDD6E009B5764 /* ClubRepositoryError.swift */,
+			);
+			path = Clubs;
+			sourceTree = "<group>";
+		};
 		3693DE162B823D9B00D4C808 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -265,8 +309,8 @@
 			isa = PBXGroup;
 			children = (
 				36ADF9762B28B9250028C73B /* Sport-Scheduler-Info.plist */,
+				368FB41D2B9CC6BF009B5764 /* LaunchScreen.storyboard */,
 				36ADF9092B21AD690028C73B /* Sport_SchedulerApp.swift */,
-				366412BC2B4699DB00ACBFC4 /* SplashView.swift */,
 				36EBE3C02B934A7000CEE8A9 /* ContentView */,
 				36ADF9772B29BCA90028C73B /* Utilities */,
 				36ADF9642B274EE10028C73B /* Data Manager */,
@@ -322,6 +366,7 @@
 				3693DE122B8233D400D4C808 /* ClubHeader.swift */,
 				3693DE192B84BEF700D4C808 /* ClubList.swift */,
 				36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */,
+				366412BC2B4699DB00ACBFC4 /* LoadingView.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -329,9 +374,9 @@
 		36ADF9642B274EE10028C73B /* Data Manager */ = {
 			isa = PBXGroup;
 			children = (
-				36ADF96F2B2899E80028C73B /* AuthenticationManager.swift */,
-				36ADF96D2B2898100028C73B /* UserRepository.swift */,
-				36CA9D962B4C1123002A7E57 /* ClubRepository.swift */,
+				368FB4232B9CDB58009B5764 /* Authentication */,
+				368FB42A2B9CDC9A009B5764 /* Users */,
+				368FB42B2B9CDCCA009B5764 /* Clubs */,
 			);
 			path = "Data Manager";
 			sourceTree = "<group>";
@@ -584,6 +629,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36ADF9112B21AD6C0028C73B /* Preview Assets.xcassets in Resources */,
+				368FB41E2B9CC6BF009B5764 /* LaunchScreen.storyboard in Resources */,
 				36ADF90E2B21AD6C0028C73B /* Assets.xcassets in Resources */,
 				36ADF9692B2771610028C73B /* GoogleService-Info.plist in Resources */,
 			);
@@ -613,6 +659,7 @@
 				36EBE3BE2B93497300CEE8A9 /* UserRequestModel.swift in Sources */,
 				3693DE242B892BDE00D4C808 /* UserWorkout.swift in Sources */,
 				36CA9D9C2B56855A002A7E57 /* TermsOfServiceView.swift in Sources */,
+				368FB4222B9CDAE9009B5764 /* FirestoreClubRepository.swift in Sources */,
 				366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */,
 				36CA9DA02B5C1AF1002A7E57 /* CustomRow.swift in Sources */,
 				3693DE222B892B4400D4C808 /* WorkoutsModel.swift in Sources */,
@@ -631,9 +678,11 @@
 				366412BB2B443A6300ACBFC4 /* CreateClubView.swift in Sources */,
 				36ADF9582B2626770028C73B /* ClubView.swift in Sources */,
 				36F005BD2B74CE8300FA9458 /* JoinedClubsModel.swift in Sources */,
-				366412BD2B4699DB00ACBFC4 /* SplashView.swift in Sources */,
+				366412BD2B4699DB00ACBFC4 /* LoadingView.swift in Sources */,
 				36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */,
+				368FB42D2B9CDD6E009B5764 /* ClubRepositoryError.swift in Sources */,
 				36F005B62B61421100FA9458 /* EditWorkoutView.swift in Sources */,
+				368FB4292B9CDBEE009B5764 /* AuthDataResultModel.swift in Sources */,
 				36ADF93C2B21B5650028C73B /* RegisterView.swift in Sources */,
 				36CA9D9E2B5C1688002A7E57 /* AddWorkoutView.swift in Sources */,
 				36CA9D9A2B4C18A7002A7E57 /* CreateClubModel.swift in Sources */,
@@ -658,10 +707,13 @@
 				36F005C12B7DF6FA00FA9458 /* OwnedClubView.swift in Sources */,
 				36ADF9482B2614F30028C73B /* MainView.swift in Sources */,
 				36ADF90A2B21AD690028C73B /* Sport_SchedulerApp.swift in Sources */,
+				368FB4202B9CDAA8009B5764 /* FirestoreUserRepository.swift in Sources */,
 				3693DE152B82387500D4C808 /* ClubRequestsView.swift in Sources */,
 				36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */,
 				36ADF93E2B21BD4E0028C73B /* SigningTextField.swift in Sources */,
 				36ADF96E2B2898100028C73B /* UserRepository.swift in Sources */,
+				368FB4272B9CDBA6009B5764 /* AuthError.swift in Sources */,
+				368FB4252B9CDB73009B5764 /* AuthenticationServiceProvidable.swift in Sources */,
 				36EBE3BC2B93495100CEE8A9 /* UserClubModel.swift in Sources */,
 				3693DE182B823DE700D4C808 /* ClubRequestModel.swift in Sources */,
 				36ADF9832B2B3E250028C73B /* GoogleButton.swift in Sources */,
@@ -837,6 +889,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -868,6 +921,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -30,18 +30,7 @@ final class CreateClubModel: ObservableObject {
     var isInputValid: Bool {
         isValidRepresenter && !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
-    
-    func createSearchName() -> [String] {
-        var resultArray: [String] = []
         
-        for index in self.name.indices {
-            let substring = String(self.name[..<self.name.index(after: index)]).lowercased()
-            resultArray.append(substring)
-        }
-        
-        return resultArray
-    }
-    
     func create(club: Club, for userID: String) async throws {
         do {
             try await clubRepository.create(club: club)
