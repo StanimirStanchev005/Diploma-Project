@@ -9,8 +9,9 @@ import SwiftUI
 import CoreImage.CIFilterBuiltins
 
 struct ProfileView: View {
-    @StateObject private var profileModel = ProfileModel()
     @EnvironmentObject var currentUser: CurrentUser
+    @StateObject private var profileModel = ProfileModel()
+    @State private var isPaywallTriggered = false
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     
@@ -35,10 +36,10 @@ struct ProfileView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 25.0))
                 
                 Button() {
-                    
+                    isPaywallTriggered.toggle()
                 } label: {
                     Text("Become Premium")
-                        .frame(minWidth: 300, minHeight: 30)
+                        .frame(minWidth: 300, minHeight: 40)
                 }
                 .buttonStyle(.borderedProminent)
                 .tint(.gold)
@@ -46,7 +47,9 @@ struct ProfileView: View {
                 
                 Spacer()
             }
-            
+            .sheet(isPresented: $isPaywallTriggered) {
+                Paywall()
+            }
             .toolbar {
                 Button("Sign Out", role: .destructive) {
                     Task {

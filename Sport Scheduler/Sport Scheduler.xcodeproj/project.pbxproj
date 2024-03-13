@@ -19,6 +19,9 @@
 		368FB4272B9CDBA6009B5764 /* AuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4262B9CDBA6009B5764 /* AuthError.swift */; };
 		368FB4292B9CDBEE009B5764 /* AuthDataResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4282B9CDBEE009B5764 /* AuthDataResultModel.swift */; };
 		368FB42D2B9CDD6E009B5764 /* ClubRepositoryError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB42C2B9CDD6E009B5764 /* ClubRepositoryError.swift */; };
+		368FB42F2BA17F70009B5764 /* Paywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB42E2BA17F70009B5764 /* Paywall.swift */; };
+		368FB4312BA181D3009B5764 /* PaywallRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4302BA181D3009B5764 /* PaywallRow.swift */; };
+		368FB4332BA18EB9009B5764 /* PaywallModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 368FB4322BA18EB9009B5764 /* PaywallModel.swift */; };
 		3693DE132B8233D400D4C808 /* ClubHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE122B8233D400D4C808 /* ClubHeader.swift */; };
 		3693DE152B82387500D4C808 /* ClubRequestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE142B82387500D4C808 /* ClubRequestsView.swift */; };
 		3693DE182B823DE700D4C808 /* ClubRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3693DE172B823DE700D4C808 /* ClubRequestModel.swift */; };
@@ -114,6 +117,9 @@
 		368FB4262B9CDBA6009B5764 /* AuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthError.swift; sourceTree = "<group>"; };
 		368FB4282B9CDBEE009B5764 /* AuthDataResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthDataResultModel.swift; sourceTree = "<group>"; };
 		368FB42C2B9CDD6E009B5764 /* ClubRepositoryError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRepositoryError.swift; sourceTree = "<group>"; };
+		368FB42E2BA17F70009B5764 /* Paywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Paywall.swift; sourceTree = "<group>"; };
+		368FB4302BA181D3009B5764 /* PaywallRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallRow.swift; sourceTree = "<group>"; };
+		368FB4322BA18EB9009B5764 /* PaywallModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallModel.swift; sourceTree = "<group>"; };
 		3693DE122B8233D400D4C808 /* ClubHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubHeader.swift; sourceTree = "<group>"; };
 		3693DE142B82387500D4C808 /* ClubRequestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRequestsView.swift; sourceTree = "<group>"; };
 		3693DE172B823DE700D4C808 /* ClubRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubRequestModel.swift; sourceTree = "<group>"; };
@@ -261,6 +267,8 @@
 			children = (
 				36ADF9802B29D5730028C73B /* ProfileModel.swift */,
 				36ADF94C2B2616430028C73B /* ProfileView.swift */,
+				368FB4322BA18EB9009B5764 /* PaywallModel.swift */,
+				368FB42E2BA17F70009B5764 /* Paywall.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -367,6 +375,7 @@
 				3693DE192B84BEF700D4C808 /* ClubList.swift */,
 				36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */,
 				366412BC2B4699DB00ACBFC4 /* LoadingView.swift */,
+				368FB4302BA181D3009B5764 /* PaywallRow.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -693,11 +702,13 @@
 				36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */,
 				36CA9DA82B5EE0C8002A7E57 /* ClubModel.swift in Sources */,
 				36EBE3B82B933BDE00CEE8A9 /* ContentViewModel.swift in Sources */,
+				368FB42F2BA17F70009B5764 /* Paywall.swift in Sources */,
 				36ADF9372B21B3A00028C73B /* SignInButton.swift in Sources */,
 				36E8E1962B90914800811EA1 /* WorkoutViewModel.swift in Sources */,
 				36EBE3BA2B93493900CEE8A9 /* CurrentUser.swift in Sources */,
 				36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */,
 				36ADF9512B2618570028C73B /* DBUser.swift in Sources */,
+				368FB4332BA18EB9009B5764 /* PaywallModel.swift in Sources */,
 				36E8E18F2B8F33FF00811EA1 /* TabBarWorkoutRow.swift in Sources */,
 				3693DE1F2B87301C00D4C808 /* JoinedClubView.swift in Sources */,
 				36ADF9532B2618620028C73B /* Club.swift in Sources */,
@@ -716,6 +727,7 @@
 				368FB4252B9CDB73009B5764 /* AuthenticationServiceProvidable.swift in Sources */,
 				36EBE3BC2B93495100CEE8A9 /* UserClubModel.swift in Sources */,
 				3693DE182B823DE700D4C808 /* ClubRequestModel.swift in Sources */,
+				368FB4312BA181D3009B5764 /* PaywallRow.swift in Sources */,
 				36ADF9832B2B3E250028C73B /* GoogleButton.swift in Sources */,
 				36ADF9442B22F4CD0028C73B /* RegisterModel.swift in Sources */,
 			);

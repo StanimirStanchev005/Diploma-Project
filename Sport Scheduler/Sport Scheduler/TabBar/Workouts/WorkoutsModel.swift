@@ -28,7 +28,6 @@ final class WorkoutsModel: ObservableObject {
                     }
                     self.workouts = userWorkouts
                     workouts.sort { $0.date < $1.date }
-                    print(selectedDate)
                     isTaskInProgress = false
                 }
             } catch {

@@ -8,6 +8,12 @@
 import Foundation
 import FirebaseFirestore
 
+enum ClubScreenState {
+    case loading
+    case club(Club)
+    // Add error state
+}
+
 final class ClubModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
@@ -17,10 +23,29 @@ final class ClubModel: ObservableObject {
     @Published var userRequests: [ClubRequestModel] = []
     @Published var isTaskInProgress = true
     
+    @Published var state: ClubScreenState
+    
     init(clubRepository: ClubRepository = FirestoreClubRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
         self.clubRepository = clubRepository
         self.userRepository = userRepository
+        
+        state = .loading
+    }
+    
+    func isUserOwner(userId: String?) -> Bool {
+        guard let userId else {
+            return false
+        }
+        return club?.ownerId == userId
+    }
+    
+    func isJoined(joinedClubs: [UserClubModel]?) -> Bool {
+        guard let joinedClubs else {
+            return false
+        }
+        return joinedClubs.contains(where: { club in
+            club.name == self.club?.clubName })
     }
     
     func triggerListeners() {
@@ -38,6 +63,7 @@ final class ClubModel: ObservableObject {
         
         Task {
             await MainActor.run {
+                self.state = .club(fetchedClub)
                 self.club = fetchedClub
             }
         }

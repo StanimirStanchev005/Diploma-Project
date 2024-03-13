@@ -28,7 +28,6 @@ final class JoinedClubsModel: ObservableObject {
                 return
             }
             guard self.clubs.count != clubs.count else {
-                print("A change in clubs is detected, but clubs count is unchanged")
                 return
             }
             self.clubs = clubs

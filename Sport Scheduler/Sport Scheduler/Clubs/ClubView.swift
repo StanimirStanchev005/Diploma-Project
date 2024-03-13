@@ -15,21 +15,33 @@ struct ClubView: View {
     
     var body: some View {
         ZStack {
-            if clubModel.club == nil {
+            switch clubModel.state {
+            case .loading:
                 VStack {
                     ProgressView()
                         .controlSize(.large)
                     Text("Loading...")
                 }
-            } else if clubModel.club!.ownerId == currentUser.user!.userID {
-                OwnedClubView(clubModel: clubModel)
-            } else if currentUser.user!.joinedClubs.contains(where: { club in
-                club.name == clubModel.club!.clubName })
-            {
-                JoinedClubView(clubModel: clubModel)
-            } else {
-                LockedClubView(clubModel: clubModel)
+            case .club(let club):
+                if clubModel.isUserOwner(userId: currentUser.user?.userID) {
+                    OwnedClubView(clubModel: clubModel)
+                } else if clubModel.isJoined(joinedClubs: currentUser.user?.joinedClubs) {
+                    JoinedClubView(clubModel: clubModel)
+                } else {
+                    LockedClubView(clubModel: clubModel)
+                }
             }
+//            if clubModel.club == nil {
+//                
+//            } else if clubModel.club!.ownerId == currentUser.user!.userID {
+//                
+//            } else if currentUser.user!.joinedClubs.contains(where: { club in
+//                club.name == clubModel.club!.clubName })
+//            {
+//                
+//            } else {
+//                
+//            }
         }
         .task {
             do {
