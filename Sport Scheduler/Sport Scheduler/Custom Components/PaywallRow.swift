@@ -8,26 +8,26 @@
 import SwiftUI
 
 struct PaywallRow: View {
-    let planTitle: String
-    let planPrice: Double
-    let planDescription: String
-    @State var isChosen: Bool
+    let plan: PremiumPlan
+    @Binding var isChosen: Bool
+    @Binding var isAlertShown: Bool
     
     var body: some View {
         Button {
             isChosen.toggle()
+            isAlertShown.toggle()
         } label: {
             HStack {
-                Text(planTitle)
+                Text(plan.title)
                     .font(.title)
                     .bold()
                 
                 Spacer()
                 
                 VStack {
-                    Text(planPrice, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    Text(plan.price, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                         .font(.headline)
-                    Text(planDescription)
+                    Text(plan.extras)
                         .font(.subheadline)
                         .lineLimit(1)
                         .truncationMode(.tail)
@@ -43,5 +43,5 @@ struct PaywallRow: View {
 }
 
 #Preview {
-    PaywallRow(planTitle: "Standard", planPrice: 0, planDescription: "No ability to create clubs", isChosen: false)
+    PaywallRow(plan: PremiumPlan(tier: 0, title: "Gold", extras: "Some extras added", price: 50), isChosen: .constant(false), isAlertShown: .constant(false))
 }

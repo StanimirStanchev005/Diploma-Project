@@ -9,7 +9,7 @@ import Foundation
 
 final class DBUser: ObservableObject, Codable {
     enum CodingKeys: CodingKey {
-        case userID, name, email, photoUrl, joinedClubs, ownedClubs, requests, dateCreated
+        case userID, name, email, photoUrl, joinedClubs, ownedClubs, subscriptionPlan, requests, dateCreated
     }
     
     let userID: String
@@ -18,7 +18,7 @@ final class DBUser: ObservableObject, Codable {
     @Published var photoUrl: String?
     @Published var joinedClubs: [UserClubModel] = []
     @Published var ownedClubs: [UserClubModel] = []
-    @Published var subscribed: Bool = false
+    @Published var subscriptionPlan: PremiumPlan = Plans.standard.plan
     var requests: [UserRequestModel] = []
     let dateCreated: Date
     
@@ -30,7 +30,8 @@ final class DBUser: ObservableObject, Codable {
         photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl) ?? "UserPlaceholder"
         joinedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .joinedClubs) ?? []
         ownedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .ownedClubs) ?? []
-        requests = try container.decode([UserRequestModel].self, forKey: .requests) 
+        subscriptionPlan = try container.decodeIfPresent(PremiumPlan.self, forKey: .subscriptionPlan) ?? Plans.standard.plan
+        requests = try container.decode([UserRequestModel].self, forKey: .requests)
         dateCreated = try container.decode(Date.self, forKey: .dateCreated)
     }
     
@@ -50,6 +51,7 @@ final class DBUser: ObservableObject, Codable {
         try container.encode(photoUrl, forKey: .photoUrl)
         try container.encode(joinedClubs, forKey: .joinedClubs)
         try container.encode(ownedClubs, forKey: .ownedClubs)
+        try container.encode(subscriptionPlan, forKey: .subscriptionPlan)
         try container.encode(requests, forKey: .requests)
         try container.encode(dateCreated, forKey: .dateCreated)
     }

@@ -77,6 +77,15 @@ struct CreateClubView: View {
                 .disabled(createClubModel.isInputValid == false)
                 .padding()
             }
+            .navigationTitle("Create Club")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading){
+                    Button("Cancel", role: .cancel) {
+                        dismiss()
+                    }
+                }
+            }
         }
         .padding()
         
@@ -100,7 +109,6 @@ struct CreateClubView: View {
             TermsOfServiceView()
                 .presentationDetents([.medium])
         }
-        .navigationTitle("Create Club")
     }
 }
 

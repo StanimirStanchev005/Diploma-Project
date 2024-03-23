@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-final class OwnedClubsModel: ObservableObject {
-    @Published var ownedClubs: [UserClubModel] = []
-}
-
 struct OwnedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject var ownedClubsModel = OwnedClubsModel()
@@ -30,13 +26,26 @@ struct OwnedClubsView: View {
             }
         }
         .toolbar {
-            NavigationLink(destination: CreateClubView()) {
+            Button {
+                ownedClubsModel.canUserCreateClub(clubs: currentUser.user?.ownedClubs.count)
+            } label: {
                 Image(systemName: "plus")
             }
+        }
+        .sheet(isPresented: $ownedClubsModel.showCreateClubView) {
+            ownedClubsModel.ownedClubs = currentUser.user!.ownedClubs
+        } content: {
+            CreateClubView()
+        }
+        .alert("Oops!", isPresented: $ownedClubsModel.showSubscribeAlert) {
+            Button("OK") { }
+        } message: {
+            Text("You've reached the maximum number of clubs for your account type! Upgrade your account to create more clubs.")
         }
         .navigationTitle("Owned Clubs")
         .onAppear() {
             ownedClubsModel.ownedClubs = currentUser.user!.ownedClubs
+            ownedClubsModel.checkSubscription(tier: currentUser.user?.subscriptionPlan.tier)
         }
     }
 }

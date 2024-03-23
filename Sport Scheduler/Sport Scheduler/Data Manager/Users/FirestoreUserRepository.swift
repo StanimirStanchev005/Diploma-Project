@@ -40,10 +40,10 @@ class FirestoreUserRepository: UserRepository {
         do {
             let document = try await querySnapshot.getDocument().data()
             return document != nil
-          } catch {
+        } catch {
             print("Error fetching document: \(error)")
             return false
-          }
+        }
     }
     
     func save(user: DBUser) throws {
@@ -55,6 +55,19 @@ class FirestoreUserRepository: UserRepository {
                     "picture": clubPicture]
         db.collection("users").document(userID).updateData([
             "ownedClubs": FieldValue.arrayUnion([club])
+        ])
+    }
+    
+    func upgrade(plan: PremiumPlan, for userID: String) throws {
+        let upgradePlan = [
+            "title": plan.title,
+            "tier": plan.tier,
+            "extras": plan.extras,
+            "price": plan.price
+        ] as [String : Any]
+        
+        db.collection("users").document(userID).updateData([
+            "subscriptionPlan": upgradePlan
         ])
     }
 }

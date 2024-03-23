@@ -21,7 +21,7 @@ class FirestoreClubRepository: ClubRepository {
             }
             try clubDocument.reference.setData(from: club, merge: false)
         } catch {
-            throw ClubRepositoryError.networkError
+            throw ClubRepositoryError.alreadyExists
         }
     }
     
@@ -50,10 +50,6 @@ class FirestoreClubRepository: ClubRepository {
                     print("There are no club changes")
                     return
                 }
-                /*
-                 Create a class that will be ClubsProvider (or smt similar (adapter is also suitable)). This class should be initialised with a ClubsRepository and will provide features to access clubs data. The class will hook a snapshot listener and will store the clubs locally to decreaes the amount of requests to Firestore (it's expensive dude).
-                 The class should provide "CLUB" based access as this repository now does. This repo should provide the data instead. All decoding and data manipulation should happen in the Provider. This will allow to test this new class and verify that local data manipulation is done right.
-                 */
                 let clubs = clubDocuments.compactMap { club in
                     do {
                         return try club.data(as: Club.self)
