@@ -9,7 +9,8 @@ import SwiftUI
 
 struct OwnedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var ownedClubsModel = OwnedClubsModel()
+    @EnvironmentObject var clubModel: ClubModel
+    @StateObject var ownedClubsModel = TabBarClubsModel()
     
     var body: some View {
         VStack {
@@ -46,6 +47,8 @@ struct OwnedClubsView: View {
         .onAppear() {
             ownedClubsModel.ownedClubs = currentUser.user!.ownedClubs
             ownedClubsModel.checkSubscription(tier: currentUser.user?.subscriptionPlan.tier)
+            clubModel.state = .loading
+            clubModel.userRequests = []
         }
     }
 }

@@ -39,5 +39,6 @@ final class Club: Identifiable, Codable {
 struct ClubUserModel: Codable {
     let userID: String
     let name: String
+    var visitedWorkouts: Int = 0
 }
 

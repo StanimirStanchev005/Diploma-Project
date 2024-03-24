@@ -9,20 +9,13 @@ import SwiftUI
 
 struct JoinedClubView: View {
     @State private var selectedDate = Date()
-    @StateObject var clubModel: ClubModel
+    @EnvironmentObject var clubModel: ClubModel
     @EnvironmentObject var currentUser: CurrentUser
     
     var body: some View {
         VStack {
-            
-            ClubHeader(picture: clubModel.club!.picture, members: clubModel.club!.members.count, description: clubModel.club!.description)
-            
-            Divider()
-                .padding(.vertical, 10)
+            ClubHeader(showDateButtonOnly: true, selectedDate: $selectedDate)
 
-            DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
-                .labelsHidden()
-            
             if clubModel.isTaskInProgress {
                     ProgressView()
                         .controlSize(.large)
@@ -58,9 +51,10 @@ struct JoinedClubView: View {
 }
 
 #Preview {
-    JoinedClubView(clubModel: ClubModel()).environmentObject({ () -> CurrentUser in
-        let envObj = CurrentUser()
-        envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
-        return envObj
-    }())
+    let clubModel = ClubModel()
+    clubModel.club = Club(clubName: "Levski", description: "xxxx", category: "Football", ownerId: "123")
+    clubModel.club?.members.append(ClubUserModel(userID: "333", name: "Spas4o", visitedWorkouts: 3))
+    let currentUser = CurrentUser()
+    currentUser.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
+    return JoinedClubView().environmentObject(currentUser)
 }

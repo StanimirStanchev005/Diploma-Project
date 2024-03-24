@@ -54,7 +54,7 @@ class FirestoreClubRepository: ClubRepository {
                     do {
                         return try club.data(as: Club.self)
                     } catch {
-                        print("Error decoding clubs")
+                        print("Error decoding club: \(club)")
                         return nil
                     }
                 }
@@ -132,11 +132,12 @@ class FirestoreClubRepository: ClubRepository {
             
             let requestDocuments = requestSnapshot.documents
             
+            var requests: [ClubRequestModel] = []
+            
             guard !requestDocuments.isEmpty else {
-                print("There are no request changes")
                 return
             }
-            let requests = requestDocuments.compactMap { request in
+            requests = requestDocuments.compactMap { request in
                 do {
                     return try request.data(as: ClubRequestModel.self)
                 } catch {
@@ -148,15 +149,27 @@ class FirestoreClubRepository: ClubRepository {
         }
     }
     
+    func listenForChanges(for club: String, onSuccess: @escaping (Club) -> Void) {
+        db.collection("clubs").document(club).addSnapshotListener { clubSnapshot, error in
+            guard let clubSnapshot else {
+                print("Error listening to request changes")
+                return
+            }
+            do {
+                let club = try clubSnapshot.data(as: Club.self)
+                onSuccess(club)
+            } catch {
+                print("Error decoding club: \(club)")
+            }
+        }
+    }
+    
     func accept(request: ClubRequestModel, from club: Club) throws {
-        db.collection("clubs").document(request.clubID).collection("requests").document(request.requestID).updateData([
-            "status" : RequestStatus.accepted.rawValue
-        ])
-        
         let member = [
             "userID": request.userID,
-            "name": request.userName
-        ]
+            "name": request.userName,
+            "visitedWorkouts": 0
+        ] as [String : Any]
         
         let joinedClub = [
             "name": club.clubName,
@@ -175,6 +188,7 @@ class FirestoreClubRepository: ClubRepository {
             "joinedClubs": FieldValue.arrayUnion([joinedClub]),
             "requests": FieldValue.arrayRemove([requestToRemove])
         ])
+        db.collection("clubs").document(request.clubID).collection("requests").document(request.requestID).delete()
     }
     
     func reject(request: ClubRequestModel, from club: Club) throws {

@@ -22,7 +22,6 @@ final class ClubModel: ObservableObject {
     @Published var workouts: [Workout] = []
     @Published var userRequests: [ClubRequestModel] = []
     @Published var isTaskInProgress = true
-    
     @Published var state: ClubScreenState
     
     init(clubRepository: ClubRepository = FirestoreClubRepository(),
@@ -48,7 +47,17 @@ final class ClubModel: ObservableObject {
             club.name == self.club?.clubName })
     }
     
-    func triggerListeners() {
+    func triggerClubListeners() {
+        clubRepository.listenForChanges(for: club!.id) { [weak self] club in
+            guard let self = self else {
+                print("Unable to update club")
+                return
+            }
+            self.club = club
+        }
+    }
+    
+    func triggerRequestListeners() {
         clubRepository.listenForRequestChanges(for: club!.clubName) { [weak self] requests in
             guard let self = self else {
                 print("Unable to update userRequests")
@@ -58,13 +67,14 @@ final class ClubModel: ObservableObject {
         }
     }
     
-    func fetchData(for clubId: String) async throws {
-        let fetchedClub = try await clubRepository.getClub(clubId: clubId)
-        
+    func fetchData(for clubID: String) async throws {
+        let fetchedClub = try await clubRepository.getClub(clubId: clubID)
         Task {
             await MainActor.run {
-                self.state = .club(fetchedClub)
                 self.club = fetchedClub
+                self.state = .club(fetchedClub)
+                triggerClubListeners()
+                triggerRequestListeners()
             }
         }
     }
@@ -92,18 +102,16 @@ final class ClubModel: ObservableObject {
             }
         }
     }
-    
-    func getRequests() async throws {
-        let requests = try await clubRepository.getRequests(for: club!.clubName)
-        await MainActor.run {
-            self.userRequests = requests
-        }
+        
+    func sendJoinRequest(for clubId: String, request: ClubRequestModel) throws {
+        try clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
     }
-    
+
     func accept(request: ClubRequestModel) throws {
         try clubRepository.accept(request: request, from: club!)
         let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
         userRequests[index].status = RequestStatus.accepted.rawValue
+        userRequests.remove(at: index)
     }
     
     func reject(request: ClubRequestModel) throws {

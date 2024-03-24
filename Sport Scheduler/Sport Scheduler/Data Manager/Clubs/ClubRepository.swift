@@ -20,6 +20,7 @@ protocol ClubRepository {
     func getRequests(for clubId: String) async throws -> [ClubRequestModel]
     func accept(request: ClubRequestModel, from club: Club) throws
     func reject(request: ClubRequestModel, from club: Club) throws
+    func listenForChanges(for club: String, onSuccess: @escaping (Club) -> Void) 
     func listenForClubChanges(onSuccess: @escaping ([Club]) -> Void)
     func listenForRequestChanges(for club: String, onSuccess: @escaping ([ClubRequestModel]) -> Void)
 }

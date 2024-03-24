@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClubView: View {
-    @StateObject private var clubModel = ClubModel()
+    @EnvironmentObject var clubModel: ClubModel
     @EnvironmentObject var currentUser: CurrentUser
     
     let club: UserClubModel
@@ -24,24 +24,13 @@ struct ClubView: View {
                 }
             case .club(let club):
                 if clubModel.isUserOwner(userId: currentUser.user?.userID) {
-                    OwnedClubView(clubModel: clubModel)
+                    OwnedClubView()
                 } else if clubModel.isJoined(joinedClubs: currentUser.user?.joinedClubs) {
-                    JoinedClubView(clubModel: clubModel)
+                    JoinedClubView()
                 } else {
-                    LockedClubView(clubModel: clubModel)
+                    LockedClubView()
                 }
             }
-//            if clubModel.club == nil {
-//                
-//            } else if clubModel.club!.ownerId == currentUser.user!.userID {
-//                
-//            } else if currentUser.user!.joinedClubs.contains(where: { club in
-//                club.name == clubModel.club!.clubName })
-//            {
-//                
-//            } else {
-//                
-//            }
         }
         .task {
             do {

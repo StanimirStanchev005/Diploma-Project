@@ -9,15 +9,12 @@ import SwiftUI
 
 struct LockedClubView: View {
     @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var lockedClubModel = LockedClubModel()
-    @StateObject var clubModel: ClubModel
+    @EnvironmentObject var clubModel: ClubModel
     @State private var isRequestSend = false
 
     var body: some View {
         VStack(spacing: 10) {
-            ClubHeader(picture: clubModel.club!.picture, members: clubModel.club!.members.count, description: clubModel.club!.description)
-            
-            Divider()
+            ClubHeader(showButtons: false)
             
             ContentUnavailableView("Club is locked", systemImage: "lock", description: Text("Join this club to see their workouts"))
             
@@ -27,7 +24,7 @@ struct LockedClubView: View {
             Button {
                 do {
                     let request = ClubRequestModel(clubID: clubModel.club!.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
-                    try lockedClubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
+                    try clubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
                     isRequestSend = true
                 } catch {
                     print("Error while sending join request: \(error)")
@@ -47,14 +44,14 @@ struct LockedClubView: View {
             Text("Request to join was sent successfully")
         }
         .navigationTitle(clubModel.club!.clubName)
-        .onAppear {
-            lockedClubModel.club = clubModel.club
-        }
     }
 }
 
 #Preview {
-    NavigationStack {
-        LockedClubView(clubModel: ClubModel())
-    }
+    let clubModel = ClubModel()
+    clubModel.club = Club(clubName: "Levski", description: "xxxx", category: "Football", ownerId: "123")
+    clubModel.club?.members.append(ClubUserModel(userID: "333", name: "Spas4o", visitedWorkouts: 3))
+    let currentUser = CurrentUser()
+    currentUser.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
+    return LockedClubView().environmentObject(currentUser)
 }

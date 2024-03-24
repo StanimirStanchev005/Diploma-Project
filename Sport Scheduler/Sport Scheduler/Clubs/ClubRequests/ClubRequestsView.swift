@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ClubRequestsView: View {
     @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var clubModel: ClubModel
+    @EnvironmentObject var clubModel: ClubModel
     
     var body: some View {
         VStack {
@@ -61,12 +61,13 @@ struct ClubRequestsView: View {
             .scrollContentBackground(.hidden)
             .navigationTitle("Requests")
         }
-        .onAppear() {
-            clubModel.triggerListeners()
-        }
     }
 }
 
 #Preview {
-    ClubRequestsView(clubModel: ClubModel())
+    ClubRequestsView().environmentObject({ () -> CurrentUser in
+        let envObj = CurrentUser()
+        envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
+        return envObj
+    }())
 }

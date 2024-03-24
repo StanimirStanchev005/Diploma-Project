@@ -7,13 +7,17 @@
 import FirebaseFirestore
 import Combine
 
-final class JoinedClubsModel: ObservableObject {
+final class TabBarClubsModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var cancellables = Set<AnyCancellable>()
+    private var clubs: [Club] = []
     @Published var joinedClubs: [UserClubModel] = []
     @Published var searchQuery: String = ""
     @Published private(set) var filteredClubs: [UserClubModel] = []
-    private var clubs: [Club] = []
+    @Published var ownedClubs: [UserClubModel] = []
+    @Published var showCreateClubView = false
+    @Published var showSubscribeAlert = false
+    var numberOfClubsAllowed = 0
     
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
@@ -25,9 +29,6 @@ final class JoinedClubsModel: ObservableObject {
         clubRepository.listenForClubChanges { [weak self] clubs in
             guard let self = self else {
                 print("Unable to update clubs")
-                return
-            }
-            guard self.clubs.count != clubs.count else {
                 return
             }
             self.clubs = clubs
@@ -60,5 +61,29 @@ final class JoinedClubsModel: ObservableObject {
             return
         }
         filteredClubs = searchClub(searchText: searchText.lowercased(), clubs: clubs)
+    }
+    
+    func checkSubscription(tier: Int?) {
+        guard let tier else {
+            return
+        }
+        if tier == Plans.standard.plan.tier {
+            numberOfClubsAllowed = 0
+        } else if tier == Plans.gold.plan.tier {
+            numberOfClubsAllowed = 3
+        } else {
+            numberOfClubsAllowed = Int.max
+        }
+    }
+    
+    func canUserCreateClub(clubs count: Int?) {
+        guard let count else {
+            return
+        }
+        if numberOfClubsAllowed > count {
+            showCreateClubView = true
+        } else {
+            showSubscribeAlert = true
+        }
     }
 }

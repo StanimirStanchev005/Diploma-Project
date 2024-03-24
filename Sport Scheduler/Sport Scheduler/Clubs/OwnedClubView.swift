@@ -10,31 +10,16 @@ import SwiftUI
 struct OwnedClubView: View {
     @State private var showAddWorkoutScreen = false
     @State private var selectedDate = Date()
-    @StateObject var clubModel: ClubModel
+    @EnvironmentObject var clubModel: ClubModel
     @EnvironmentObject var currentUser: CurrentUser
     
     var body: some View {
         VStack {
+            ClubHeader(showButtons: true, selectedDate: $selectedDate)
             
-            ClubHeader(picture: clubModel.club!.picture, members: clubModel.club!.members.count, description: clubModel.club!.description)
-            
-            Divider()
-                .padding(.vertical, 10)
-            
-            HStack(spacing: 10) {
-                HStack {
-                    DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
-                        .labelsHidden()
-                    NavigationLink("Join Requests", destination: ClubRequestsView(clubModel: clubModel))
-                        .foregroundStyle(.lightBackground)
-                        .tint(.gray.opacity(0.2))
-                        .buttonStyle(.borderedProminent)
-                    
-                }
-            }
             if clubModel.isTaskInProgress {
-                    ProgressView()
-                        .controlSize(.large)
+                ProgressView()
+                    .controlSize(.large)
             } else if clubModel.workouts.isEmpty && !clubModel.isTaskInProgress {
                 Spacer()
                 Text("No workouts for the selected date.")
@@ -94,5 +79,10 @@ struct OwnedClubView: View {
 }
 
 #Preview {
-    OwnedClubView(clubModel: ClubModel())
+    let clubModel = ClubModel()
+    clubModel.club = Club(clubName: "Levski", description: "xxxx", category: "Football", ownerId: "123")
+    clubModel.club?.members.append(ClubUserModel(userID: "333", name: "Spas4o", visitedWorkouts: 3))
+    let currentUser = CurrentUser()
+    currentUser.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
+    return OwnedClubView().environmentObject(currentUser)
 }
