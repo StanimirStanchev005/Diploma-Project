@@ -22,7 +22,7 @@ struct ClubView: View {
                         .controlSize(.large)
                     Text("Loading...")
                 }
-            case .club(let club):
+            case .club:
                 if clubModel.isUserOwner(userId: currentUser.user?.userID) {
                     OwnedClubView()
                 } else if clubModel.isJoined(joinedClubs: currentUser.user?.joinedClubs) {
