@@ -20,6 +20,7 @@ struct ClubMembersView: View {
                     Text("Workouts visited: \(member.visitedWorkouts)")
                 }
             }
+            .onDelete(perform: clubModel.removeMember)
         }
         .navigationTitle("Members")
     }

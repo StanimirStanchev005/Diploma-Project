@@ -212,6 +212,25 @@ class FirestoreClubRepository: ClubRepository {
             "participants": FieldValue.arrayUnion([participantToAdd])
         ])
     }
+    
+    func remove(user: ClubUserModel, from club: Club) throws {
+        let userToRemove = [
+            "userID": user.userID,
+            "name": user.name,
+            "visitedWorkouts": user.visitedWorkouts
+        ] as [String : Any]
+        
+        db.collection("clubs").document(club.id).updateData([
+            "members": FieldValue.arrayRemove([userToRemove])
+        ])
+        let clubToRemove = [
+            "name": club.clubName,
+            "picture": club.picture
+        ]
+        db.collection("users").document(user.userID).updateData([
+            "joinedClubs": FieldValue.arrayRemove([clubToRemove])
+        ])
+    }
 }
 
 

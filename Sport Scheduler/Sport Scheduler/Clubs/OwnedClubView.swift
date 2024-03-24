@@ -37,7 +37,7 @@ struct OwnedClubView: View {
                             }
                         }
                     }
-                    .onDelete(perform: clubModel.deletedWorkout)
+                    .onDelete(perform: clubModel.deleteWorkout)
                 }
             }
             Spacer()
