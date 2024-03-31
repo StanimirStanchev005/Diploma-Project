@@ -75,6 +75,12 @@ struct ClubContentView: View {
                                     }
                                 }
                             }
+                            if workout == clubModel.workouts.last {
+                                ProgressView()
+                                    .onAppear {
+                                        clubModel.fetchWorkouts(on: selectedDate)
+                                    }
+                            }
                         }
                         .onDelete(perform: clubModel.deleteWorkout)
                         .deleteDisabled(!isOwner)
@@ -93,13 +99,7 @@ struct ClubContentView: View {
             Text("Request to join was sent successfully")
         }
         .sheet(isPresented: $showAddWorkoutScreen) {
-            Task {
-                do {
-                    try await clubModel.fetchWorkouts(for: clubModel.club!.clubName, on: selectedDate)
-                } catch {
-                    print("Error fetching club's workouts: \(error)")
-                }
-            }
+            clubModel.fetchWorkouts(on: selectedDate)
         } content: {
             AddWorkoutView(clubID: clubModel.club!.clubName)
         }
@@ -107,17 +107,11 @@ struct ClubContentView: View {
         .toolbar {
             navbarButtons
         }
-        .task {
-            do {
-                try await clubModel.fetchWorkouts(for: clubModel.club!.clubName, on: selectedDate)
-            } catch {
-                print("Error fetching club's workouts: \(error)")
-            }
+        .onAppear {
+            clubModel.fetchWorkouts(on: selectedDate)
         }
         .onChange(of: selectedDate) {
-            Task {
-                try await clubModel.fetchWorkouts(for: clubModel.club!.clubName, on: selectedDate)
-            }
+            clubModel.fetchWorkouts(on: selectedDate)
         }
     }
 }

@@ -17,6 +17,7 @@ enum ClubScreenState {
 final class ClubModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
+    private var lastDocument: DocumentSnapshot? = nil
     
     @Published var club: Club?
     @Published var workouts: [Workout] = []
@@ -94,17 +95,27 @@ final class ClubModel: ObservableObject {
             }
         }
     }
-    
-    func fetchWorkouts(for clubId: String, on date: Date) async throws {
-        let fetchedWorkouts = try await clubRepository.getWorkouts(for: clubId, on: date)
-        
+    //Here
+    func fetchWorkouts(on date: Date) {
         Task {
+            let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: lastDocument)
             await MainActor.run {
-                self.workouts = fetchedWorkouts
+                self.workouts.append(contentsOf: fetchedWorkouts)
+                if let lastDocument {
+                    self.lastDocument = lastDocument
+                }
                 isTaskInProgress = false
-                print(workouts.count)
             }
         }
+//        let fetchedWorkouts = try await clubRepository.getWorkouts(for: clubId, on: date)
+//        
+//        Task {
+//            await MainActor.run {
+//                self.workouts = fetchedWorkouts
+//                isTaskInProgress = false
+//                print(workouts.count)
+//            }
+//        }
     }
     
     func deleteWorkout(at offsets: IndexSet) {

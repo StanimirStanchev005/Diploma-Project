@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Workout: Codable {
+final class Workout: Codable, Equatable {
     var workoutId = UUID().uuidString
     var clubId: String
     var title: String
@@ -20,6 +20,10 @@ final class Workout: Codable {
         self.title = title
         self.description = description
         self.date = date
+    }
+    
+    static func ==(lhs: Workout, rhs: Workout) -> Bool {
+        lhs.workoutId == rhs.workoutId
     }
 }
 

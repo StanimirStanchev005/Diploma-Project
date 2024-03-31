@@ -164,6 +164,25 @@ class FirestoreClubRepository: ClubRepository {
         }
     }
     
+    func getWorkouts(for club: String, lastDocument: DocumentSnapshot?) async throws -> ([Workout], lastDocument: DocumentSnapshot?) {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: Date())
+        let startDate = calendar.date(from: components)!
+        if let lastDocument {
+            return try await db.collection("clubs").document(club).collection("workouts")
+                .order(by: "date", descending: false)
+                .limit(to: 5)
+                .start(afterDocument: lastDocument)
+                .getDocumentsWithSnapshot(as: Workout.self)
+        } else {
+            return try await db.collection("clubs").document(club).collection("workouts")
+                .order(by: "date", descending: false)
+                .limit(to: 5)
+                .start(at: [startDate])
+                .getDocumentsWithSnapshot(as: Workout.self)
+        }
+    }
+    
     func accept(request: ClubRequestModel, from club: Club) throws {
         let member = [
             "userID": request.userID,
@@ -246,5 +265,18 @@ class FirestoreClubRepository: ClubRepository {
     }
 }
 
-
+extension Query {
+    func getDocuments<T>(as type: T.Type) async throws -> [T] where T : Decodable {
+        try await getDocumentsWithSnapshot(as: type).workouts
+    }
+    
+    func getDocumentsWithSnapshot<T>(as type: T.Type) async throws -> (workouts: [T], lastDocument: DocumentSnapshot?) where T : Decodable {
+        let snapshot = try await self.getDocuments()
+        
+        let workouts = try snapshot.documents.map { document in
+            try document.data(as: T.self)
+        }
+        return (workouts, snapshot.documents.last)
+    }
+}
 
