@@ -11,7 +11,7 @@ struct ClubContentView: View {
     @State private var showAddWorkoutScreen = false
     @State private var selectedDate = Date()
     @State private var isRequestSend = false
-    @EnvironmentObject var clubModel: ClubModel
+    @ObservedObject var clubModel: ClubModel
     @EnvironmentObject var currentUser: CurrentUser
     
     private var isOwner: Bool {
@@ -51,7 +51,7 @@ struct ClubContentView: View {
     
     var body: some View {
         VStack {
-            ClubHeader(isOwner: isOwner, isJoined: isJoined, selectedDate: $selectedDate)
+            ClubHeader(clubModel: clubModel, isOwner: isOwner, isJoined: isJoined, selectedDate: $selectedDate)
             
             if isOwner || isJoined {
                 if clubModel.isTaskInProgress {
@@ -65,7 +65,7 @@ struct ClubContentView: View {
                 } else {
                     List {
                         ForEach(clubModel.workouts, id:\.workoutId) { workout in
-                            NavigationLink(destination: WorkoutView(workout: workout)) {
+                            NavigationLink(destination: WorkoutView(workout: workout, clubModel: clubModel)) {
                                 WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
                             }
                             .swipeActions(edge: .leading) {
@@ -123,10 +123,5 @@ struct ClubContentView: View {
 }
 
 #Preview {
-    let clubModel = ClubModel()
-    clubModel.club = Club(clubName: "Levski", description: "xxxx", category: "Football", ownerId: "123")
-    clubModel.club?.members.append(ClubUserModel(userID: "333", name: "Spas4o", visitedWorkouts: 3))
-    let currentUser = CurrentUser()
-    currentUser.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
-    return NavigationStack{ ClubContentView().environmentObject(currentUser).environmentObject(clubModel) }
+    Text("Preview is unavailable for now")
 }

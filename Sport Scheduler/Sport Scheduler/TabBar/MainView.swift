@@ -28,11 +28,9 @@ final class MainViewModel: ObservableObject {
 struct MainView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject var mainViewModel = MainViewModel()
-    @StateObject var clubModel = ClubModel()
     var body: some View {
         TabView {
             JoinedClubsView()
-                .environmentObject(clubModel)
                 .tabItem {
                     Label("Clubs", systemImage: "person.3.fill")
                 }

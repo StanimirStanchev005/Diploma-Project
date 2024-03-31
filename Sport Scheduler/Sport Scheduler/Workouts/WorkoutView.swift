@@ -11,7 +11,7 @@ import CodeScanner
 struct WorkoutView: View {
     let workout: Workout
     @EnvironmentObject var currentUser: CurrentUser
-    @EnvironmentObject var clubModel: ClubModel
+    @ObservedObject var clubModel: ClubModel
     @StateObject var workoutViewModel = WorkoutViewModel()
     @State private var hasError = false
     
@@ -55,6 +55,6 @@ struct WorkoutView: View {
 
 #Preview {
     NavigationStack {
-        WorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date()))
+        WorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date()), clubModel: ClubModel())
     }
 }

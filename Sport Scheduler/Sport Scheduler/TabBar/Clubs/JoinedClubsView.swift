@@ -9,7 +9,6 @@ import SwiftUI
 
 struct JoinedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
-    @EnvironmentObject var clubModel: ClubModel
     @StateObject var joinedClubsModel = TabBarClubsModel()
     
     var body: some View {
@@ -59,8 +58,6 @@ struct JoinedClubsView: View {
             .autocorrectionDisabled(true)
             .onAppear {
                 joinedClubsModel.triggerListener()
-                clubModel.state = .loading
-                clubModel.userRequests = []
             }
         }
     }

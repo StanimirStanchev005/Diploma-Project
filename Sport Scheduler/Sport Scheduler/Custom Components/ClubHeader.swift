@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ClubHeader: View {
-    @EnvironmentObject var clubModel: ClubModel
+    @ObservedObject var clubModel: ClubModel
     let isOwner: Bool
     let isJoined: Bool
     @Binding var selectedDate: Date
     
-    init(isOwner: Bool = false, isJoined: Bool = false, selectedDate: Binding<Date> = .constant(Date())) {
+    init(clubModel: ClubModel, isOwner: Bool = false, isJoined: Bool = false, selectedDate: Binding<Date> = .constant(Date())) {
+        self.clubModel = clubModel
         self.isOwner = isOwner
         self.isJoined = isJoined
         self._selectedDate = selectedDate
@@ -42,14 +43,16 @@ struct ClubHeader: View {
                 HStack(spacing: 10) {
                     DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
                         .labelsHidden()
-                    NavigationLink("Requests (\(clubModel.userRequests.count))", destination: ClubRequestsView())
+                    NavigationLink("Requests (\(clubModel.userRequests.count))", destination: ClubRequestsView(clubModel: clubModel))
                         .foregroundStyle(.lightBackground)
                         .tint(.gray.opacity(0.2))
                         .buttonStyle(.borderedProminent)
-                    NavigationLink("Members", destination: ClubMembersView())
+                        .frame(maxWidth: 130)
+                    NavigationLink("Members", destination: ClubMembersView(clubModel: clubModel))
                         .foregroundStyle(.lightBackground)
                         .tint(.gray.opacity(0.2))
                         .buttonStyle(.borderedProminent)
+                    
                 }
                 .padding(10)
             } else if isJoined {
@@ -64,5 +67,5 @@ struct ClubHeader: View {
 }
 
 #Preview {
-    ClubHeader(isOwner: true)
+    ClubHeader(clubModel: ClubModel(), isOwner: true)
 }

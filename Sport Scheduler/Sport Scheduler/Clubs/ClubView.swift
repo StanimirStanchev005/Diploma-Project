@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClubView: View {
-    @EnvironmentObject var clubModel: ClubModel
+    @StateObject var clubModel = ClubModel()
     @EnvironmentObject var currentUser: CurrentUser
     
     let club: UserClubModel
@@ -23,7 +23,7 @@ struct ClubView: View {
                     Text("Loading...")
                 }
             case .club:
-                    ClubContentView()
+                ClubContentView(clubModel: clubModel)
             }
         }
         .task {
@@ -38,6 +38,6 @@ struct ClubView: View {
 
 #Preview {
     NavigationStack {
-        ClubView(club: UserClubModel(name: "Sofia City breakers", picture: "ClubPlaceholder")).environmentObject(ClubModel()).environmentObject(CurrentUser())
+       Text("Will add previews later")
     }
 }
