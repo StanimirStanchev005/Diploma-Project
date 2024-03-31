@@ -203,13 +203,7 @@ class FirestoreClubRepository: ClubRepository {
         db.collection("clubs").document(request.clubID).collection("requests").document(request.requestID).delete()
     }
     
-    func add(participant: ClubUserModel, for workout: Workout) throws {
-        let participantToRemove = [
-            "userID": participant.userID,
-            "name": participant.name,
-            "visitedWorkouts": participant.visitedWorkouts
-        ] as [String : Any]
-        
+    func add(participant: ClubUserModel, for workout: Workout, from club: Club) throws {
         let participantToAdd = [
             "userID": participant.userID,
             "name": participant.name,
@@ -220,13 +214,16 @@ class FirestoreClubRepository: ClubRepository {
             "participants": FieldValue.arrayUnion([participantToAdd])
         ])
     
-        db.collection("clubs").document(workout.clubId).updateData([
-            "members": FieldValue.arrayRemove([participantToRemove])
-        ])
-        db.collection("clubs").document(workout.clubId).updateData([
-            "members": FieldValue.arrayUnion([participantToAdd])
-        ])
+        let memberIndex = club.members.firstIndex { member in
+            participant.userID == member.userID
+        }
+        guard let memberIndex else {
+            print("This user is not a member in this club")
+            return
+        }
+        club.members[memberIndex].visitedWorkouts += 1
        
+        try db.collection("clubs").document(workout.clubId).setData(from: club, merge: true)
     }
     
     func remove(user: ClubUserModel, from club: Club) throws {

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ClubHeader: View {
+    @EnvironmentObject var currentUser: CurrentUser
     @ObservedObject var clubModel: ClubModel
     let isOwner: Bool
     let isJoined: Bool
@@ -28,9 +29,14 @@ struct ClubHeader: View {
                 .clipShape(Circle())
                 .frame(width: 100, height: 100)
                 .padding()
-            
-            Text("Members: \(clubModel.club?.members.count ?? 0)")
-                .font(.headline)
+            HStack(spacing: 10) {
+                Text("Members: \(clubModel.club?.members.count ?? 0)")
+                    .font(.headline)
+                if isJoined {
+                    Text("My workouts: \(clubModel.visitedWorkouts(for: currentUser.user?.userID))")
+                        .font(.headline)
+                }
+            }
             
             Text(clubModel.club?.description ?? "")
                 .multilineTextAlignment(.center)
@@ -67,5 +73,8 @@ struct ClubHeader: View {
 }
 
 #Preview {
-    ClubHeader(clubModel: ClubModel(), isOwner: true)
+    let currentUser = CurrentUser()
+    currentUser.user = DBUser(userID: "123", name: "spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
+    return ClubHeader(clubModel: ClubModel(), isOwner: true)
+        .environmentObject(currentUser)
 }

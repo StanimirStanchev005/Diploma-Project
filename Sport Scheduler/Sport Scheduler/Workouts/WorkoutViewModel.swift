@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 final class WorkoutViewModel: ObservableObject {
     private var clubRepository: ClubRepository
+    var club: Club = Club(clubName: "", description: "", category: "", ownerId: "")
     @Published var workout: Workout = Workout(clubId: "", title: "", date: Date())
     @Published var isShowingScanner = false
     @Published var isShowingError = false
@@ -37,7 +38,7 @@ final class WorkoutViewModel: ObservableObject {
             }
             let participant = ClubUserModel(userID: details[0], name: details[1])
             do {
-                try clubRepository.add(participant: participant, for: self.workout)
+                try clubRepository.add(participant: participant, for: self.workout, from: self.club)
                 workout.participants.append(participant)
             } catch {
                 print("Error adding participant: \(error)")

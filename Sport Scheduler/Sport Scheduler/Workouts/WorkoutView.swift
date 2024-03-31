@@ -49,6 +49,7 @@ struct WorkoutView: View {
         }
         .onAppear() {
             workoutViewModel.workout = self.workout
+            workoutViewModel.club = clubModel.club!
         }
     }
 }

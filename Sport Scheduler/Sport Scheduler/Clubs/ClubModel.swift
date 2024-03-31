@@ -23,6 +23,7 @@ final class ClubModel: ObservableObject {
     @Published var userRequests: [ClubRequestModel] = []
     @Published var isTaskInProgress = true
     @Published var state: ClubScreenState
+    @Published var errorMessage = ""
     
     init(clubRepository: ClubRepository = FirestoreClubRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
@@ -45,6 +46,21 @@ final class ClubModel: ObservableObject {
         }
         return joinedClubs.contains(where: { club in
             club.name == self.club?.clubName })
+    }
+    
+    func visitedWorkouts(for userId: String?) -> Int {
+        guard let userId else {
+            print("Invalid userId")
+            return -1
+        }
+        let clubMember = club?.members.first { member in
+            member.userID == userId
+        }
+        guard let clubMember else {
+            print("No user with this id found in the club")
+            return -1
+        }
+        return clubMember.visitedWorkouts
     }
     
     func triggerClubListeners() {

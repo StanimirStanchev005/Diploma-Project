@@ -11,7 +11,7 @@ protocol ClubRepository {
     func create(club: Club) async throws
     func getClub(clubId: String) async throws -> Club
     func add(workout: Workout, for clubId: String) throws
-    func add(participant: ClubUserModel, for workout: Workout) throws
+    func add(participant: ClubUserModel, for workout: Workout, from club: Club) throws
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
     func getAllWokrouts(for user: DBUser, on date: Date) async throws -> [Workout]
     func deleteWorkout(for clubId: String, with workoutId: String) throws
