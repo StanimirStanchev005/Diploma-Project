@@ -12,15 +12,14 @@ struct ProfileView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject private var profileModel = ProfileModel()
     @State private var isPaywallTriggered = false
+    @State private var showUserPlanDetails = false
     private let context = CIContext()
     private let filter = CIFilter.qrCodeGenerator()
     
     var body: some View {
         NavigationStack {
             VStack {
-                Text("* Use your QR Code to validate that you participated in a workout")
-                    .font(.subheadline)
-                    .padding()
+                Spacer()
                 
                 ZStack {
                     LinearGradient(colors: [Color.gold, Color.red.opacity(0.7)], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -45,25 +44,44 @@ struct ProfileView: View {
                 .tint(.gold)
                 .padding()
                 
+                Text("* Use your QR Code to check in a workout")
+                    .font(.subheadline)
+                    .padding([.top, .horizontal], 10)
+                
                 Spacer()
             }
             .sheet(isPresented: $isPaywallTriggered) {
                 Paywall()
             }
+            .sheet(isPresented: $showUserPlanDetails) {
+                PlanDetailsView(plan: currentUser.user!.subscriptionPlan)
+                    .presentationDetents([.medium])
+                
+            }
             .toolbar {
-                Button("Sign Out", role: .destructive) {
-                    Task {
-                        do {
-                            try profileModel.signOut()
-                            withAnimation(.easeInOut) {
-                                currentUser.showSignInView = true
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Sign Out", role: .destructive) {
+                        Task {
+                            do {
+                                try profileModel.signOut()
+                                withAnimation(.easeInOut) {
+                                    currentUser.showSignInView = true
+                                }
+                            } catch {
+                                print(error)
                             }
-                        } catch {
-                            print(error)
                         }
                     }
+                    .tint(.red)
                 }
-                .tint(.red)
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        showUserPlanDetails.toggle()
+                    } label: {
+                        Text("Details")
+                    }
+                }
             }
             .navigationTitle(currentUser.user!.name)
         }
@@ -86,7 +104,7 @@ struct ProfileView: View {
     NavigationStack {
         ProfileView().environmentObject({ () -> CurrentUser in
             let envObj = CurrentUser()
-            envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
+            envObj.user = DBUser(userID: "123", name: "Stanimir Stanchev", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
             return envObj
         }())
     }

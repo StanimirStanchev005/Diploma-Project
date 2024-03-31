@@ -10,8 +10,14 @@ import CodeScanner
 
 struct WorkoutView: View {
     let workout: Workout
+    @EnvironmentObject var currentUser: CurrentUser
+    @EnvironmentObject var clubModel: ClubModel
     @StateObject var workoutViewModel = WorkoutViewModel()
     @State private var hasError = false
+    
+    var isOwner: Bool {
+        clubModel.isUserOwner(userId: currentUser.user?.userID)
+    }
     
     var body: some View {
         VStack {
@@ -23,8 +29,12 @@ struct WorkoutView: View {
         }
         .navigationTitle("Participants")
         .toolbar {
-            Button("Scan", systemImage: "qrcode.viewfinder") {
-                workoutViewModel.isShowingScanner.toggle()
+            Group {
+                if isOwner {
+                    Button("Scan", systemImage: "qrcode.viewfinder") {
+                        workoutViewModel.isShowingScanner.toggle()
+                    }
+                }
             }
         }
         .sheet(isPresented: $workoutViewModel.isShowingScanner) {

@@ -15,7 +15,7 @@ final class ClubMembersModel: ObservableObject {
     }
     
     func sortMembersByWorkouts() {
-        members.sort { $0.visitedWorkouts < $1.visitedWorkouts }
+        members.sort { $0.visitedWorkouts > $1.visitedWorkouts }
     }
 }
 
@@ -63,5 +63,5 @@ struct ClubMembersView: View {
     clubModel.club?.members.append(ClubUserModel(userID: "333", name: "Spas4o", visitedWorkouts: 3))
     let currentUser = CurrentUser()
     currentUser.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
-    return ClubMembersView().environmentObject(currentUser)
+    return NavigationStack { ClubMembersView().environmentObject(currentUser).environmentObject(clubModel) }
 }

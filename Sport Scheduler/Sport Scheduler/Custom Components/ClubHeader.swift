@@ -9,13 +9,13 @@ import SwiftUI
 
 struct ClubHeader: View {
     @EnvironmentObject var clubModel: ClubModel
-    let showButtons: Bool
-    let showDateButtonOnly: Bool
+    let isOwner: Bool
+    let isJoined: Bool
     @Binding var selectedDate: Date
     
-    init(showButtons: Bool = false, showDateButtonOnly: Bool = false, selectedDate: Binding<Date> = .constant(Date())) {
-        self.showButtons = showButtons
-        self.showDateButtonOnly = showDateButtonOnly
+    init(isOwner: Bool = false, isJoined: Bool = false, selectedDate: Binding<Date> = .constant(Date())) {
+        self.isOwner = isOwner
+        self.isJoined = isJoined
         self._selectedDate = selectedDate
     }
     
@@ -38,7 +38,7 @@ struct ClubHeader: View {
                 .lineLimit(2)
                 .truncationMode(.tail)
             
-            if showButtons {
+            if isOwner {
                 HStack(spacing: 10) {
                     DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
                         .labelsHidden()
@@ -52,7 +52,7 @@ struct ClubHeader: View {
                         .buttonStyle(.borderedProminent)
                 }
                 .padding(10)
-            } else if showDateButtonOnly {
+            } else if isJoined {
                 DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
                     .labelsHidden()
                     .padding(10)
@@ -64,5 +64,5 @@ struct ClubHeader: View {
 }
 
 #Preview {
-    ClubHeader(showButtons: true)
+    ClubHeader(isOwner: true)
 }

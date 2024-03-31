@@ -65,9 +65,7 @@ struct ClubRequestsView: View {
 }
 
 #Preview {
-    ClubRequestsView().environmentObject({ () -> CurrentUser in
-        let envObj = CurrentUser()
-        envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
-        return envObj
-    }())
+    ClubRequestsView()
+        .environmentObject(CurrentUser())
+        .environmentObject(ClubModel())
 }

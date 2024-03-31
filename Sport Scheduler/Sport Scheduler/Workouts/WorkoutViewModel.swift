@@ -36,7 +36,6 @@ final class WorkoutViewModel: ObservableObject {
                 return
             }
             let participant = ClubUserModel(userID: details[0], name: details[1])
-            
             do {
                 try clubRepository.add(participant: participant, for: self.workout)
                 workout.participants.append(participant)

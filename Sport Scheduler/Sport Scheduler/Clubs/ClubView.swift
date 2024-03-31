@@ -23,13 +23,7 @@ struct ClubView: View {
                     Text("Loading...")
                 }
             case .club:
-                if clubModel.isUserOwner(userId: currentUser.user?.userID) {
-                    OwnedClubView()
-                } else if clubModel.isJoined(joinedClubs: currentUser.user?.joinedClubs) {
-                    JoinedClubView()
-                } else {
-                    LockedClubView()
-                }
+                    ClubContentView()
             }
         }
         .task {
@@ -44,6 +38,6 @@ struct ClubView: View {
 
 #Preview {
     NavigationStack {
-        ClubView(club: UserClubModel(name: "Sofia City breakers", picture: "ClubPlaceholder"))
+        ClubView(club: UserClubModel(name: "Sofia City breakers", picture: "ClubPlaceholder")).environmentObject(ClubModel()).environmentObject(CurrentUser())
     }
 }

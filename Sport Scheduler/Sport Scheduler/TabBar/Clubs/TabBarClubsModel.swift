@@ -37,8 +37,6 @@ final class TabBarClubsModel: ObservableObject {
     
     private func addSubscribers() {
         $searchQuery
-            .debounce(for: 0.3, scheduler: DispatchQueue.main)
-            .receive(on: DispatchQueue.main)
             .sink { searchedClub in
                 self.filterClubs(searchText: searchedClub)
             }
