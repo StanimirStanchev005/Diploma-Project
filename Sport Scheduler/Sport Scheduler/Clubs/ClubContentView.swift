@@ -51,40 +51,14 @@ struct ClubContentView: View {
     
     var body: some View {
         VStack {
-            ClubHeader(clubModel: clubModel, isOwner: isOwner, isJoined: isJoined, selectedDate: $selectedDate)
+            ClubHeader(clubModel: clubModel, isOwner: isOwner, isJoined: isJoined)
             
             if isOwner || isJoined {
                 if clubModel.isTaskInProgress {
                     ProgressView()
                         .controlSize(.large)
-                } else if clubModel.workouts.isEmpty && !clubModel.isTaskInProgress {
-                    Spacer()
-                    Text("No workouts for the selected date.")
-                        .font(.title3)
-                    Spacer()
                 } else {
-                    List {
-                        ForEach(clubModel.workouts, id:\.workoutId) { workout in
-                            NavigationLink(destination: WorkoutView(workout: workout, clubModel: clubModel)) {
-                                WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
-                            }
-                            .swipeActions(edge: .leading) {
-                                if isOwner {
-                                    NavigationLink(destination: EditWorkoutView(workout: workout, clubID: clubModel.club!.clubName)) {
-                                        Label("Edit", systemImage: "pencil")
-                                    }
-                                }
-                            }
-                            if workout == clubModel.workouts.last {
-                                ProgressView()
-                                    .onAppear {
-                                        clubModel.fetchWorkouts(on: selectedDate)
-                                    }
-                            }
-                        }
-                        .onDelete(perform: clubModel.deleteWorkout)
-                        .deleteDisabled(!isOwner)
-                    }
+                    WorkoutListView(clubModel: clubModel, isOwner: isOwner, isHistory: clubModel.isHistory)
                 }
             } else {
                 ContentUnavailableView("Club is locked", systemImage: "lock", description: Text("Join this club to see their workouts"))
@@ -99,7 +73,7 @@ struct ClubContentView: View {
             Text("Request to join was sent successfully")
         }
         .sheet(isPresented: $showAddWorkoutScreen) {
-            clubModel.fetchWorkouts(on: selectedDate)
+            clubModel.fetchWorkouts()
         } content: {
             AddWorkoutView(clubID: clubModel.club!.clubName)
         }
@@ -108,10 +82,9 @@ struct ClubContentView: View {
             navbarButtons
         }
         .onAppear {
-            clubModel.fetchWorkouts(on: selectedDate)
-        }
-        .onChange(of: selectedDate) {
-            clubModel.fetchWorkouts(on: selectedDate)
+            clubModel.isHistory = false
+            clubModel.clearWorkouts()
+            clubModel.fetchWorkouts()
         }
     }
 }

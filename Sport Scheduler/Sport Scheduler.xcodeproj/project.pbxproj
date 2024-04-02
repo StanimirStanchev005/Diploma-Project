@@ -11,6 +11,8 @@
 		361CE4F92BAF030A00D1ADE4 /* Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE4F82BAF030A00D1ADE4 /* Plans.swift */; };
 		361CE4FF2BB03F6800D1ADE4 /* ClubMembersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE4FE2BB03F6800D1ADE4 /* ClubMembersView.swift */; };
 		361CE5032BB9784C00D1ADE4 /* PlanDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5022BB9784C00D1ADE4 /* PlanDetailsView.swift */; };
+		361CE5052BBAB3F300D1ADE4 /* WorkoutListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5042BBAB3F300D1ADE4 /* WorkoutListView.swift */; };
+		361CE5072BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5062BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift */; };
 		366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */; };
 		366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */; };
 		366412BB2B443A6300ACBFC4 /* CreateClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412BA2B443A6300ACBFC4 /* CreateClubView.swift */; };
@@ -110,6 +112,8 @@
 		361CE4F82BAF030A00D1ADE4 /* Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plans.swift; sourceTree = "<group>"; };
 		361CE4FE2BB03F6800D1ADE4 /* ClubMembersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubMembersView.swift; sourceTree = "<group>"; };
 		361CE5022BB9784C00D1ADE4 /* PlanDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailsView.swift; sourceTree = "<group>"; };
+		361CE5042BBAB3F300D1ADE4 /* WorkoutListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListView.swift; sourceTree = "<group>"; };
+		361CE5062BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsHistoryView.swift; sourceTree = "<group>"; };
 		366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedClubsView.swift; sourceTree = "<group>"; };
 		366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedClubsView.swift; sourceTree = "<group>"; };
 		366412BA2B443A6300ACBFC4 /* CreateClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateClubView.swift; sourceTree = "<group>"; };
@@ -389,6 +393,7 @@
 				36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */,
 				366412BC2B4699DB00ACBFC4 /* LoadingView.swift */,
 				368FB4302BA181D3009B5764 /* PaywallRow.swift */,
+				361CE5042BBAB3F300D1ADE4 /* WorkoutListView.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -450,6 +455,7 @@
 				36ADF9572B2626770028C73B /* ClubView.swift */,
 				361CE4FE2BB03F6800D1ADE4 /* ClubMembersView.swift */,
 				36F005C02B7DF6F900FA9458 /* ClubContentView.swift */,
+				361CE5062BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift */,
 			);
 			path = Clubs;
 			sourceTree = "<group>";
@@ -727,6 +733,7 @@
 				36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */,
 				36ADF93E2B21BD4E0028C73B /* SigningTextField.swift in Sources */,
 				36ADF96E2B2898100028C73B /* UserRepository.swift in Sources */,
+				361CE5052BBAB3F300D1ADE4 /* WorkoutListView.swift in Sources */,
 				368FB4272B9CDBA6009B5764 /* AuthError.swift in Sources */,
 				368FB4252B9CDB73009B5764 /* AuthenticationServiceProvidable.swift in Sources */,
 				36EBE3BC2B93495100CEE8A9 /* UserClubModel.swift in Sources */,
@@ -734,6 +741,7 @@
 				368FB4312BA181D3009B5764 /* PaywallRow.swift in Sources */,
 				36ADF9832B2B3E250028C73B /* GoogleButton.swift in Sources */,
 				36ADF9442B22F4CD0028C73B /* RegisterModel.swift in Sources */,
+				361CE5072BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

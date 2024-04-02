@@ -12,13 +12,11 @@ struct ClubHeader: View {
     @ObservedObject var clubModel: ClubModel
     let isOwner: Bool
     let isJoined: Bool
-    @Binding var selectedDate: Date
     
-    init(clubModel: ClubModel, isOwner: Bool = false, isJoined: Bool = false, selectedDate: Binding<Date> = .constant(Date())) {
+    init(clubModel: ClubModel, isOwner: Bool = false, isJoined: Bool = false) {
         self.clubModel = clubModel
         self.isOwner = isOwner
         self.isJoined = isJoined
-        self._selectedDate = selectedDate
     }
     
     var body: some View {
@@ -47,8 +45,10 @@ struct ClubHeader: View {
             
             if isOwner {
                 HStack(spacing: 10) {
-                    DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
-                        .labelsHidden()
+                    NavigationLink("History", destination: WorkoutsHistoryView(clubModel: clubModel, isOwner: isOwner))
+                        .foregroundStyle(.lightBackground)
+                        .tint(.gray.opacity(0.2))
+                        .buttonStyle(.borderedProminent)
                     NavigationLink("Requests (\(clubModel.userRequests.count))", destination: ClubRequestsView(clubModel: clubModel))
                         .foregroundStyle(.lightBackground)
                         .tint(.gray.opacity(0.2))
@@ -62,9 +62,10 @@ struct ClubHeader: View {
                 }
                 .padding(10)
             } else if isJoined {
-                DatePicker("Select Date", selection: $selectedDate, displayedComponents: [.date])
-                    .labelsHidden()
-                    .padding(10)
+                NavigationLink("History", destination: WorkoutsHistoryView(clubModel: clubModel, isOwner: isOwner))
+                    .foregroundStyle(.lightBackground)
+                    .tint(.gray.opacity(0.2))
+                    .buttonStyle(.borderedProminent)
             }
             Divider()
                 .padding(.vertical, 10)

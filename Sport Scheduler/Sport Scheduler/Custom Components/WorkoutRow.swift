@@ -32,7 +32,7 @@ struct WorkoutRow: View {
             VStack {
                 Text("Participants: \(participants.count)")
                     .foregroundStyle(.lightBackground)
-                Text(date.formatted())
+                Text(date.formatted(date: .omitted, time: .shortened))
                     .foregroundStyle(.lightBackground)
                     .lineLimit(1)
                     .truncationMode(.tail)

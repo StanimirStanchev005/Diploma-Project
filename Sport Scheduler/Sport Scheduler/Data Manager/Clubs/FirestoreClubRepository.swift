@@ -164,13 +164,32 @@ class FirestoreClubRepository: ClubRepository {
         }
     }
     
-    func getWorkouts(for club: String, lastDocument: DocumentSnapshot?) async throws -> ([Workout], lastDocument: DocumentSnapshot?) {
+    func getWorkouts(for club: String, lastDocument: DocumentSnapshot?, history: Bool) async throws -> ([Workout], lastDocument: DocumentSnapshot?) {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month, .day], from: Date())
         let startDate = calendar.date(from: components)!
         if let lastDocument {
             return try await db.collection("clubs").document(club).collection("workouts")
-                .order(by: "date", descending: false)
+                .order(by: "date", descending: history)
+                .limit(to: 5)
+                .start(afterDocument: lastDocument)
+                .getDocumentsWithSnapshot(as: Workout.self)
+        } else {
+            return try await db.collection("clubs").document(club).collection("workouts")
+                .order(by: "date", descending: history)
+                .limit(to: 5)
+                .start(at: [startDate])
+                .getDocumentsWithSnapshot(as: Workout.self)
+        }
+    }
+    
+    func getWorkoutsHistory(for club: String, lastDocument: DocumentSnapshot?) async throws -> ([Workout], lastDocument: DocumentSnapshot?) {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: Date())
+        let startDate = calendar.date(from: components)!
+        if let lastDocument {
+            return try await db.collection("clubs").document(club).collection("workouts")
+                .order(by: "date", descending: true)
                 .limit(to: 5)
                 .start(afterDocument: lastDocument)
                 .getDocumentsWithSnapshot(as: Workout.self)
