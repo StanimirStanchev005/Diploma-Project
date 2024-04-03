@@ -11,11 +11,12 @@ struct WorkoutListView: View {
     @ObservedObject var clubModel: ClubModel
     var isOwner: Bool
     var isHistory: Bool
+    var noWorkoutsMessage: String
     
     var body: some View {
         List {
             if clubModel.workouts.isEmpty && !clubModel.isTaskInProgress {
-                Text("There are no upcomming workouts")
+                Text(noWorkoutsMessage)
                     .font(.title3)
             }
             ForEach(clubModel.workoutDates, id:\.self) { date in
@@ -57,5 +58,5 @@ struct WorkoutListView: View {
 }
 
 #Preview {
-    WorkoutListView(clubModel: ClubModel(), isOwner: false, isHistory: false)
+    WorkoutListView(clubModel: ClubModel(), isOwner: false, isHistory: false, noWorkoutsMessage: "")
 }

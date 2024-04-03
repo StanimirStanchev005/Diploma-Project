@@ -35,10 +35,15 @@ final class ClubModel: ObservableObject {
         self.lastDocument = nil
     }
     
-    func getUniqueDates() {
+    func getUniqueDates(isHistory: Bool) {
         let calendar = Calendar.current
         let dateSet = Set(workouts.map { calendar.startOfDay(for: $0.date) })
-        workoutDates = Array(dateSet).sorted()
+        if isHistory {
+            workoutDates = Array(dateSet).sorted(by: >)
+        } else {
+            workoutDates = Array(dateSet).sorted()
+        }
+        
     }
     
     func filteredWorkouts(for date: Date) -> [Workout] {
@@ -129,8 +134,8 @@ final class ClubModel: ObservableObject {
                     if let lastDocument {
                         self.lastDocument = lastDocument
                     }
+                    getUniqueDates(isHistory: isHistory)
                     isTaskInProgress = false
-                    getUniqueDates()
                 }
             } catch {
                 print("Error: \(error)")

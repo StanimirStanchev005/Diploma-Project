@@ -15,7 +15,6 @@ protocol ClubRepository {
     func add(participant: ClubUserModel, for workout: Workout, from club: Club) throws
     func getWorkouts(for club: String, lastDocument: DocumentSnapshot?, history: Bool) async throws -> ([Workout], lastDocument: DocumentSnapshot?)
     func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout]
-    func getAllWokrouts(for user: DBUser, on date: Date) async throws -> [Workout]
     func deleteWorkout(for clubId: String, with workoutId: String) throws
     func updateWorkout(for clubId: String, with workout: Workout) throws
     func sendJoinRequest(for clubId: String, from userId: String, with name: String) throws

@@ -79,15 +79,7 @@ class FirestoreClubRepository: ClubRepository {
             try document.data(as: Workout.self)
         }
     }
-    
-    func getAllWokrouts(for user: DBUser, on date: Date) async throws -> [Workout] {
-        var workouts: [Workout] = []
-        for club in user.joinedClubs {
-            workouts.append(contentsOf: try await getWorkouts(for: club.name, on: date))
-        }
-        return workouts
-    }
-    
+        
     func deleteWorkout(for clubId: String, with workoutId: String) throws {
         db.collection("clubs").document(clubId).collection("workouts").document(workoutId).delete()
     }
@@ -182,26 +174,7 @@ class FirestoreClubRepository: ClubRepository {
                 .getDocumentsWithSnapshot(as: Workout.self)
         }
     }
-    
-    func getWorkoutsHistory(for club: String, lastDocument: DocumentSnapshot?) async throws -> ([Workout], lastDocument: DocumentSnapshot?) {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.year, .month, .day], from: Date())
-        let startDate = calendar.date(from: components)!
-        if let lastDocument {
-            return try await db.collection("clubs").document(club).collection("workouts")
-                .order(by: "date", descending: true)
-                .limit(to: 5)
-                .start(afterDocument: lastDocument)
-                .getDocumentsWithSnapshot(as: Workout.self)
-        } else {
-            return try await db.collection("clubs").document(club).collection("workouts")
-                .order(by: "date", descending: false)
-                .limit(to: 5)
-                .start(at: [startDate])
-                .getDocumentsWithSnapshot(as: Workout.self)
-        }
-    }
-    
+        
     func accept(request: ClubRequestModel, from club: Club) throws {
         let member = [
             "userID": request.userID,
