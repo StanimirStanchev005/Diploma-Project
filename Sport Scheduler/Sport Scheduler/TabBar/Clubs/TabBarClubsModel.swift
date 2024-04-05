@@ -11,18 +11,31 @@ final class TabBarClubsModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var cancellables = Set<AnyCancellable>()
     private var clubs: [Club] = []
-    @Published var joinedClubs: [UserClubModel] = []
     @Published var searchQuery: String = ""
     @Published private(set) var filteredClubs: [UserClubModel] = []
     @Published var ownedClubs: [UserClubModel] = []
+    @Published var joinedClubs: [UserClubModel] = []
     @Published var showCreateClubView = false
     @Published var showSubscribeAlert = false
     var numberOfClubsAllowed = 0
-    
+    var mappedClubs: [UserClubModel] {
+        clubs.map { club in
+            UserClubModel(name: club.clubName, picture: club.picture)
+        }
+    }
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
         
         addSubscribers()
+    }
+    
+    func filterUserClubs(by clubsToFilter: [UserClubModel]) -> [UserClubModel] {
+        let mappedClubs = clubs.map { club in
+            UserClubModel(name: club.clubName, picture: club.picture)
+        }
+        return mappedClubs.filter { club in
+            clubsToFilter.contains { $0.name == club.name }
+        }
     }
     
     func triggerListener() {
@@ -84,4 +97,5 @@ final class TabBarClubsModel: ObservableObject {
             showSubscribeAlert = true
         }
     }
+    
 }

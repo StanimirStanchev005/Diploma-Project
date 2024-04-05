@@ -15,6 +15,9 @@ struct ClubRequestsView: View {
     var body: some View {
         VStack {
             List {
+                if clubModel.userRequests.isEmpty {
+                    ContentUnavailableView("No one wants to join your club", systemImage: "person.crop.circle.badge.xmark.fill")
+                }
                 ForEach(clubModel.userRequests.filter { $0.status == RequestStatus.pending.rawValue }, id: \.self.requestID) { request in
                     HStack {
                         VStack(alignment: .leading) {

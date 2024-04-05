@@ -88,8 +88,8 @@ struct ClubContentView: View {
             clubModel.clearWorkouts()
             clubModel.fetchWorkouts()
         }
-        .onChange(of: clubModel.workouts.count) {
-            print(clubModel.workouts)
+        .onChange(of: clubModel.selectedItem) {
+            clubModel.updateClubPicture()
         }
     }
 }

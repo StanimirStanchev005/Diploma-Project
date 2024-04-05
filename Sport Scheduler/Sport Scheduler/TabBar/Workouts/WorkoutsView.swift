@@ -38,8 +38,7 @@ struct WorkoutsView: View {
                                 .controlSize(.large)
                             Text("Loading...")
                         } else if workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workouts.isEmpty && !workoutsModel.isTaskInProgress {
-                            Text("There are no upcomming workouts")
-                                .font(.title3)
+                           ContentUnavailableView("No upcomming workouts", systemImage: "sofa", description: Text("Feel free to relax"))
                         } else {
                             ForEach(workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workoutDates, id:\.self) { date in
                                 Section {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct ClubHeader: View {
     @EnvironmentObject var currentUser: CurrentUser
@@ -21,12 +22,25 @@ struct ClubHeader: View {
     
     var body: some View {
         VStack(spacing: 10) {
-            Image(clubModel.club?.picture ?? "ClubPlaceholder")
-                .resizable()
-                .frame(width: 100)
-                .clipShape(Circle())
-                .frame(width: 100, height: 100)
-                .padding()
+            PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
+                AsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { image in
+                    image
+                        .resizable()
+                        .frame(width: 100)
+                        .clipShape(Circle())
+                        .frame(width: 100, height: 100)
+                        .padding()
+                } placeholder: {
+                    Image("ClubPlaceholder")
+                        .resizable()
+                        .frame(width: 100)
+                        .clipShape(Circle())
+                        .frame(width: 100, height: 100)
+                        .padding()
+                }
+            }
+            .disabled(!isOwner)
+            
             HStack(spacing: 10) {
                 Text("Members: \(clubModel.club?.members.count ?? 0)")
                     .font(.headline)

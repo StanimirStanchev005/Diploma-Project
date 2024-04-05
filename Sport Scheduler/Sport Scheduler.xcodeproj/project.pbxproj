@@ -13,6 +13,9 @@
 		361CE5032BB9784C00D1ADE4 /* PlanDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5022BB9784C00D1ADE4 /* PlanDetailsView.swift */; };
 		361CE5052BBAB3F300D1ADE4 /* WorkoutListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5042BBAB3F300D1ADE4 /* WorkoutListView.swift */; };
 		361CE5072BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5062BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift */; };
+		361CE5252BC0081600D1ADE4 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 361CE5242BC0081600D1ADE4 /* FirebaseStorage */; };
+		361CE5282BC0157F00D1ADE4 /* ClubStorageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5272BC0157F00D1ADE4 /* ClubStorageRepository.swift */; };
+		361CE52A2BC0159E00D1ADE4 /* FirebaseClubStorageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 361CE5292BC0159E00D1ADE4 /* FirebaseClubStorageRepository.swift */; };
 		366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */; };
 		366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */; };
 		366412BB2B443A6300ACBFC4 /* CreateClubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366412BA2B443A6300ACBFC4 /* CreateClubView.swift */; };
@@ -114,6 +117,8 @@
 		361CE5022BB9784C00D1ADE4 /* PlanDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanDetailsView.swift; sourceTree = "<group>"; };
 		361CE5042BBAB3F300D1ADE4 /* WorkoutListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListView.swift; sourceTree = "<group>"; };
 		361CE5062BBC79AE00D1ADE4 /* WorkoutsHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsHistoryView.swift; sourceTree = "<group>"; };
+		361CE5272BC0157F00D1ADE4 /* ClubStorageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClubStorageRepository.swift; sourceTree = "<group>"; };
+		361CE5292BC0159E00D1ADE4 /* FirebaseClubStorageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseClubStorageRepository.swift; sourceTree = "<group>"; };
 		366412B42B42F43100ACBFC4 /* JoinedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinedClubsView.swift; sourceTree = "<group>"; };
 		366412B62B42F44100ACBFC4 /* OwnedClubsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OwnedClubsView.swift; sourceTree = "<group>"; };
 		366412BA2B443A6300ACBFC4 /* CreateClubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateClubView.swift; sourceTree = "<group>"; };
@@ -198,6 +203,7 @@
 				36ADF95D2B2743EC0028C73B /* FirebaseAuth in Frameworks */,
 				36E8E1942B908D7000811EA1 /* CodeScanner in Frameworks */,
 				36ADF9732B28B8FB0028C73B /* GoogleSignIn in Frameworks */,
+				361CE5252BC0081600D1ADE4 /* FirebaseStorage in Frameworks */,
 				36ADF95F2B2743EC0028C73B /* FirebaseFirestore in Frameworks */,
 				36ADF96C2B27792B0028C73B /* FirebaseFirestoreSwift in Frameworks */,
 			);
@@ -229,6 +235,15 @@
 				361CE4F82BAF030A00D1ADE4 /* Plans.swift */,
 			);
 			path = Paywall;
+			sourceTree = "<group>";
+		};
+		361CE5262BC0156300D1ADE4 /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				361CE5272BC0157F00D1ADE4 /* ClubStorageRepository.swift */,
+				361CE5292BC0159E00D1ADE4 /* FirebaseClubStorageRepository.swift */,
+			);
+			path = Storage;
 			sourceTree = "<group>";
 		};
 		366412B82B4439BD00ACBFC4 /* Login */ = {
@@ -401,6 +416,7 @@
 		36ADF9642B274EE10028C73B /* Data Manager */ = {
 			isa = PBXGroup;
 			children = (
+				361CE5262BC0156300D1ADE4 /* Storage */,
 				368FB4232B9CDB58009B5764 /* Authentication */,
 				368FB42A2B9CDC9A009B5764 /* Users */,
 				368FB42B2B9CDCCA009B5764 /* Clubs */,
@@ -552,6 +568,7 @@
 				36ADF9722B28B8FB0028C73B /* GoogleSignIn */,
 				36ADF9742B28B8FB0028C73B /* GoogleSignInSwift */,
 				36E8E1932B908D7000811EA1 /* CodeScanner */,
+				361CE5242BC0081600D1ADE4 /* FirebaseStorage */,
 			);
 			productName = "Sport Scheduler";
 			productReference = 36ADF9062B21AD690028C73B /* Sport Scheduler.app */;
@@ -680,6 +697,7 @@
 				368FB4222B9CDAE9009B5764 /* FirestoreClubRepository.swift in Sources */,
 				366412B72B42F44100ACBFC4 /* OwnedClubsView.swift in Sources */,
 				36CA9DA02B5C1AF1002A7E57 /* CustomRow.swift in Sources */,
+				361CE52A2BC0159E00D1ADE4 /* FirebaseClubStorageRepository.swift in Sources */,
 				3693DE222B892B4400D4C808 /* WorkoutsModel.swift in Sources */,
 				36F005BA2B614ADF00FA9458 /* EditWorkoutModel.swift in Sources */,
 				3693DE132B8233D400D4C808 /* ClubHeader.swift in Sources */,
@@ -729,6 +747,7 @@
 				36ADF90A2B21AD690028C73B /* Sport_SchedulerApp.swift in Sources */,
 				368FB4202B9CDAA8009B5764 /* FirestoreUserRepository.swift in Sources */,
 				361CE5032BB9784C00D1ADE4 /* PlanDetailsView.swift in Sources */,
+				361CE5282BC0157F00D1ADE4 /* ClubStorageRepository.swift in Sources */,
 				3693DE152B82387500D4C808 /* ClubRequestsView.swift in Sources */,
 				36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */,
 				36ADF93E2B21BD4E0028C73B /* SigningTextField.swift in Sources */,
@@ -910,6 +929,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Sport-Scheduler-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need to scan QR Code.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library so you can update your club picture.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -942,6 +962,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Sport-Scheduler-Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "We need to scan QR Code.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow access to photo library so you can update your club picture.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -1106,6 +1127,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		361CE5242BC0081600D1ADE4 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36ADF95B2B2743EC0028C73B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		36ADF95C2B2743EC0028C73B /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 36ADF95B2B2743EC0028C73B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

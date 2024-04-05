@@ -6,77 +6,78 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct CreateClubView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject private var createClubModel = CreateClubModel()
-    @State private var clubCreationSuccess = false
     @State private var showTermsOfService = false
     
     var body: some View {
         NavigationStack {
-            VStack {
-                
-                Spacer()
-                
-                Image("ClubPlaceholder")
-                    .resizable()
-                    .scaledToFit()
-                    .clipShape(Circle())
-                    .frame(width: 300)
-                
-                Spacer()
-                
-                VStack(spacing: 15) {
+            ZStack {
+                VStack {
                     
-                    LabeledTextField(input: $createClubModel.name, text: "Club name")
-                    LabeledTextField(input: $createClubModel.description, text: "Description")
+                    Spacer()
                     
-                    HStack{
-                        Text("Select sport")
+                    PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
+                        createClubModel.photo
+                            .resizable()
+                            .scaledToFill()
+                            .clipShape(Circle())
+                            .frame(width: 150, height: 150)
+                    }
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 15) {
                         
-                        Spacer()
+                        LabeledTextField(input: $createClubModel.name, text: "Club name")
+                        LabeledTextField(input: $createClubModel.description, text: "Description")
                         
-                        Picker("Sport", selection: $createClubModel.selectedSport) {
-                            ForEach(createClubModel.sports, id: \.self) { sport in
-                                Text(sport)
+                        HStack{
+                            Text("Select sport")
+                            
+                            Spacer()
+                            
+                            Picker("Sport", selection: $createClubModel.selectedSport) {
+                                ForEach(createClubModel.sports, id: \.self) { sport in
+                                    Text(sport)
+                                }
                             }
+                            .pickerStyle(.menu)
                         }
-                        .pickerStyle(.menu)
+                        
+                        HStack {
+                            Button("Terms of service") {
+                                showTermsOfService.toggle()
+                            }
+                            
+                            Toggle("", isOn: $createClubModel.isValidRepresenter)
+                                .toggleStyle(.switch)
+                                .tint(.pink)
+                        }
                     }
+                    .padding(.horizontal)
                     
-                    HStack {
-                        Button("Terms of service") {
-                            showTermsOfService.toggle()
-                        }
-                        
-                        Toggle("", isOn: $createClubModel.isValidRepresenter)
-                            .toggleStyle(.switch)
-                            .tint(.pink)
-                    }
-                }
-                .padding(.horizontal)
-                
-                Spacer()
-                
-                Button {
-                    Task {
+                    Spacer()
+                    
+                    Button {
                         let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
-                        
-                        try await createClubModel.create(club: club, for: currentUser.user!.userID)
-                        
-                        guard createClubModel.hasError == false else {
-                            return
-                        }
-                        clubCreationSuccess = true
+                        createClubModel.create(club: club, for: currentUser.user!.userID, photo: createClubModel.selectedItem)
+                    } label: {
+                        SignInButton(text: "Create", color: createClubModel.isInputValid ? .pink : .gray)
                     }
-                } label: {
-                    SignInButton(text: "Create", color: createClubModel.isInputValid ? .pink : .gray)
+                    .disabled(createClubModel.isInputValid == false)
+                    .padding()
                 }
-                .disabled(createClubModel.isInputValid == false)
-                .padding()
+                if createClubModel.isTaskInProgress {
+                    ProgressView()
+                        .controlSize(.large)
+                }
             }
+            .ignoresSafeArea()
             .navigationTitle("Create Club")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -97,8 +98,8 @@ struct CreateClubView: View {
             Text(createClubModel.localizedError)
         }
         
-        .alert("Success", isPresented: $clubCreationSuccess) {
-            Button("OK") { 
+        .alert("Success", isPresented: $createClubModel.clubCreationSuccess) {
+            Button("OK") {
                 dismiss()
             }
         } message: {
@@ -108,6 +109,9 @@ struct CreateClubView: View {
         .sheet(isPresented: $showTermsOfService) {
             TermsOfServiceView()
                 .presentationDetents([.medium])
+        }
+        .onChange(of: createClubModel.selectedItem)  {
+            createClubModel.convertDataToImage()
         }
     }
 }

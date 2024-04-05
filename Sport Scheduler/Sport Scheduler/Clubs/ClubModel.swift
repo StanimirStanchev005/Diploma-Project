@@ -7,6 +7,8 @@
 
 import Foundation
 import FirebaseFirestore
+import SwiftUI
+import PhotosUI
 
 enum ClubScreenState {
     case loading
@@ -17,6 +19,7 @@ enum ClubScreenState {
 final class ClubModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
+    private var storageRepository: ClubStorageRepository
     private var lastDocument: DocumentSnapshot? = nil
     
     @Published var club: Club?
@@ -26,6 +29,7 @@ final class ClubModel: ObservableObject {
     @Published var isTaskInProgress = true
     @Published var state: ClubScreenState
     @Published var errorMessage = ""
+    @Published var selectedItem: PhotosPickerItem?
     
     var isHistory = false
     
@@ -34,7 +38,7 @@ final class ClubModel: ObservableObject {
         self.workoutDates = []
         self.lastDocument = nil
     }
-    
+        
     func getUniqueDates(isHistory: Bool) {
         let calendar = Calendar.current
         let dateSet = Set(workouts.map { calendar.startOfDay(for: $0.date) })
@@ -51,9 +55,10 @@ final class ClubModel: ObservableObject {
         return workouts.filter { calendar.startOfDay(for: $0.date) == date }
     }
     
-    init(clubRepository: ClubRepository = FirestoreClubRepository(),
+    init(clubRepository: ClubRepository = FirestoreClubRepository(), storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
         self.clubRepository = clubRepository
+        self.storageRepository = storageRepository
         self.userRepository = userRepository
         
         state = .loading
@@ -182,5 +187,20 @@ final class ClubModel: ObservableObject {
         try clubRepository.reject(request: request, from: club!)
         let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
         userRequests.remove(at: index)
+    }
+    
+    func updateClubPicture() {
+        guard let club else {
+            return
+        }
+        guard let selectedItem else {
+            return
+        }
+        Task {
+            guard let data = try await selectedItem.loadTransferable(type: Data.self) else { return }
+            let returnedData = try await storageRepository.saveImage(data: data, name: club.clubName)
+            let url = try  await storageRepository.getUrlFromImage(path: returnedData.path)
+            try clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
+        }
     }
 }

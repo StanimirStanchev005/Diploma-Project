@@ -255,6 +255,12 @@ class FirestoreClubRepository: ClubRepository {
             "joinedClubs": FieldValue.arrayRemove([clubToRemove])
         ])
     }
+    
+    func updateClubPicture(clubID: String, pictureUrl: String) throws {
+        db.collection("clubs").document(clubID).updateData([
+            "picture": pictureUrl
+        ])
+    }
 }
 
 extension Query {

@@ -40,12 +40,14 @@ struct MainView: View {
                     Label("Workouts", systemImage: "figure.run.square.stack.fill")
                 }
             
+            
             ProfileView()
                 .tabItem {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
         }
         .onAppear {
+            UITabBar.appearance().backgroundColor = .tabBar
             mainViewModel.triggerListener(for: currentUser)
         }
     }

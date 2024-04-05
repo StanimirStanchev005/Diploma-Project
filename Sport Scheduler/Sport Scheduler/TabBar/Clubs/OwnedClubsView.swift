@@ -9,16 +9,14 @@ import SwiftUI
 
 struct OwnedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var ownedClubsModel = TabBarClubsModel()
+    @ObservedObject var ownedClubsModel: TabBarClubsModel
     
     var body: some View {
         VStack {
             if currentUser.user!.ownedClubs.isEmpty {
                 VStack {
-                    Text("You don't own any clubs yet.\nClubs you own will appear here")
-                        .font(.title2)
-                        .padding()
-                        .multilineTextAlignment(.center)
+                    ContentUnavailableView("You don't own any clubs yet.", systemImage: "person.3.fill", description: Text("Clubs you own will appear here"))
+                   
                     Spacer()
                 }
             } else {
@@ -33,7 +31,7 @@ struct OwnedClubsView: View {
             }
         }
         .sheet(isPresented: $ownedClubsModel.showCreateClubView) {
-            ownedClubsModel.ownedClubs = currentUser.user!.ownedClubs
+            ownedClubsModel.ownedClubs = ownedClubsModel.filterUserClubs(by: currentUser.user!.ownedClubs)
         } content: {
             CreateClubView()
         }
@@ -44,7 +42,7 @@ struct OwnedClubsView: View {
         }
         .navigationTitle("Owned Clubs")
         .onAppear() {
-            ownedClubsModel.ownedClubs = currentUser.user!.ownedClubs
+            ownedClubsModel.ownedClubs = ownedClubsModel.filterUserClubs(by: currentUser.user!.ownedClubs)
             ownedClubsModel.checkSubscription(tier: currentUser.user?.subscriptionPlan.tier)
         }
     }
@@ -52,7 +50,7 @@ struct OwnedClubsView: View {
 
 #Preview {
     NavigationStack {
-    OwnedClubsView().environmentObject({ () -> CurrentUser in
+        OwnedClubsView(ownedClubsModel: TabBarClubsModel()).environmentObject({ () -> CurrentUser in
         let envObj = CurrentUser()
         envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
         return envObj

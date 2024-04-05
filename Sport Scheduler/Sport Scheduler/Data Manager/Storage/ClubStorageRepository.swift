@@ -6,3 +6,9 @@
 //
 
 import Foundation
+import UIKit
+
+protocol ClubStorageRepository {
+    func saveImage(data: Data, name: String) async throws -> (path: String, name: String)
+    func getUrlFromImage(path: String) async throws -> URL 
+}

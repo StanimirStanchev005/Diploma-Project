@@ -25,4 +25,5 @@ protocol ClubRepository {
     func listenForChanges(for club: String, onSuccess: @escaping (Club) -> Void)
     func listenForClubChanges(onSuccess: @escaping ([Club]) -> Void)
     func listenForRequestChanges(for club: String, onSuccess: @escaping ([ClubRequestModel]) -> Void)
+    func updateClubPicture(clubID: String, pictureUrl: String) throws
 }

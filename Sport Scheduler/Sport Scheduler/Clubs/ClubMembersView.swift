@@ -26,6 +26,9 @@ struct ClubMembersView: View {
     
     var body: some View {
         List {
+            if clubMembersModel.members.isEmpty {
+                ContentUnavailableView("No one has joined yet.", systemImage: "person.3.sequence.fill", description: Text("Members of your club will appear here."))
+            }
             ForEach(clubMembersModel.members, id: \.self.userID) { member in
                 HStack {
                     Text(member.name)

@@ -19,12 +19,19 @@ struct JoinedClubsView: View {
                         ForEach(joinedClubsModel.filteredClubs, id: \.name.self) { club in
                             NavigationLink(destination: ClubView(club: club)) {
                                 HStack {
-                                    Image(club.picture)
-                                        .resizable()
-                                        .frame(width: 50)
-                                        .clipShape(Circle())
-                                        .frame(width: 50, height: 50)
-                                    
+                                    AsyncImage(url: URL(string: club.picture)) { image in
+                                        image
+                                            .resizable()
+                                            .frame(width: 50)
+                                            .clipShape(Circle())
+                                            .frame(width: 50, height: 50)
+                                    } placeholder: {
+                                        Image("ClubPlaceholder")
+                                            .resizable()
+                                            .frame(width: 50)
+                                            .clipShape(Circle())
+                                            .frame(width: 50, height: 50)
+                                    }
                                     Text(club.name)
                                         .bold()
                                         .foregroundStyle(.lightBackground)
@@ -36,21 +43,18 @@ struct JoinedClubsView: View {
                     .scrollContentBackground(.hidden)
                 } else if currentUser.user!.joinedClubs.isEmpty {
                     VStack {
-                        Text("You're not a member of any club yet. Clubs you're a member of will appear here.")
-                            .font(.title2)
-                            .padding()
-                            .multilineTextAlignment(.center)
+                        ContentUnavailableView("You're not a member of any club yet.", systemImage: "person.3.fill", description: Text("Clubs you're a member of will appear here."))
                         Spacer()
                     }
                 } else {
                     VStack {
-                        ClubList(clubs: currentUser.user!.joinedClubs)
+                        ClubList(clubs: joinedClubsModel.joinedClubs)
                     }
                 }
             }
             .toolbar {
                 NavigationLink("Owned Clubs") {
-                    OwnedClubsView()
+                    OwnedClubsView(ownedClubsModel: joinedClubsModel)
                 }
             }
             .navigationTitle("Joined Clubs")
@@ -58,6 +62,9 @@ struct JoinedClubsView: View {
             .autocorrectionDisabled(true)
             .onAppear {
                 joinedClubsModel.triggerListener()
+            }
+            .onChange(of: joinedClubsModel.mappedClubs.count) {
+                joinedClubsModel.joinedClubs = joinedClubsModel.filterUserClubs(by: currentUser.user!.joinedClubs)
             }
         }
     }

@@ -16,8 +16,7 @@ struct WorkoutListView: View {
     var body: some View {
         List {
             if clubModel.workouts.isEmpty && !clubModel.isTaskInProgress {
-                Text(noWorkoutsMessage)
-                    .font(.title3)
+                ContentUnavailableView(noWorkoutsMessage, systemImage: "figure.core.training")
             }
             ForEach(clubModel.workoutDates, id:\.self) { date in
                 Section {
@@ -40,6 +39,7 @@ struct WorkoutListView: View {
                                         .font(.subheadline)
                                     Spacer()
                                 }
+                                .deleteDisabled(true)
                                 .onAppear {
                                     clubModel.fetchWorkouts()
                                 }

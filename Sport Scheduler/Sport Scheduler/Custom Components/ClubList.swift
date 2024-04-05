@@ -21,11 +21,19 @@ struct ClubList: View {
                         
                         Spacer()
                         
-                        Image(club.picture)
-                            .resizable()
-                            .frame(width: 100)
-                            .clipShape(Circle())
-                            .frame(width: 100, height: 100)
+                        AsyncImage(url: URL(string: club.picture)) { image in
+                            image
+                                .resizable()
+                                .frame(width: 100)
+                                .clipShape(Circle())
+                                .frame(width: 100, height: 100)
+                        } placeholder: {
+                            Image("ClubPlaceholder")
+                                .resizable()
+                                .frame(width: 100)
+                                .clipShape(Circle())
+                                .frame(width: 100, height: 100)
+                        }
                     }
                 }
                 .frame(maxWidth: .infinity)
