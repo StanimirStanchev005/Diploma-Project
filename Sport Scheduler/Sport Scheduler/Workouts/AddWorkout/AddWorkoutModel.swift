@@ -9,10 +9,11 @@ import Foundation
 import FirebaseFirestore
 
 final class AddWorkoutModel: ObservableObject {
-    @Published var workoutDate = Date()
+    @Published var workoutDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
     @Published var workoutTitle = ""
     @Published var workoutDescription = ""
     @Published var isRepeating = false
+    let calendar = Calendar.current
     
     private var clubRepository: ClubRepository
     

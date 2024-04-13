@@ -22,7 +22,7 @@ struct AddWorkoutView: View {
                     
                     CustomRow(label: "Description", placeholder: "Description", text: $addWorkoutModel.workoutDescription)
                     
-                    Toggle("Add for a Month", isOn: $addWorkoutModel.isRepeating)
+                    Toggle("Add for 4 weeks", isOn: $addWorkoutModel.isRepeating)
                 }
             }
             .navigationTitle("Add Workout")

@@ -66,7 +66,6 @@
 		36ADF9702B2899E80028C73B /* AuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF96F2B2899E80028C73B /* AuthenticationManager.swift */; };
 		36ADF9732B28B8FB0028C73B /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADF9722B28B8FB0028C73B /* GoogleSignIn */; };
 		36ADF9752B28B8FB0028C73B /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 36ADF9742B28B8FB0028C73B /* GoogleSignInSwift */; };
-		36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9782B29BCB60028C73B /* Utilities.swift */; };
 		36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */; };
 		36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9802B29D5730028C73B /* ProfileModel.swift */; };
 		36ADF9832B2B3E250028C73B /* GoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36ADF9822B2B3E250028C73B /* GoogleButton.swift */; };
@@ -168,7 +167,6 @@
 		36ADF96D2B2898100028C73B /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		36ADF96F2B2899E80028C73B /* AuthenticationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationManager.swift; sourceTree = "<group>"; };
 		36ADF9762B28B9250028C73B /* Sport-Scheduler-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Sport-Scheduler-Info.plist"; sourceTree = SOURCE_ROOT; };
-		36ADF9782B29BCB60028C73B /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleSignInResultModel.swift; sourceTree = "<group>"; };
 		36ADF9802B29D5730028C73B /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		36ADF9822B2B3E250028C73B /* GoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleButton.swift; sourceTree = "<group>"; };
@@ -434,7 +432,6 @@
 		36ADF9772B29BCA90028C73B /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				36ADF9782B29BCB60028C73B /* Utilities.swift */,
 				36ADF97A2B29C1D80028C73B /* GoogleSignInResultModel.swift */,
 			);
 			path = Utilities;
@@ -726,7 +723,6 @@
 				366412B52B42F43100ACBFC4 /* JoinedClubsView.swift in Sources */,
 				36ADF9702B2899E80028C73B /* AuthenticationManager.swift in Sources */,
 				3693DE1A2B84BEF700D4C808 /* ClubList.swift in Sources */,
-				36ADF9792B29BCB60028C73B /* Utilities.swift in Sources */,
 				361CE4FF2BB03F6800D1ADE4 /* ClubMembersView.swift in Sources */,
 				36CA9DA82B5EE0C8002A7E57 /* ClubModel.swift in Sources */,
 				36EBE3B82B933BDE00CEE8A9 /* ContentViewModel.swift in Sources */,

@@ -38,7 +38,7 @@ final class WorkoutsModel: ObservableObject {
         }
     
         func fetchWorkouts(for user: DBUser?) {
-            guard let user else {
+            guard user != nil else {
                 print("Unable to find user")
                 return
             }

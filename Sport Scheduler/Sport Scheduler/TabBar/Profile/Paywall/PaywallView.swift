@@ -33,14 +33,18 @@ struct Paywall: View {
             Image("PremiumIcon")
                 .resizable()
                 .scaledToFit()
+                .shadow(color: .white, radius: 10)
             
             PaywallRow(plan: Plans.standard.plan, isChosen: $paywallModel.isStandardChosen, isAlertShown: $paywallModel.isAlertShown)
+                .shadow(color: .lightBackground, radius: 10)
                 .tint(.lightBackground)
             
             PaywallRow(plan: Plans.gold.plan, isChosen: $paywallModel.isGoldChosen, isAlertShown: $paywallModel.isAlertShown)
+                .shadow(color: .gold, radius: 10)
                 .tint(.gold)
             
             PaywallRow(plan: Plans.diamond.plan, isChosen: $paywallModel.isDiamondChosen, isAlertShown: $paywallModel.isAlertShown)
+                .shadow(color: .diamond, radius: 10)
                 .tint(.diamond)
         }
         .padding()

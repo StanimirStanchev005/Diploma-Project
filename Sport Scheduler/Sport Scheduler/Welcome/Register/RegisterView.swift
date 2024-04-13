@@ -12,10 +12,8 @@ struct RegisterView: View {
     @StateObject private var registerModel = RegisterModel()
     
     var body: some View {
+        
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [Color.cyan, Color.darkGreen]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
-            
             VStack(spacing: 15) {
                 
                 Spacer()
@@ -72,6 +70,7 @@ struct RegisterView: View {
                     } label: {
                         GoogleButton()
                     }
+                    .buttonStyle(.plain)
                 }
                 .frame(width: 350)
                 .alert("Error", isPresented: $registerModel.hasError) {
@@ -85,6 +84,7 @@ struct RegisterView: View {
             }
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 25.0))
+            .shadow(color: .lightBackground, radius: 10)
             .frame(height: 450)
             .navigationTitle("Register")
             .navigationBarTitleDisplayMode(.inline)
@@ -98,6 +98,7 @@ struct RegisterView: View {
         }
     }
 }
+
 
 #Preview {
     NavigationStack {

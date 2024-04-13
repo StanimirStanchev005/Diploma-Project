@@ -15,9 +15,6 @@ struct LoginView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(gradient: Gradient(colors: [Color.cyan, Color.darkGreen]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
-            
             VStack(spacing: 50) {
                 Spacer()
                 VStack(spacing: 15) {
@@ -67,6 +64,7 @@ struct LoginView: View {
                     } label: {
                         GoogleButton()
                     }
+                    .buttonStyle(.plain)
                     
                     Spacer()
                 }
@@ -83,6 +81,7 @@ struct LoginView: View {
             }
             .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 25.0))
+            .shadow(color: .lightBackground, radius: 10)
             .frame(height: 450)
             
             if loginModel.isTaskInProgress {

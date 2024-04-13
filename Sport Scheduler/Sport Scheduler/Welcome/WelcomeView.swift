@@ -13,14 +13,14 @@ struct WelcomeView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                LinearGradient(gradient: Gradient(colors: [Color.cyan, Color.darkGreen]), startPoint: .topLeading, endPoint: .bottomTrailing)
-                    .ignoresSafeArea()
+               
                 VStack {
                     Spacer()
                     
                     Image("running")
                         .resizable()
                         .scaledToFit()
+                        .shadow(color: .white, radius: 30)
                         .padding()
                     
                     Spacer()
@@ -41,6 +41,7 @@ struct WelcomeView: View {
                     .padding(.vertical)
                     .background(.ultraThinMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 25))
+                    .shadow(color: .lightBackground, radius: 10)
                     .padding(.bottom)
                 }
                 .navigationTitle("Sport Scheduler")

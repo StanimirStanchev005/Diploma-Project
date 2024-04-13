@@ -21,13 +21,23 @@ struct WorkoutView: View {
     
     var body: some View {
         VStack {
-            List {
+            Text(workout.description)
+                .font(.callout)
+                .padding([.bottom, .horizontal], 10)
+            Text("Participants")
+                .font(.headline)
+            List() {
                 ForEach(workoutViewModel.workout.participants, id:\.userID) { participant in
-                    Text(participant.name)
+                    HStack {
+                        Text(participant.name)
+                        Spacer()
+                        Text("Visited: \(participant.visitedWorkouts)")
+                    }
                 }
             }
+            .scrollContentBackground(.hidden)
         }
-        .navigationTitle("Participants")
+        .navigationTitle(workout.title)
         .toolbar {
             Group {
                 if isOwner {

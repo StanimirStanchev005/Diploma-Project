@@ -9,11 +9,6 @@ import Foundation
 import GoogleSignIn
 import GoogleSignInSwift
 
-struct GoogleSignInResultModel {
-    let idToken: String
-    let accessToken: String
-}
-
 final class SignInGoogleHelper {
     
     private var authenticationProvider: AuthenticationServiceProvidable
@@ -24,11 +19,10 @@ final class SignInGoogleHelper {
     
     @MainActor
     func signIn() async throws -> GoogleSignInResultModel {
-        guard let topVC = Utilities.shared.topViewController() else {
-            throw URLError(.cannotFindHost)
-        }
-        
-        let gidSignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: topVC)
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { throw "Cannot find windowScene" }
+        guard let rootViewController = windowScene.windows.first?.rootViewController else { throw "Cannot find rootViewController" }
+
+        let gidSignInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
         
         guard let idToken: String = gidSignInResult.user.idToken?.tokenString else {
             throw URLError(.badServerResponse)
@@ -40,4 +34,13 @@ final class SignInGoogleHelper {
         let _ = try await authenticationProvider.signInWithGoogle(tokens: tokens)
         return tokens
     }
+}
+
+struct GoogleSignInResultModel {
+    let idToken: String
+    let accessToken: String
+}
+
+extension String: LocalizedError {
+    public var errorDescription: String? { return self }
 }
