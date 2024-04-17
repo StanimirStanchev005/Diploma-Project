@@ -17,51 +17,42 @@ struct CreateClubView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                VStack {
-                    
-                    Spacer()
+                VStack(spacing: 15) {
                     
                     PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
                         createClubModel.photo
                             .resizable()
                             .scaledToFill()
                             .clipShape(Circle())
-                            .frame(width: 150, height: 150)
+                            .frame(width: 120, height: 120)
+                    }
+
+                    
+                    LabeledTextField(input: $createClubModel.name, text: "Club name")
+                    LabeledTextField(input: $createClubModel.description, text: "Description")
+                    
+                    HStack{
+                        Text("Select sport")
+                        
+                        Spacer()
+                        
+                        Picker("Sport", selection: $createClubModel.selectedSport) {
+                            ForEach(createClubModel.sports, id: \.self) { sport in
+                                Text(sport)
+                            }
+                        }
+                        .pickerStyle(.menu)
                     }
                     
-                    Spacer()
-                    
-                    VStack(spacing: 15) {
-                        
-                        LabeledTextField(input: $createClubModel.name, text: "Club name")
-                        LabeledTextField(input: $createClubModel.description, text: "Description")
-                        
-                        HStack{
-                            Text("Select sport")
-                            
-                            Spacer()
-                            
-                            Picker("Sport", selection: $createClubModel.selectedSport) {
-                                ForEach(createClubModel.sports, id: \.self) { sport in
-                                    Text(sport)
-                                }
-                            }
-                            .pickerStyle(.menu)
+                    HStack {
+                        Button("Terms of service") {
+                            showTermsOfService.toggle()
                         }
                         
-                        HStack {
-                            Button("Terms of service") {
-                                showTermsOfService.toggle()
-                            }
-                            
-                            Toggle("", isOn: $createClubModel.isValidRepresenter)
-                                .toggleStyle(.switch)
-                                .tint(.pink)
-                        }
+                        Toggle("", isOn: $createClubModel.isValidRepresenter)
+                            .toggleStyle(.switch)
+                            .tint(.pink)
                     }
-                    .padding(.horizontal)
-                    
-                    Spacer()
                     
                     Button {
                         let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
@@ -70,14 +61,17 @@ struct CreateClubView: View {
                         SignInButton(text: "Create", color: createClubModel.isInputValid ? .pink : .gray)
                     }
                     .disabled(createClubModel.isInputValid == false)
-                    .padding()
+                    .padding(.vertical, 20)
                 }
+                .padding(.horizontal)
+                .padding(.bottom, 20)
+                
                 if createClubModel.isTaskInProgress {
                     ProgressView()
                         .controlSize(.large)
                 }
             }
-            .ignoresSafeArea()
+            .modifier(OverflowContentViewModifier())
             .navigationTitle("Create Club")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -88,8 +82,8 @@ struct CreateClubView: View {
                 }
             }
         }
+        .ignoresSafeArea(.keyboard)
         .padding()
-        
         .alert("Error", isPresented: $createClubModel.hasError) {
             Button("OK") {
                 createClubModel.hasError = false
@@ -115,6 +109,37 @@ struct CreateClubView: View {
         }
     }
 }
+
+extension View { //Add this View extension
+    @ViewBuilder
+    func wrappedInScrollView(when condition: Bool) -> some View {
+        if condition {
+            ScrollView(showsIndicators: false, content: {
+                self
+            })
+        } else {
+            self
+        }
+    }
+}
+
+struct OverflowContentViewModifier: ViewModifier {
+    @State private var contentOverflow: Bool = false
+
+    func body(content: Content) -> some View {
+        GeometryReader { geometry in
+            content
+            .background(
+                GeometryReader { contentGeometry in
+                    Color.clear.onAppear {
+                        contentOverflow = contentGeometry.size.height > geometry.size.height
+                    }
+                }
+            )
+            .wrappedInScrollView(when: contentOverflow)
+        }
+    }
+ }
 
 #Preview {
     CreateClubView()

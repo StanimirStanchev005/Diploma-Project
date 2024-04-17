@@ -66,20 +66,6 @@ class FirestoreClubRepository: ClubRepository {
         try db.collection("clubs").document(clubId).collection("workouts").document(workout.workoutId).setData(from: workout, merge: true)
     }
     
-    func getWorkouts(for clubId: String, on date: Date) async throws -> [Workout] {
-        let startDate = Calendar.current.startOfDay(for: date)
-        let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
-        
-        let querySnapshot = try await db.collection("clubs").document(clubId).collection("workouts")
-            .whereField("date", isGreaterThanOrEqualTo: startDate)
-            .whereField("date", isLessThanOrEqualTo: endDate)
-            .getDocuments()
-        
-        return try querySnapshot.documents.compactMap { document in
-            try document.data(as: Workout.self)
-        }
-    }
-        
     func deleteWorkout(for clubId: String, with workoutId: String) throws {
         db.collection("clubs").document(clubId).collection("workouts").document(workoutId).delete()
     }
@@ -116,7 +102,7 @@ class FirestoreClubRepository: ClubRepository {
     }
     
     func listenForRequestChanges(for club: String, onSuccess: @escaping ([ClubRequestModel]) -> Void) {
-        _ = db.collection("clubs").document(club).collection("requests").addSnapshotListener { requestSnapshot, error in
+        db.collection("clubs").document(club).collection("requests").addSnapshotListener { requestSnapshot, error in
             guard let requestSnapshot else {
                 print("Error listening to request changes")
                 return
