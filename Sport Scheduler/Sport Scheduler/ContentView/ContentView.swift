@@ -6,8 +6,6 @@
 //
 
 import SwiftUI
-import FirebaseAuth
-import FirebaseFirestore
 
 struct ContentView: View {
     @EnvironmentObject var currentUser: CurrentUser
@@ -16,13 +14,14 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            if contentViewModel.showSplashView {
+            switch currentUser.state {
+            case .loading:
                 LoadingView()
-            } else if currentUser.showSignInView {
+            case .noUser:
                 withAnimation(.easeInOut) {
                     WelcomeView()
                 }
-            } else {
+            case .hasUser:
                 withAnimation(.easeInOut) {
                     MainView()
                 }

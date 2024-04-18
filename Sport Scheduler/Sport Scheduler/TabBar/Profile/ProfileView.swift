@@ -65,7 +65,7 @@ struct ProfileView: View {
                             do {
                                 try profileModel.signOut()
                                 withAnimation(.easeInOut) {
-                                    currentUser.showSignInView = true
+                                    currentUser.state = .noUser
                                 }
                             } catch {
                                 print(error)

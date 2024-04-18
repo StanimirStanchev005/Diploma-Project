@@ -23,8 +23,10 @@ struct SigningTextField: View {
             Group {
                 if isSecure {
                     SecureField(text, text: $input)
+                        .frame(height: 30)
                 } else {
                     TextField(text, text: $input)
+                        .frame(height: 30)
                 }
             }
             .padding(10)
@@ -32,7 +34,7 @@ struct SigningTextField: View {
                 RoundedRectangle(cornerRadius: 7)
                     .stroke(Color.lightBackground, lineWidth: 1)
             )
-            .frame(width: 280, height: 50)
+            .frame(width: 280, height: 53)
             .overlay(
                 Button {
                     input = ""

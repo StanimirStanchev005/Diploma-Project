@@ -16,64 +16,65 @@ struct CreateClubView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                VStack(spacing: 15) {
-                    
-                    PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
-                        createClubModel.photo
-                            .resizable()
-                            .scaledToFill()
-                            .clipShape(Circle())
-                            .frame(width: 120, height: 120)
-                    }
+            GeometryReader { _ in
+                ZStack {
+                    VStack(spacing: 15) {
 
-                    
-                    LabeledTextField(input: $createClubModel.name, text: "Club name")
-                    LabeledTextField(input: $createClubModel.description, text: "Description")
-                    
-                    HStack{
-                        Text("Select sport")
-                        
-                        Spacer()
-                        
-                        Picker("Sport", selection: $createClubModel.selectedSport) {
-                            ForEach(createClubModel.sports, id: \.self) { sport in
-                                Text(sport)
+                        PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
+                            createClubModel.photo
+                                .resizable()
+                                .scaledToFill()
+                                .clipShape(Circle())
+                                .frame(width: 120, height: 120)
+                        }
+
+
+                        LabeledTextField(input: $createClubModel.name, text: "Club name")
+                        LabeledTextField(input: $createClubModel.description, text: "Description")
+
+                        HStack{
+                            Text("Select sport")
+
+                            Spacer()
+
+                            Picker("Sport", selection: $createClubModel.selectedSport) {
+                                ForEach(createClubModel.sports, id: \.self) { sport in
+                                    Text(sport)
+                                }
                             }
+                            .pickerStyle(.menu)
                         }
-                        .pickerStyle(.menu)
-                    }
-                    
-                    HStack {
-                        Button("Terms of service") {
-                            showTermsOfService.toggle()
+
+                        HStack {
+                            Button("Terms of service") {
+                                showTermsOfService.toggle()
+                            }
+
+                            Toggle("", isOn: $createClubModel.isValidRepresenter)
+                                .toggleStyle(.switch)
+                                .tint(.blue)
                         }
-                        
-                        Toggle("", isOn: $createClubModel.isValidRepresenter)
-                            .toggleStyle(.switch)
-                            .tint(.pink)
+
+                        Button {
+                            let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
+                            createClubModel.create(club: club, for: currentUser.user!.userID, photo: createClubModel.selectedItem)
+                        } label: {
+                            SignInButton(text: "Create", color: createClubModel.isInputValid ? .blue : .gray)
+                        }
+                        .disabled(createClubModel.isInputValid == false)
+                        .padding(.vertical, 20)
                     }
-                    
-                    Button {
-                        let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
-                        createClubModel.create(club: club, for: currentUser.user!.userID, photo: createClubModel.selectedItem)
-                    } label: {
-                        SignInButton(text: "Create", color: createClubModel.isInputValid ? .pink : .gray)
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
+
+                    if createClubModel.isTaskInProgress {
+                        ProgressView()
+                            .controlSize(.large)
                     }
-                    .disabled(createClubModel.isInputValid == false)
-                    .padding(.vertical, 20)
                 }
-                .padding(.horizontal)
-                .padding(.bottom, 20)
-                
-                if createClubModel.isTaskInProgress {
-                    ProgressView()
-                        .controlSize(.large)
-                }
+                .navigationTitle("Create Club")
+                .navigationBarTitleDisplayMode(.inline)
             }
-            .modifier(OverflowContentViewModifier())
-            .navigationTitle("Create Club")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading){
                     Button("Cancel", role: .cancel) {
@@ -109,37 +110,6 @@ struct CreateClubView: View {
         }
     }
 }
-
-extension View { //Add this View extension
-    @ViewBuilder
-    func wrappedInScrollView(when condition: Bool) -> some View {
-        if condition {
-            ScrollView(showsIndicators: false, content: {
-                self
-            })
-        } else {
-            self
-        }
-    }
-}
-
-struct OverflowContentViewModifier: ViewModifier {
-    @State private var contentOverflow: Bool = false
-
-    func body(content: Content) -> some View {
-        GeometryReader { geometry in
-            content
-            .background(
-                GeometryReader { contentGeometry in
-                    Color.clear.onAppear {
-                        contentOverflow = contentGeometry.size.height > geometry.size.height
-                    }
-                }
-            )
-            .wrappedInScrollView(when: contentOverflow)
-        }
-    }
- }
 
 #Preview {
     CreateClubView()

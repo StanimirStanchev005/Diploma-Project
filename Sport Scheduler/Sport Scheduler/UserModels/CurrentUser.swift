@@ -9,8 +9,8 @@ import Foundation
 
 final class CurrentUser: ObservableObject {
     @Published var user: DBUser?
-    @Published var showSignInView = false
-    
+    @Published var state = ContentViewScreenState.loading
+
     func updateUser(with newUser: DBUser) {
         self.user = newUser
     }

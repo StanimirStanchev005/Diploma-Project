@@ -5,30 +5,32 @@
 //  Created by Tumba Developer on 8.01.24.
 //
 
-import Foundation
 import FirebaseFirestore
 import SwiftUI
 import PhotosUI
 
 final class CreateClubModel: ObservableObject {
-    private var clubRepository: ClubRepository
-    private var userRepository: UserRepository
-    private var storageRepository: ClubStorageRepository
+    private let clubRepository: ClubRepository
+    private let userRepository: UserRepository
+    private let storageRepository: ClubStorageRepository
     
-    @Published var sports = ["Archery", "Athletics", "Badminton", "Basketball", "Boxing", "BreakDance", "Canoeing", "Cycling", "Diving", "Equestrian", "Fencing", "Football", "Golf", "Gymnastics", "Handball", "Hockey", "Judo", "Modern Pentathlon", "Rowing", "Rugby Sevens", "Sailing", "Shooting", "Swimming", "Synchronized Swimming", "Table Tennis", "Taekwondo", "Tennis", "Triathlon", "Volleyball", "Water Polo", "Weightlifting", "Wrestling"]
-    
+    let sports = ["Archery", "Athletics", "Badminton", "Basketball", "Boxing", "BreakDance", "Canoeing", "Cycling", "Diving", "Equestrian", "Fencing", "Football", "Golf",
+                  "Gymnastics", "Handball", "Hockey", "Judo", "Modern Pentathlon", "Rowing", "Rugby Sevens", "Sailing", "Shooting", "Swimming", "Synchronized Swimming",
+                  "Table Tennis", "Taekwondo", "Tennis", "Triathlon", "Volleyball", "Water Polo", "Weightlifting", "Wrestling"]
+
     @Published var name = ""
     @Published var description = ""
     @Published var isValidRepresenter = false
     @Published var selectedSport: String = "Football"
     @Published var photo: Image = Image("ClubPlaceholder")
     @Published var hasError = false
-    @Published var localizedError: String = "There was an error creating the club! Please try again!"
+    private(set) var localizedError: String = "There was an error creating the club! Please try again!"
     @Published var selectedItem: PhotosPickerItem?
     @Published var clubCreationSuccess = false
-    @Published var isTaskInProgress = false
+    private(set) var isTaskInProgress = false
     
-    init(clubRepository: ClubRepository = FirestoreClubRepository(), storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
+    init(clubRepository: ClubRepository = FirestoreClubRepository(),
+         storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
         self.clubRepository = clubRepository
         self.storageRepository = storageRepository

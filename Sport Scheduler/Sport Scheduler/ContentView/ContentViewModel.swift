@@ -5,13 +5,18 @@
 //  Created by Tumba Developer on 2.03.24.
 //
 
-import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
+enum ContentViewScreenState {
+    case loading
+    case noUser
+    case hasUser
+}
+
 final class ContentViewModel: ObservableObject {
-    private var authenticationProvider: AuthenticationServiceProvidable
-    private var userRepository: UserRepository
+    private let authenticationProvider: AuthenticationServiceProvidable
+    private let userRepository: UserRepository
     @Published var showSplashView = true
     
     init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(), userRepository: UserRepository = FirestoreUserRepository()) {
@@ -24,15 +29,14 @@ final class ContentViewModel: ObservableObject {
         do {
             let authUser: AuthDataResultModel? = try authenticationProvider.getAuthenticatedUser()
             guard authUser != nil else {
-                currentUser.showSignInView = true
+                currentUser.state = .noUser
                 return
             }
             currentUser.user = try await userRepository.getUser(userId: authUser!.uid)
-            showSplashView = false
+            currentUser.state = .hasUser
         } catch {
-            currentUser.showSignInView = true
+            currentUser.state = .noUser
         }
-        showSplashView = false
     }
     
 }
