@@ -21,11 +21,25 @@ struct CreateClubView: View {
                     VStack(spacing: 15) {
 
                         PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
-                            createClubModel.photo
-                                .resizable()
-                                .scaledToFill()
-                                .clipShape(Circle())
-                                .frame(width: 120, height: 120)
+                            switch createClubModel.imageState {
+                            case .empty:
+                                Image(systemName: "person.3.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(.lightBackground)
+                                    .frame(width: 120, height: 120)
+                            case .loading:
+                                ProgressView()
+                                    .controlSize(.large)
+                                    .frame(width: 120, height: 120)
+                            case .success:
+                                createClubModel.photo
+                                    .resizable()
+                                    .scaledToFill()
+                                    .clipShape(Circle())
+                                    .frame(width: 120, height: 120)
+                            }
+
                         }
 
 

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ClubList: View {
     var clubs: [UserClubModel]
-    
+
     var body: some View {
         List {
             ForEach(clubs, id: \.name.self) { club in
@@ -18,9 +18,9 @@ struct ClubList: View {
                         Text(club.name)
                             .bold()
                             .foregroundStyle(.lightBackground)
-                        
+
                         Spacer()
-                        
+
                         AsyncImage(url: URL(string: club.picture)) { image in
                             image
                                 .resizable()
@@ -28,11 +28,18 @@ struct ClubList: View {
                                 .clipShape(Circle())
                                 .frame(width: 100, height: 100)
                         } placeholder: {
-                            Image("ClubPlaceholder")
-                                .resizable()
-                                .frame(width: 100)
-                                .clipShape(Circle())
-                                .frame(width: 100, height: 100)
+                            if club.picture == "ClubPlaceholder" {
+                                Image(systemName: "person.3.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(.lightBackground)
+                                    .frame(width: 80, height: 80)
+                                    .frame(width: 100, height: 100)
+                                    .padding()
+                            } else {
+                                    ProgressView()
+                                        .frame(width: 100, height: 100)
+                                }
                         }
                     }
                 }

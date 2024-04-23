@@ -30,9 +30,8 @@ final class ClubModel: ObservableObject {
     @Published var state: ClubScreenState
     @Published var errorMessage = ""
     @Published var selectedItem: PhotosPickerItem?
-    
     var isHistory = false
-    
+
     func clearWorkouts() {
         self.workouts = []
         self.workoutDates = []
@@ -188,7 +187,7 @@ final class ClubModel: ObservableObject {
         let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
         userRequests.remove(at: index)
     }
-    
+
     func updateClubPicture() {
         guard let club else {
             return
@@ -199,7 +198,7 @@ final class ClubModel: ObservableObject {
         Task {
             guard let data = try await selectedItem.loadTransferable(type: Data.self) else { return }
             let returnedData = try await storageRepository.saveImage(data: data, name: club.clubName)
-            let url = try  await storageRepository.getUrlFromImage(path: returnedData.path)
+            let url = try await storageRepository.getUrlFromImage(path: returnedData.path)
             try clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
         }
     }

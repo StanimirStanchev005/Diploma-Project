@@ -26,11 +26,17 @@ struct JoinedClubsView: View {
                                             .clipShape(Circle())
                                             .frame(width: 50, height: 50)
                                     } placeholder: {
-                                        Image("ClubPlaceholder")
-                                            .resizable()
-                                            .frame(width: 50)
-                                            .clipShape(Circle())
-                                            .frame(width: 50, height: 50)
+                                        if club.picture == "ClubPlaceholder" {
+                                            Image(systemName: "person.3.fill")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .foregroundStyle(.lightBackground)
+                                                .frame(width: 40, height: 40)
+                                                .frame(width: 50, height: 50)
+                                        } else {
+                                            ProgressView()
+                                                .frame(width: 50, height: 50)
+                                        }
                                     }
                                     Text(club.name)
                                         .bold()

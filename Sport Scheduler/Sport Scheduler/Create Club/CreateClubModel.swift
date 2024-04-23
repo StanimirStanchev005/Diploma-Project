@@ -9,6 +9,12 @@ import FirebaseFirestore
 import SwiftUI
 import PhotosUI
 
+enum CreateClubImageState {
+    case empty
+    case loading
+    case success
+}
+
 final class CreateClubModel: ObservableObject {
     private let clubRepository: ClubRepository
     private let userRepository: UserRepository
@@ -27,6 +33,7 @@ final class CreateClubModel: ObservableObject {
     private(set) var localizedError: String = "There was an error creating the club! Please try again!"
     @Published var selectedItem: PhotosPickerItem?
     @Published var clubCreationSuccess = false
+    @Published var imageState = CreateClubImageState.empty
     private(set) var isTaskInProgress = false
     
     init(clubRepository: ClubRepository = FirestoreClubRepository(),
@@ -43,11 +50,13 @@ final class CreateClubModel: ObservableObject {
     
     func convertDataToImage() {
         guard let selectedItem else { return }
+        imageState = .loading
         Task {
             do {
                 if let image = try await selectedItem.loadTransferable(type: Image.self) {
                     await MainActor.run {
                         self.photo = image
+                        imageState = .success
                     }
                 }
             } catch {
