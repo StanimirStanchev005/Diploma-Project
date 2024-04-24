@@ -70,12 +70,12 @@ final class ClubModel: ObservableObject {
         return club?.ownerId == userId
     }
     
-    func isJoined(joinedClubs: [UserClubModel]?) -> Bool {
+    func isJoined(joinedClubs: [String]?) -> Bool {
         guard let joinedClubs else {
             return false
         }
         return joinedClubs.contains(where: { club in
-            club.name == self.club?.clubName })
+            club == self.club?.clubName })
     }
     
     func visitedWorkouts(for userId: String?) -> Int {

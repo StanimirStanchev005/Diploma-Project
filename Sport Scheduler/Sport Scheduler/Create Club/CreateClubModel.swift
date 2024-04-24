@@ -70,7 +70,7 @@ final class CreateClubModel: ObservableObject {
         Task {
             do {
                 try await clubRepository.create(club: club)
-                try userRepository.addClub(for: userID, clubName: club.clubName, clubPicture: club.picture)
+                try userRepository.addClub(for: userID, clubName: club.clubName)
                 if let photo {
                     try await saveClubImage(item: photo, club: club.id)
                 }

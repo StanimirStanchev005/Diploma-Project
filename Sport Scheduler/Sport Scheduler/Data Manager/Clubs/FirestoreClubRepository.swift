@@ -169,8 +169,7 @@ class FirestoreClubRepository: ClubRepository {
         ] as [String : Any]
         
         let joinedClub = [
-            "name": club.clubName,
-            "picture": club.picture
+            "name": club.clubName
         ]
         let requestToRemove = [
             "requestID": request.requestID,
@@ -180,7 +179,6 @@ class FirestoreClubRepository: ClubRepository {
         db.collection("clubs").document(request.clubID).updateData([
             "members": FieldValue.arrayUnion([member])
         ])
-        
         db.collection("users").document(request.userID).updateData([
             "joinedClubs": FieldValue.arrayUnion([joinedClub]),
             "requests": FieldValue.arrayRemove([requestToRemove])
@@ -235,7 +233,6 @@ class FirestoreClubRepository: ClubRepository {
         ])
         let clubToRemove = [
             "name": club.clubName,
-            "picture": club.picture
         ]
         db.collection("users").document(user.userID).updateData([
             "joinedClubs": FieldValue.arrayRemove([clubToRemove])

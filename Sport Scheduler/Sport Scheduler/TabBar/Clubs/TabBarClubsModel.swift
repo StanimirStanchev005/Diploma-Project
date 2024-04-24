@@ -29,12 +29,12 @@ final class TabBarClubsModel: ObservableObject {
         addSubscribers()
     }
     
-    func filterUserClubs(by clubsToFilter: [UserClubModel]) -> [UserClubModel] {
+    func filterUserClubs(by clubsToFilter: [String]) -> [UserClubModel] {
         let mappedClubs = clubs.map { club in
             UserClubModel(name: club.clubName, picture: club.picture)
         }
         return mappedClubs.filter { club in
-            clubsToFilter.contains { $0.name == club.name }
+            clubsToFilter.contains { $0 == club.name }
         }
     }
     

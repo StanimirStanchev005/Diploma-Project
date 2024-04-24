@@ -17,15 +17,14 @@ struct WorkoutsView: View {
                 if currentUser.user!.joinedClubs.isEmpty {
                     VStack {
                         Spacer()
-                        Text("Joined club workouts will appear here")
-                            .font(.system(size: 20))
+                        ContentUnavailableView("Join a Club", systemImage: "figure.strengthtraining.traditional", description: Text("Joined club workouts will appear here"))
                         Spacer()
                     }
                 } else {
                     ScrollView(.horizontal) {
                         Picker("Club", selection: $workoutsModel.selectedClub) {
-                            ForEach(currentUser.user?.joinedClubs ?? [], id:\.self.name) { club in
-                                Text(club.name)
+                            ForEach(currentUser.user?.joinedClubs ?? [], id:\.self) { club in
+                                Text(club)
                             }
                         }
                         .padding(.horizontal)
@@ -72,7 +71,7 @@ struct WorkoutsView: View {
             .navigationTitle("Workouts")
         }
         .onAppear {
-            guard let first = currentUser.user?.joinedClubs.first?.name else {
+            guard let first = currentUser.user?.joinedClubs.first else {
                 return
             }
             workoutsModel.selectedClub = first
@@ -90,7 +89,7 @@ struct WorkoutsView: View {
         WorkoutsView().environmentObject({ () -> CurrentUser in
             let envObj = CurrentUser()
             envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
-            envObj.user!.joinedClubs.append(UserClubModel(name: "Levski", picture: ""))
+            envObj.user!.joinedClubs.append("Levski")
             return envObj
         }() )
     }

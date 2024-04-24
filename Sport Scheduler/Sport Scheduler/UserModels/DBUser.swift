@@ -16,8 +16,8 @@ final class DBUser: ObservableObject, Codable {
     @Published var name: String
     let email: String
     @Published var photoUrl: String?
-    @Published var joinedClubs: [UserClubModel] = []
-    @Published var ownedClubs: [UserClubModel] = []
+    @Published var joinedClubs: [String] = []
+    @Published var ownedClubs: [String] = []
     @Published var subscriptionPlan: PremiumPlan = Plans.standard.plan
     var requests: [UserRequestModel] = []
     let dateCreated: Date
@@ -28,8 +28,8 @@ final class DBUser: ObservableObject, Codable {
         userID = try container.decode(String.self, forKey: .userID)
         email = try container.decode(String.self, forKey: .email)
         photoUrl = try container.decodeIfPresent(String.self, forKey: .photoUrl) ?? "UserPlaceholder"
-        joinedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .joinedClubs) ?? []
-        ownedClubs = try container.decodeIfPresent([UserClubModel].self, forKey: .ownedClubs) ?? []
+        joinedClubs = try container.decodeIfPresent([String].self, forKey: .joinedClubs) ?? []
+        ownedClubs = try container.decodeIfPresent([String].self, forKey: .ownedClubs) ?? []
         subscriptionPlan = try container.decodeIfPresent(PremiumPlan.self, forKey: .subscriptionPlan) ?? Plans.standard.plan
         requests = try container.decode([UserRequestModel].self, forKey: .requests)
         dateCreated = try container.decode(Date.self, forKey: .dateCreated)

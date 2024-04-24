@@ -18,12 +18,12 @@ final class WorkoutsModel: ObservableObject {
         self.clubRepository = clubRepository
     }
     
-    func setupClubWorkouts(with clubs: [UserClubModel]?) {
+    func setupClubWorkouts(with clubs: [String]?) {
         guard let clubs else {
             return
         }
         for club in clubs {
-            clubWorkouts[club.name] = PaginatedClubWorkouts()
+            clubWorkouts[club] = PaginatedClubWorkouts()
         }
     }
         func getUniqueDates() {

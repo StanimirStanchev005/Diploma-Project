@@ -50,9 +50,8 @@ class FirestoreUserRepository: UserRepository {
         try db.collection("users").document(user.userID).setData(from: user, merge: true)
     }
     
-    func addClub(for userID: String, clubName: String, clubPicture: String) throws {
-        let club = ["name": clubName,
-                    "picture": clubPicture]
+    func addClub(for userID: String, clubName: String) throws {
+        let club = ["name": clubName]
         db.collection("users").document(userID).updateData([
             "ownedClubs": FieldValue.arrayUnion([club])
         ])
