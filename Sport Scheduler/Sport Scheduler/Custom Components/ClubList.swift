@@ -21,26 +21,7 @@ struct ClubList: View {
 
                         Spacer()
 
-                        AsyncImage(url: URL(string: club.picture)) { image in
-                            image
-                                .resizable()
-                                .frame(width: 100)
-                                .clipShape(Circle())
-                                .frame(width: 100, height: 100)
-                        } placeholder: {
-                            if club.picture == "ClubPlaceholder" {
-                                Image(systemName: "person.3.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .foregroundStyle(.lightBackground)
-                                    .frame(width: 80, height: 80)
-                                    .frame(width: 100, height: 100)
-                                    .padding()
-                            } else {
-                                    ProgressView()
-                                        .frame(width: 100, height: 100)
-                                }
-                        }
+                        ImageLoadingView(url: club.picture, club: club.name)
                     }
                 }
                 .frame(maxWidth: .infinity)

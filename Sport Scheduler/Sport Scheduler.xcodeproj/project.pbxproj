@@ -81,6 +81,9 @@
 		36E8E18F2B8F33FF00811EA1 /* TabBarWorkoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */; };
 		36E8E1942B908D7000811EA1 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 36E8E1932B908D7000811EA1 /* CodeScanner */; };
 		36E8E1962B90914800811EA1 /* WorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */; };
+		36EBB4B32BD8E8FF00F49C35 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBB4B22BD8E8FF00F49C35 /* ImageLoader.swift */; };
+		36EBB4B52BD8EC4700F49C35 /* ImageLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBB4B42BD8EC4700F49C35 /* ImageLoadingView.swift */; };
+		36EBB4B72BD8F98800F49C35 /* CacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBB4B62BD8F98800F49C35 /* CacheManager.swift */; };
 		36EBE3B82B933BDE00CEE8A9 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBE3B72B933BDE00CEE8A9 /* ContentViewModel.swift */; };
 		36EBE3BA2B93493900CEE8A9 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBE3B92B93493900CEE8A9 /* CurrentUser.swift */; };
 		36EBE3BC2B93495100CEE8A9 /* UserClubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBE3BB2B93495100CEE8A9 /* UserClubModel.swift */; };
@@ -181,6 +184,9 @@
 		36CA9DA92B601027002A7E57 /* WorkoutRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRow.swift; sourceTree = "<group>"; };
 		36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarWorkoutRow.swift; sourceTree = "<group>"; };
 		36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutViewModel.swift; sourceTree = "<group>"; };
+		36EBB4B22BD8E8FF00F49C35 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		36EBB4B42BD8EC4700F49C35 /* ImageLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoadingView.swift; sourceTree = "<group>"; };
+		36EBB4B62BD8F98800F49C35 /* CacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheManager.swift; sourceTree = "<group>"; };
 		36EBE3B72B933BDE00CEE8A9 /* ContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewModel.swift; sourceTree = "<group>"; };
 		36EBE3B92B93493900CEE8A9 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		36EBE3BB2B93495100CEE8A9 /* UserClubModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserClubModel.swift; sourceTree = "<group>"; };
@@ -240,6 +246,8 @@
 			children = (
 				361CE5272BC0157F00D1ADE4 /* ClubStorageRepository.swift */,
 				361CE5292BC0159E00D1ADE4 /* FirebaseClubStorageRepository.swift */,
+				36EBB4B22BD8E8FF00F49C35 /* ImageLoader.swift */,
+				36EBB4B62BD8F98800F49C35 /* CacheManager.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -407,6 +415,7 @@
 				366412BC2B4699DB00ACBFC4 /* LoadingView.swift */,
 				368FB4302BA181D3009B5764 /* PaywallRow.swift */,
 				361CE5042BBAB3F300D1ADE4 /* WorkoutListView.swift */,
+				36EBB4B42BD8EC4700F49C35 /* ImageLoadingView.swift */,
 			);
 			path = "Custom Components";
 			sourceTree = "<group>";
@@ -716,6 +725,7 @@
 				36ADF97B2B29C1D80028C73B /* GoogleSignInResultModel.swift in Sources */,
 				368FB42D2B9CDD6E009B5764 /* ClubRepositoryError.swift in Sources */,
 				36F005B62B61421100FA9458 /* EditWorkoutView.swift in Sources */,
+				36EBB4B72BD8F98800F49C35 /* CacheManager.swift in Sources */,
 				368FB4292B9CDBEE009B5764 /* AuthDataResultModel.swift in Sources */,
 				36ADF93C2B21B5650028C73B /* RegisterView.swift in Sources */,
 				36CA9D9E2B5C1688002A7E57 /* AddWorkoutView.swift in Sources */,
@@ -730,6 +740,7 @@
 				36ADF9372B21B3A00028C73B /* SignInButton.swift in Sources */,
 				36E8E1962B90914800811EA1 /* WorkoutViewModel.swift in Sources */,
 				36EBE3BA2B93493900CEE8A9 /* CurrentUser.swift in Sources */,
+				36EBB4B32BD8E8FF00F49C35 /* ImageLoader.swift in Sources */,
 				36CA9DA52B5ED07C002A7E57 /* Workout.swift in Sources */,
 				361CE4F92BAF030A00D1ADE4 /* Plans.swift in Sources */,
 				36ADF9512B2618570028C73B /* DBUser.swift in Sources */,
@@ -746,6 +757,7 @@
 				361CE5282BC0157F00D1ADE4 /* ClubStorageRepository.swift in Sources */,
 				3693DE152B82387500D4C808 /* ClubRequestsView.swift in Sources */,
 				36ADF9812B29D5730028C73B /* ProfileModel.swift in Sources */,
+				36EBB4B52BD8EC4700F49C35 /* ImageLoadingView.swift in Sources */,
 				36ADF93E2B21BD4E0028C73B /* SigningTextField.swift in Sources */,
 				36ADF96E2B2898100028C73B /* UserRepository.swift in Sources */,
 				361CE5052BBAB3F300D1ADE4 /* WorkoutListView.swift in Sources */,

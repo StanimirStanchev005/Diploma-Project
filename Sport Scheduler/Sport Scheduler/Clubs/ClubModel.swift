@@ -195,11 +195,15 @@ final class ClubModel: ObservableObject {
         guard let selectedItem else {
             return
         }
+        CacheManager.shared.remove(name: club.clubName)
         Task {
             guard let data = try await selectedItem.loadTransferable(type: Data.self) else { return }
             let returnedData = try await storageRepository.saveImage(data: data, name: club.clubName)
             let url = try await storageRepository.getUrlFromImage(path: returnedData.path)
             try clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
+            await MainActor.run {
+                CacheManager.shared.add(image: UIImage(data: data)!, name: club.clubName)
+            }
         }
     }
 }

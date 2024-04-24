@@ -32,13 +32,6 @@ struct ClubHeader: View {
                             .clipShape(Circle())
                             .frame(width: 100, height: 100)
                             .padding()
-                    case .empty:
-                        Image(systemName: "person.3.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(.lightBackground)
-                            .frame(width: 100, height: 100)
-                            .padding()
                     case .failure(_):
                         Image(systemName: "person.3.fill")
                             .resizable()

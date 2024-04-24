@@ -90,6 +90,7 @@ struct ClubContentView: View {
         }
         .onChange(of: clubModel.selectedItem) {
             clubModel.updateClubPicture()
+
         }
     }
 }
