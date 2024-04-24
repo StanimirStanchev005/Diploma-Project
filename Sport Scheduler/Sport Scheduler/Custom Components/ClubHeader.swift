@@ -7,6 +7,7 @@
 
 import SwiftUI
 import PhotosUI
+import CachedAsyncImage
 
 struct ClubHeader: View {
     @EnvironmentObject var currentUser: CurrentUser
@@ -23,7 +24,7 @@ struct ClubHeader: View {
     var body: some View {
         VStack(spacing: 10) {
             PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
-                AsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
+                CachedAsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
                     switch phase {
                     case .success(let image):
                         image

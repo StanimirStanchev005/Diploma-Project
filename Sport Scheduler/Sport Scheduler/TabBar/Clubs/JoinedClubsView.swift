@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct JoinedClubsView: View {
     @EnvironmentObject var currentUser: CurrentUser
@@ -19,7 +20,7 @@ struct JoinedClubsView: View {
                         ForEach(joinedClubsModel.filteredClubs, id: \.name.self) { club in
                             NavigationLink(destination: ClubView(club: club)) {
                                 HStack {
-                                    AsyncImage(url: URL(string: club.picture)) { image in
+                                    CachedAsyncImage(url: URL(string: club.picture)) { image in
                                         image
                                             .resizable()
                                             .frame(width: 50)
