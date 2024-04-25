@@ -20,11 +20,15 @@ final class ClubModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
     private var storageRepository: ClubStorageRepository
-    private var lastDocument: DocumentSnapshot? = nil
-    
+//    private var lastDocument: DocumentSnapshot? = nil
+
     @Published var club: Club?
-    @Published var workouts: [Workout] = []
-    @Published var workoutDates: [Date] = []
+    @Published var clubWorkouts: [String: PaginatedClubWorkouts] = [
+        "future" : PaginatedClubWorkouts(),
+        "history" : PaginatedClubWorkouts()
+    ]
+//    @Published var workouts: [Workout] = []
+//    @Published var workoutDates: [Date] = []
     @Published var userRequests: [ClubRequestModel] = []
     @Published var isTaskInProgress = true
     @Published var state: ClubScreenState
@@ -32,37 +36,38 @@ final class ClubModel: ObservableObject {
     @Published var selectedItem: PhotosPickerItem?
     var isHistory = false
 
-    func clearWorkouts() {
-        self.workouts = []
-        self.workoutDates = []
-        self.lastDocument = nil
-    }
-        
-    func getUniqueDates(isHistory: Bool) {
-        let calendar = Calendar.current
-        let dateSet = Set(workouts.map { calendar.startOfDay(for: $0.date) })
-        if isHistory {
-            workoutDates = Array(dateSet).sorted(by: >)
-        } else {
-            workoutDates = Array(dateSet).sorted()
-        }
-        
-    }
-    
-    func filteredWorkouts(for date: Date) -> [Workout] {
-        let calendar = Calendar.current
-        return workouts.filter { calendar.startOfDay(for: $0.date) == date }
-    }
-    
     init(clubRepository: ClubRepository = FirestoreClubRepository(), storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
         self.clubRepository = clubRepository
         self.storageRepository = storageRepository
         self.userRepository = userRepository
-        
+
         state = .loading
     }
+
+    func clearFutureWorkouts() {
+        clubWorkouts["future"]!.workouts = []
+        clubWorkouts["future"]!.workoutDates = []
+        clubWorkouts["future"]!.lastDocument = nil
+    }
+        
+    func getUniqueDates(isHistory: Bool) {
+        let calendar = Calendar.current
+        if isHistory {
+            let dateSet = Set(clubWorkouts["history"]!.workouts.map { calendar.startOfDay(for: $0.date) })
+            clubWorkouts["history"]!.workoutDates = Array(dateSet).sorted(by: >)
+        } else {
+            let dateSet = Set(clubWorkouts["future"]!.workouts.map { calendar.startOfDay(for: $0.date) })
+            clubWorkouts["future"]!.workoutDates = Array(dateSet).sorted()
+        }
+        
+    }
     
+    func filteredWorkouts(on date: Date, for key: String) -> [Workout] {
+        let calendar = Calendar.current
+        return clubWorkouts[key]!.workouts.filter { calendar.startOfDay(for: $0.date) == date }
+    }
+
     func isUserOwner(userId: String?) -> Bool {
         guard let userId else {
             return false
@@ -125,18 +130,18 @@ final class ClubModel: ObservableObject {
         }
     }
     //Here
-    func fetchWorkouts() {
+    func fetchWorkouts(for key: String) {
         Task {
             do {
-                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: lastDocument, history: isHistory)
+                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key]!.lastDocument, history: isHistory)
                 await MainActor.run {
                     for workout in fetchedWorkouts {
-                        if !self.workouts.contains(where: { $0 == workout }) {
-                            self.workouts.append(workout)
+                        if !self.clubWorkouts[key]!.workouts.contains(where: { $0 == workout }) {
+                            self.clubWorkouts[key]!.workouts.append(workout)
                         }
                     }
                     if let lastDocument {
-                        self.lastDocument = lastDocument
+                        self.clubWorkouts[key]!.lastDocument = lastDocument
                     }
                     getUniqueDates(isHistory: isHistory)
                     isTaskInProgress = false
@@ -147,18 +152,26 @@ final class ClubModel: ObservableObject {
         }
     }
 
-    func deleteWorkout(at offsets: IndexSet) {
-        let deletedWorkouts = offsets.map { workouts[$0] }
-        
-        for deletedWorkout in deletedWorkouts {
-            do {
-                try clubRepository.deleteWorkout(for: self.club!.clubName, with: deletedWorkout.workoutId)
-            } catch {
-                print("Error deleting workout: \(error)")
-            }
+//    func deleteWorkout(at offsets: IndexSet) {
+//        let deletedWorkouts = offsets.map { clubWorkouts["future"]!.workouts[$0] }
+//
+//        for deletedWorkout in deletedWorkouts {
+//            do {
+//                try clubRepository.deleteWorkout(for: self.club!.clubName, with: deletedWorkout.workoutId)
+//            } catch {
+//                print("Error deleting workout: \(error)")
+//            }
+//        }
+//    }
+    func deleteWorkout(id: String) {
+        do {
+            try clubRepository.deleteWorkout(for: self.club!.clubName, with: id)
+            clubWorkouts["future"]!.workouts.removeAll(where: {$0.workoutId == id})
+        } catch {
+            print("Error deleting workout: \(error)")
         }
     }
-    
+
     func removeMember(at offsets: IndexSet) {
         let membersToRemove = offsets.map { club!.members[$0] }
         

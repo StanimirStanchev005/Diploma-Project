@@ -12,42 +12,50 @@ struct WorkoutListView: View {
     var isOwner: Bool
     var isHistory: Bool
     var noWorkoutsMessage: String
-    
+    var key: String
+
     var body: some View {
         List {
-            if clubModel.workouts.isEmpty && !clubModel.isTaskInProgress {
+            if clubModel.clubWorkouts[key]!.workouts.isEmpty && !clubModel.isTaskInProgress {
                 ContentUnavailableView(noWorkoutsMessage, systemImage: "figure.core.training")
             }
-            ForEach(clubModel.workoutDates, id:\.self) { date in
+            ForEach(clubModel.clubWorkouts[key]!.workoutDates, id:\.self) { date in
                 Section {
-                    ForEach(clubModel.filteredWorkouts(for: date), id:\.self.workoutId) { workout in
+                    ForEach(clubModel.filteredWorkouts(on: date, for: key), id:\.self.workoutId) { workout in
                         NavigationLink(destination: WorkoutView(workout: workout, clubModel: clubModel)) {
                             WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
                         }
                         .swipeActions(edge: .leading) {
-                            if isOwner {
+                            if isOwner && !isHistory {
                                 NavigationLink(destination: EditWorkoutView(workout: workout, clubID: clubModel.club!.clubName)) {
                                     Label("Edit", systemImage: "pencil")
                                 }
+                                .tint(.indigo)
                             }
                         }
-                        if date == clubModel.workoutDates.last {
-                            if workout == clubModel.filteredWorkouts(for: date).last {
+                        .swipeActions(edge: .trailing) {
+                            if isOwner && !isHistory {
+                                Button(role: .destructive) {
+                                    clubModel.deleteWorkout(id: workout.workoutId)
+                                } label: {
+                                    Label("Delete", systemImage: "trash.fill")
+                                }
+                            }
+                        }
+                        if date == clubModel.clubWorkouts[key]!.workoutDates.last {
+                            if workout == clubModel.filteredWorkouts(on: date, for: key).last {
                                 HStack {
                                     Spacer()
                                     Text("You've reached the last planned workout")
                                         .font(.subheadline)
                                     Spacer()
                                 }
-                                .deleteDisabled(true)
                                 .onAppear {
-                                    clubModel.fetchWorkouts()
+                                    clubModel.fetchWorkouts(for: key)
                                 }
                             }
                         }
                     }
-                    .onDelete(perform: clubModel.deleteWorkout)
-                    .deleteDisabled(!isOwner)
                 } header: {
                     Text(date.formatted(date: .complete, time: .omitted))
                         .font(.headline)
@@ -58,5 +66,5 @@ struct WorkoutListView: View {
 }
 
 #Preview {
-    WorkoutListView(clubModel: ClubModel(), isOwner: false, isHistory: false, noWorkoutsMessage: "")
+    WorkoutListView(clubModel: ClubModel(), isOwner: false, isHistory: false, noWorkoutsMessage: "", key: "current")
 }
