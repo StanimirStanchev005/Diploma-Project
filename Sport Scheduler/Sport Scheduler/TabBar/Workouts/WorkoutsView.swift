@@ -10,7 +10,7 @@ import SwiftUI
 struct WorkoutsView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject var workoutsModel = WorkoutsModel()
-    
+
     var body: some View {
         NavigationStack {
             VStack {
@@ -33,17 +33,23 @@ struct WorkoutsView: View {
                     }
                     List {
                         if workoutsModel.isTaskInProgress {
-                            ProgressView()
-                                .controlSize(.large)
-                            Text("Loading...")
+
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                                    .controlSize(.large)
+
+                            }
+
                         } else if workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workouts.isEmpty && !workoutsModel.isTaskInProgress {
-                           ContentUnavailableView("No upcomming workouts", systemImage: "sofa", description: Text("Feel free to relax"))
+                            ContentUnavailableView("No upcomming workouts", systemImage: "sofa", description: Text("Feel free to relax"))
                         } else {
                             ForEach(workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workoutDates, id:\.self) { date in
                                 Section {
                                     ForEach(workoutsModel.filteredWorkouts(on: date), id:\.self.workoutId) { workout in
                                         WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
-                                        
+
                                         if date == workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workoutDates.last {
                                             if workout == workoutsModel.filteredWorkouts(on: date).last {
                                                 HStack {

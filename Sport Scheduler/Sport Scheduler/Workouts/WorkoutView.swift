@@ -31,7 +31,7 @@ struct WorkoutView: View {
                     HStack {
                         Text(participant.name)
                         Spacer()
-                        Text("Visited: \(participant.visitedWorkouts)")
+                        Text("Arrived: \(Date().formatted(date: .omitted, time: .shortened))")
                     }
                 }
             }

@@ -36,7 +36,18 @@ final class WorkoutViewModel: ObservableObject {
                 isShowingError = true
                 return
             }
-            let participant = ClubUserModel(userID: details[0], name: details[1])
+            guard workout.date - TimeInterval(60 * 30) <= Date() else {
+                errorMessage = "It's too early to join this workout. Try again when there are 30 minutes or less before its beginning"
+                isShowingError = true
+                return
+            }
+            guard workout.date + TimeInterval(60 * 30) >= Date() else {
+                errorMessage = "It's too late to join this workout. 30 minutes have already passed since its beginning."
+                isShowingError = true
+                return
+            }
+
+            var participant = ClubUserModel(userID: details[0], name: details[1])
             do {
                 try clubRepository.add(participant: participant, for: self.workout, from: self.club)
                 workout.participants.append(participant)
