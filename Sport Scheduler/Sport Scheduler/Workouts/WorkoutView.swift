@@ -26,7 +26,7 @@ struct WorkoutView: View {
                 .padding([.bottom, .horizontal], 10)
             Text("Participants")
                 .font(.headline)
-            List() {
+            List {
                 ForEach(workoutViewModel.workout.participants, id:\.userID) { participant in
                     HStack {
                         Text(participant.name)

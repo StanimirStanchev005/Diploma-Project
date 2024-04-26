@@ -35,8 +35,14 @@ struct ClubMembersView: View {
                     Spacer()
                     Text("Workouts visited: \(member.visitedWorkouts)")
                 }
+                .swipeActions {
+                    Button(role: .destructive) {
+                        clubModel.remove(member: member)
+                    } label: {
+                        Label("Delete", systemImage: "trash.fill")
+                    }
+                }
             }
-            .onDelete(perform: clubModel.removeMember)
         }
         .navigationTitle("Members")
         .toolbar {

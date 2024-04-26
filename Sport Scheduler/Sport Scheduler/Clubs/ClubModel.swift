@@ -152,17 +152,6 @@ final class ClubModel: ObservableObject {
         }
     }
 
-//    func deleteWorkout(at offsets: IndexSet) {
-//        let deletedWorkouts = offsets.map { clubWorkouts["future"]!.workouts[$0] }
-//
-//        for deletedWorkout in deletedWorkouts {
-//            do {
-//                try clubRepository.deleteWorkout(for: self.club!.clubName, with: deletedWorkout.workoutId)
-//            } catch {
-//                print("Error deleting workout: \(error)")
-//            }
-//        }
-//    }
     func deleteWorkout(id: String) {
         do {
             try clubRepository.deleteWorkout(for: self.club!.clubName, with: id)
@@ -172,18 +161,15 @@ final class ClubModel: ObservableObject {
         }
     }
 
-    func removeMember(at offsets: IndexSet) {
-        let membersToRemove = offsets.map { club!.members[$0] }
-        
-        for member in membersToRemove {
-            do {
-                try clubRepository.remove(user: member, from: self.club!)
-            } catch {
-                print("Error removing user from club: \(error)")
-            }
+    func remove(member: ClubUserModel) {
+        do {
+            try clubRepository.remove(user: member, from: self.club!)
+            club!.members.removeAll(where: { $0.userID == member.userID })
+        } catch {
+            print("Error removing user from club: \(error)")
         }
     }
-    
+
     func sendJoinRequest(for clubId: String, request: ClubRequestModel) throws {
         try clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
     }
