@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import FirebaseAuth
+@preconcurrency import FirebaseAuth
 
-class FirebaseAuthenticationProvider: AuthenticationServiceProvidable {
+final class FirebaseAuthenticationProvider: AuthenticationServiceProvidable {
     private let auth = Auth.auth()
     
     func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {

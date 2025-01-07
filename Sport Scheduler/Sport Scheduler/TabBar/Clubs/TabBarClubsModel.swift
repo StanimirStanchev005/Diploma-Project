@@ -7,6 +7,7 @@
 import FirebaseFirestore
 import Combine
 
+@MainActor
 final class TabBarClubsModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var cancellables = Set<AnyCancellable>()

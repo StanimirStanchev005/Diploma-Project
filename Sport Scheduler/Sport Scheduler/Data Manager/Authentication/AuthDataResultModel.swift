@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-struct AuthDataResultModel {
+struct AuthDataResultModel: Sendable {
     let uid: String
     let name: String?
     let email: String?

@@ -9,8 +9,9 @@ import Foundation
 import CodeScanner
 import FirebaseFirestore
 
-final class WorkoutViewModel: ObservableObject {
-    private var clubRepository: ClubRepository
+@MainActor
+final class WorkoutViewModel: ObservableObject, Sendable {
+    private let clubRepository: ClubRepository
     var club: Club = Club(clubName: "", description: "", category: "", ownerId: "")
     @Published var workout: Workout = Workout(clubId: "", title: "", date: Date())
     @Published var isShowingScanner = false
@@ -47,7 +48,7 @@ final class WorkoutViewModel: ObservableObject {
                 return
             }
 
-            var participant = ClubUserModel(userID: details[0], name: details[1])
+            let participant = ClubUserModel(userID: details[0], name: details[1])
             do {
                 try clubRepository.add(participant: participant, for: self.workout, from: self.club)
                 workout.participants.append(participant)

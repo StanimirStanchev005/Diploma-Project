@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import FirebaseFirestore
+@preconcurrency import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class FirestoreClubRepository: ClubRepository {
+final class FirestoreClubRepository: ClubRepository {
     
     private let db = Firestore.firestore()
     

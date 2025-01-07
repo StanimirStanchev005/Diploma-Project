@@ -9,17 +9,19 @@ import FirebaseFirestore
 import SwiftUI
 import PhotosUI
 
-enum CreateClubImageState {
-    case empty
-    case loading
-    case success
-}
-
+@MainActor
 final class CreateClubModel: ObservableObject {
+
+    enum CreateClubImageState {
+        case empty
+        case loading
+        case success
+    }
+
     private let clubRepository: ClubRepository
     private let userRepository: UserRepository
     private let storageRepository: ClubStorageRepository
-    
+
     let sports = ["Archery", "Athletics", "Badminton", "Basketball", "Boxing", "BreakDance", "Canoeing", "Cycling", "Diving", "Equestrian", "Fencing", "Football", "Golf",
                   "Gymnastics", "Handball", "Hockey", "Judo", "Modern Pentathlon", "Rowing", "Rugby Sevens", "Sailing", "Shooting", "Swimming", "Synchronized Swimming",
                   "Table Tennis", "Taekwondo", "Tennis", "Triathlon", "Volleyball", "Water Polo", "Weightlifting", "Wrestling"]
@@ -35,7 +37,7 @@ final class CreateClubModel: ObservableObject {
     @Published var clubCreationSuccess = false
     @Published var imageState = CreateClubImageState.empty
     private(set) var isTaskInProgress = false
-    
+
     init(clubRepository: ClubRepository = FirestoreClubRepository(),
          storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
@@ -43,11 +45,11 @@ final class CreateClubModel: ObservableObject {
         self.storageRepository = storageRepository
         self.userRepository = userRepository
     }
-    
+
     var isInputValid: Bool {
         isValidRepresenter && !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
-    
+
     func convertDataToImage() {
         guard let selectedItem else { return }
         imageState = .loading
@@ -64,7 +66,7 @@ final class CreateClubModel: ObservableObject {
             }
         }
     }
-    
+
     func create(club: Club, for userID: String, photo: PhotosPickerItem?) {
         isTaskInProgress = true
         Task {
@@ -74,20 +76,16 @@ final class CreateClubModel: ObservableObject {
                 if let photo {
                     try await saveClubImage(item: photo, club: club.id)
                 }
-                await MainActor.run {
-                    isTaskInProgress = false
-                    clubCreationSuccess = true
-                }
+                isTaskInProgress = false
+                clubCreationSuccess = true
             } catch let error as ClubRepositoryError {
-                await MainActor.run {
-                    self.isTaskInProgress = false
-                    self.hasError = true
-                    self.localizedError = error.localizedDescription
-                }
+                self.isTaskInProgress = false
+                self.hasError = true
+                self.localizedError = error.localizedDescription
             }
         }
     }
-    
+
     func saveClubImage(item: PhotosPickerItem, club name: String) async throws {
         guard let data = try await item.loadTransferable(type: Data.self) else { return }
         let returnedData = try await storageRepository.saveImage(data: data, name: name)

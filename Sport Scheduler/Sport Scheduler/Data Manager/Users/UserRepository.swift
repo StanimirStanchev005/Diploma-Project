@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol UserRepository {
+protocol UserRepository: Sendable {
     func create(user: DBUser) throws
     func getUser(userId: String) async throws -> DBUser
     func checkIfUserExists(userId: String) async throws -> Bool

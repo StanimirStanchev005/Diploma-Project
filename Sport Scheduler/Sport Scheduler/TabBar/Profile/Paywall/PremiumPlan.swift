@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PremiumPlan: Codable {
+struct PremiumPlan: Codable, Sendable {
     let tier: Int
     let title: String
     let extras: String

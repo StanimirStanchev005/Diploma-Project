@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseStorage
+@preconcurrency import FirebaseStorage
 
 final class FirebaseClubStorageRepository: ClubStorageRepository {
     

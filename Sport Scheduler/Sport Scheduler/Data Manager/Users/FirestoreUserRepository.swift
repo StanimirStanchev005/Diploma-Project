@@ -6,10 +6,10 @@
 //
 
 import Foundation
-import FirebaseFirestore
+@preconcurrency import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class FirestoreUserRepository: UserRepository {
+final class FirestoreUserRepository: UserRepository {
     private let db = Firestore.firestore()
     
     func listenForUserChanges(for userID: String, onSuccess: @escaping (DBUser) -> Void) {

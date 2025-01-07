@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
+@MainActor
 final class PaywallModel: ObservableObject {
     @Published var isStandardChosen = false
     @Published var isGoldChosen = false

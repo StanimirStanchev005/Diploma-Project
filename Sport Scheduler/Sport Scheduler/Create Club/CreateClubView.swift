@@ -13,35 +13,41 @@ struct CreateClubView: View {
     @EnvironmentObject var currentUser: CurrentUser
     @StateObject private var createClubModel = CreateClubModel()
     @State private var showTermsOfService = false
-    
+
+
+    var clubImage: some View {
+        Group {
+            switch createClubModel.imageState {
+            case .empty:
+                Image(systemName: "person.3.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(.lightBackground)
+                    .frame(width: 120, height: 120)
+            case .loading:
+                ProgressView()
+                    .controlSize(.large)
+                    .frame(width: 120, height: 120)
+            case .success:
+                createClubModel.photo
+                    .resizable()
+                    .scaledToFill()
+                    .clipShape(Circle())
+                    .frame(width: 120, height: 120)
+            }
+        }
+    }
+
     var body: some View {
         NavigationStack {
             GeometryReader { _ in
                 ZStack {
                     VStack(spacing: 15) {
-
-                        PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
-                            switch createClubModel.imageState {
-                            case .empty:
-                                Image(systemName: "person.3.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .foregroundStyle(.lightBackground)
-                                    .frame(width: 120, height: 120)
-                            case .loading:
-                                ProgressView()
-                                    .controlSize(.large)
-                                    .frame(width: 120, height: 120)
-                            case .success:
-                                createClubModel.photo
-                                    .resizable()
-                                    .scaledToFill()
-                                    .clipShape(Circle())
-                                    .frame(width: 120, height: 120)
-                            }
-
+                        ZStack {
+                            clubImage
+                            PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) { }
                         }
-
+                        .frame(width: 120, height: 120)
 
                         LabeledTextField(input: $createClubModel.name, text: "Club name")
                         LabeledTextField(input: $createClubModel.description, text: "Description")
@@ -106,7 +112,7 @@ struct CreateClubView: View {
         } message: {
             Text(createClubModel.localizedError)
         }
-        
+
         .alert("Success", isPresented: $createClubModel.clubCreationSuccess) {
             Button("OK") {
                 dismiss()
@@ -114,7 +120,7 @@ struct CreateClubView: View {
         } message: {
             Text("Congrats! Club was created successfully")
         }
-        
+
         .sheet(isPresented: $showTermsOfService) {
             TermsOfServiceView()
                 .presentationDetents([.medium])

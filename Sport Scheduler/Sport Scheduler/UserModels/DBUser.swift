@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class DBUser: ObservableObject, Codable {
+final class DBUser: ObservableObject, Codable, @unchecked Sendable {
     enum CodingKeys: CodingKey {
         case userID, name, email, photoUrl, joinedClubs, ownedClubs, subscriptionPlan, requests, dateCreated
     }

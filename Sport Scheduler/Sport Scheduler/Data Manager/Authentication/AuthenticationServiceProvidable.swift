@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseAuth
 
-protocol AuthenticationServiceProvidable {
+protocol AuthenticationServiceProvidable: Sendable {
     func signOut() throws
     func getAuthenticatedUser() throws -> AuthDataResultModel
     func signUp(email: String, password: String) async throws -> AuthDataResultModel

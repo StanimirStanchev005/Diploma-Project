@@ -7,7 +7,7 @@
 
 import SwiftUI
 import PhotosUI
-import CachedAsyncImage
+@preconcurrency import CachedAsyncImage
 
 struct ClubHeader: View {
     @EnvironmentObject var currentUser: CurrentUser
@@ -21,34 +21,40 @@ struct ClubHeader: View {
         self.isJoined = isJoined
     }
 
+    var cachedImage: some View {
+        CachedAsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .frame(width: 100)
+                    .clipShape(Circle())
+                    .frame(width: 100, height: 100)
+                    .padding()
+            case .failure(_):
+                Image(systemName: "person.3.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(.lightBackground)
+                    .frame(width: 100, height: 100)
+                    .padding()
+            default:
+                ProgressView()
+                    .controlSize(.large)
+                    .frame(width: 100, height: 100)
+                    .padding()
+            }
+        }
+    }
+
     var body: some View {
         VStack(spacing: 10) {
-            PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
-                CachedAsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .frame(width: 100)
-                            .clipShape(Circle())
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    case .failure(_):
-                        Image(systemName: "person.3.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(.lightBackground)
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    default:
-                        ProgressView()
-                            .controlSize(.large)
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    }
-                }
+            ZStack {
+                cachedImage
+                PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) { }
+                    .disabled(!isOwner)
             }
-                .disabled(!isOwner)
+            .frame(width: 100, height: 100)
                 HStack(spacing: 10) {
                     Text("Members: \(clubModel.club?.members.count ?? 0)")
                         .font(.headline)

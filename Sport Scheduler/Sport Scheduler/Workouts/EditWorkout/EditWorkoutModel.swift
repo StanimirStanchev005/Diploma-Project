@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
+@MainActor
 final class EditWorkoutModel: ObservableObject {
     
     private var clubRepository: ClubRepository

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestore
+@preconcurrency import FirebaseFirestore
 import SwiftUI
 import PhotosUI
 
@@ -16,19 +16,15 @@ enum ClubScreenState {
     // Add error state
 }
 
-final class ClubModel: ObservableObject {
+final class ClubModel: ObservableObject, @unchecked Sendable {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
     private var storageRepository: ClubStorageRepository
-//    private var lastDocument: DocumentSnapshot? = nil
-
     @Published var club: Club?
     @Published var clubWorkouts: [String: PaginatedClubWorkouts] = [
         "future" : PaginatedClubWorkouts(),
         "history" : PaginatedClubWorkouts()
     ]
-//    @Published var workouts: [Workout] = []
-//    @Published var workoutDates: [Date] = []
     @Published var userRequests: [ClubRequestModel] = []
     @Published var isTaskInProgress = true
     @Published var state: ClubScreenState
@@ -130,7 +126,7 @@ final class ClubModel: ObservableObject {
         }
     }
     //Here
-    func fetchWorkouts(for key: String) {
+    @MainActor func fetchWorkouts(for key: String) {
         Task {
             do {
                 let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key]!.lastDocument, history: isHistory)
