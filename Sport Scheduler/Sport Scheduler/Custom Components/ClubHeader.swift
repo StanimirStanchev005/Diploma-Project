@@ -51,7 +51,7 @@ struct ClubHeader: View {
         VStack(spacing: 10) {
             ZStack {
                 cachedImage
-                PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) { }
+                PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) { Color.black.opacity(0) }
                     .disabled(!isOwner)
             }
             .frame(width: 100, height: 100)

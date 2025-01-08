@@ -7,6 +7,7 @@
 
 @preconcurrency import FirebaseFirestore
 
+@MainActor
 final class WorkoutsModel: ObservableObject {
     private var clubRepository: ClubRepository
 

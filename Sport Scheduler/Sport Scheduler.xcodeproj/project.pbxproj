@@ -457,8 +457,8 @@
 			children = (
 				36F005B82B614AC600FA9458 /* EditWorkout */,
 				36F005B72B614AB000FA9458 /* AddWorkout */,
-				36F005B32B60210200FA9458 /* WorkoutView.swift */,
 				36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */,
+				36F005B32B60210200FA9458 /* WorkoutView.swift */,
 				36CA9DA42B5ED07C002A7E57 /* Workout.swift */,
 			);
 			path = Workouts;

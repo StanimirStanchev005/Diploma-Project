@@ -10,7 +10,7 @@ import CodeScanner
 import FirebaseFirestore
 
 @MainActor
-final class WorkoutViewModel: ObservableObject, Sendable {
+final class WorkoutViewModel: ObservableObject {
     private let clubRepository: ClubRepository
     var club: Club = Club(clubName: "", description: "", category: "", ownerId: "")
     @Published var workout: Workout = Workout(clubId: "", title: "", date: Date())

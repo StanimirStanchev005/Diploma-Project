@@ -45,7 +45,7 @@ struct CreateClubView: View {
                     VStack(spacing: 15) {
                         ZStack {
                             clubImage
-                            PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) { }
+                            PhotosPicker(selection: $createClubModel.selectedItem, matching: .images, photoLibrary: .shared()) { Color.black.opacity(0) }
                         }
                         .frame(width: 120, height: 120)
 

@@ -37,12 +37,12 @@ final class Club: Identifiable, Codable, @unchecked Sendable {
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.ownerId = try container.decode(String.self, forKey: .ownerId)
         self.clubName = try container.decode(String.self, forKey: .clubName)
-        self.description = try container.decode(String.self, forKey: .description)
         self.category = try container.decode(String.self, forKey: .category)
+        self.ownerId = try container.decode(String.self, forKey: .ownerId)
         self.picture = try container.decode(String.self, forKey: .picture)
-        self.members = try container.decode([ClubUserModel].self, forKey: .members)
+        self.description = try container.decode(String.self, forKey: .description)
+        self.members = try container.decodeIfPresent([ClubUserModel].self, forKey: .members) ?? []
     }
 
     func encode(to encoder: Encoder) throws {

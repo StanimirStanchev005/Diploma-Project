@@ -9,6 +9,7 @@ import Foundation
 @preconcurrency import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+@MainActor
 final class FirestoreClubRepository: ClubRepository {
     
     private let db = Firestore.firestore()

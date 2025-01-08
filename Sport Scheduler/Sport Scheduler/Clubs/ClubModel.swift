@@ -16,7 +16,8 @@ enum ClubScreenState {
     // Add error state
 }
 
-final class ClubModel: ObservableObject, @unchecked Sendable {
+@MainActor
+final class ClubModel: ObservableObject {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
     private var storageRepository: ClubStorageRepository
@@ -126,7 +127,7 @@ final class ClubModel: ObservableObject, @unchecked Sendable {
         }
     }
     //Here
-    @MainActor func fetchWorkouts(for key: String) {
+    func fetchWorkouts(for key: String) {
         Task {
             do {
                 let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key]!.lastDocument, history: isHistory)

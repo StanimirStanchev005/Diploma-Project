@@ -8,7 +8,8 @@
 import Foundation
 import FirebaseFirestore
 
-protocol ClubRepository: Sendable {
+@MainActor
+protocol ClubRepository {
     func create(club: Club) async throws
     func getClub(clubId: String) async throws -> Club
     func add(workout: Workout, for clubId: String) throws
