@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct Paywall: View {
-    @EnvironmentObject var currentUser: CurrentUser
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
     @Environment(\.dismiss) var dismiss
-    @StateObject private var paywallModel = PaywallModel()
+    @State private var paywallModel = PaywallModel()
     
     var body: some View {
         VStack(spacing: 15) {

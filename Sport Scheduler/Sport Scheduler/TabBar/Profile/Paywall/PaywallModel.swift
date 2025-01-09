@@ -9,13 +9,13 @@ import Foundation
 import FirebaseFirestore
 
 @MainActor
-final class PaywallModel: ObservableObject {
-    @Published var isStandardChosen = false
-    @Published var isGoldChosen = false
-    @Published var isDiamondChosen = false
-    @Published var isAlertShown = false
-    @Published var errorDowngradingPlan = false
-    @Published var upgradeSuccess = false
+@Observable final class PaywallModel {
+    var isStandardChosen = false
+    var isGoldChosen = false
+    var isDiamondChosen = false
+    var isAlertShown = false
+    var errorDowngradingPlan = false
+    var upgradeSuccess = false
         
     private var userRepository: UserRepository
     

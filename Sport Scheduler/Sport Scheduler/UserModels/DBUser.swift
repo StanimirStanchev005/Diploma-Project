@@ -7,18 +7,19 @@
 
 import Foundation
 
-final class DBUser: ObservableObject, Codable, @unchecked Sendable {
+@Observable
+final class DBUser: Codable, @unchecked Sendable {
     enum CodingKeys: CodingKey {
         case userID, name, email, photoUrl, joinedClubs, ownedClubs, subscriptionPlan, requests, dateCreated
     }
     
     let userID: String
-    @Published var name: String
+    var name: String
     let email: String
-    @Published var photoUrl: String?
-    @Published var joinedClubs: [String] = []
-    @Published var ownedClubs: [String] = []
-    @Published var subscriptionPlan: PremiumPlan = Plans.standard.plan
+    var photoUrl: String?
+    var joinedClubs: [String] = []
+    var ownedClubs: [String] = []
+    var subscriptionPlan: PremiumPlan = Plans.standard.plan
     var requests: [UserRequestModel] = []
     let dateCreated: Date
     

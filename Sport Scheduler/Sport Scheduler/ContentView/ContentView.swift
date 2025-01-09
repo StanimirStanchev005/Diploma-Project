@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var contentViewModel = ContentViewModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @State var contentViewModel = ContentViewModel()
     
     
     var body: some View {

@@ -9,7 +9,7 @@ import FirebaseFirestore
 import FirebaseAuth
 
 @MainActor
-final class ProfileModel: ObservableObject {
+final class ProfileModel {
     
     private var authenticationProvider: AuthenticationServiceProvidable
     private var databaseProvider: UserRepository

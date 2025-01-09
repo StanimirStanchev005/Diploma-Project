@@ -10,7 +10,7 @@ import SwiftUI
 import PhotosUI
 
 @MainActor
-final class CreateClubModel: ObservableObject {
+@Observable final class CreateClubModel {
 
     enum CreateClubImageState {
         case empty
@@ -26,16 +26,16 @@ final class CreateClubModel: ObservableObject {
                   "Gymnastics", "Handball", "Hockey", "Judo", "Modern Pentathlon", "Rowing", "Rugby Sevens", "Sailing", "Shooting", "Swimming", "Synchronized Swimming",
                   "Table Tennis", "Taekwondo", "Tennis", "Triathlon", "Volleyball", "Water Polo", "Weightlifting", "Wrestling"]
 
-    @Published var name = ""
-    @Published var description = ""
-    @Published var isValidRepresenter = false
-    @Published var selectedSport: String = "Football"
-    @Published var photo: Image = Image("ClubPlaceholder")
-    @Published var hasError = false
+    var name = ""
+    var description = ""
+    var isValidRepresenter = false
+    var selectedSport: String = "Football"
+    var photo: Image = Image("ClubPlaceholder")
+    var hasError = false
     private(set) var localizedError: String = "There was an error creating the club! Please try again!"
-    @Published var selectedItem: PhotosPickerItem?
-    @Published var clubCreationSuccess = false
-    @Published var imageState = CreateClubImageState.empty
+    var selectedItem: PhotosPickerItem?
+    var clubCreationSuccess = false
+    var imageState = CreateClubImageState.empty
     private(set) var isTaskInProgress = false
 
     init(clubRepository: ClubRepository = FirestoreClubRepository(),

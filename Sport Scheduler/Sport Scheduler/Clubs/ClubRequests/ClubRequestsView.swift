@@ -9,8 +9,8 @@ import SwiftUI
 
 
 struct ClubRequestsView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @ObservedObject var clubModel: ClubModel
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @Binding var clubModel: ClubModel
     
     var body: some View {
         VStack {
@@ -68,6 +68,6 @@ struct ClubRequestsView: View {
 }
 
 #Preview {
-    ClubRequestsView(clubModel: ClubModel())
-        .environmentObject(CurrentUser())
+    ClubRequestsView(clubModel: .constant(ClubModel()))
+        .environment(CurrentUser())
 }

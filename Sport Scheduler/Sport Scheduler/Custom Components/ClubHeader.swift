@@ -10,16 +10,21 @@ import PhotosUI
 @preconcurrency import CachedAsyncImage
 
 struct ClubHeader: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @ObservedObject var clubModel: ClubModel
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @Binding var clubModel: ClubModel
     let isOwner: Bool
     let isJoined: Bool
 
-    init(clubModel: ClubModel, isOwner: Bool = false, isJoined: Bool = false) {
-        self.clubModel = clubModel
+    init(clubModel: Binding<ClubModel>, isOwner: Bool = false, isJoined: Bool = false) {
+        self._clubModel = clubModel
         self.isOwner = isOwner
         self.isJoined = isJoined
     }
+//    init(clubModel: ClubModel, isOwner: Bool = false, isJoined: Bool = false) {
+//        self.clubModel = clubModel
+//        self.isOwner = isOwner
+//        self.isJoined = isJoined
+//    }
 
     var cachedImage: some View {
         CachedAsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
@@ -73,16 +78,16 @@ struct ClubHeader: View {
 
                 if isOwner {
                     HStack(spacing: 10) {
-                        NavigationLink("History", destination: WorkoutsHistoryView(clubModel: clubModel, isOwner: isOwner))
+                        NavigationLink("History", destination: WorkoutsHistoryView(clubModel: $clubModel, isOwner: isOwner))
                             .foregroundStyle(.lightBackground)
                             .tint(.gray.opacity(0.2))
                             .buttonStyle(.borderedProminent)
-                        NavigationLink("Requests (\(clubModel.userRequests.count))", destination: ClubRequestsView(clubModel: clubModel))
+                        NavigationLink("Requests (\(clubModel.userRequests.count))", destination: ClubRequestsView(clubModel: $clubModel))
                             .foregroundStyle(.lightBackground)
                             .tint(.gray.opacity(0.2))
                             .buttonStyle(.borderedProminent)
                             .frame(maxWidth: 130)
-                        NavigationLink("Members", destination: ClubMembersView(clubModel: clubModel))
+                        NavigationLink("Members", destination: ClubMembersView(clubModel: $clubModel))
                             .foregroundStyle(.lightBackground)
                             .tint(.gray.opacity(0.2))
                             .buttonStyle(.borderedProminent)
@@ -90,7 +95,7 @@ struct ClubHeader: View {
                     }
                     .padding(10)
                 } else if isJoined {
-                    NavigationLink("History", destination: WorkoutsHistoryView(clubModel: clubModel, isOwner: isOwner))
+                    NavigationLink("History", destination: WorkoutsHistoryView(clubModel: $clubModel, isOwner: isOwner))
                         .foregroundStyle(.lightBackground)
                         .tint(.gray.opacity(0.2))
                         .buttonStyle(.borderedProminent)
@@ -106,6 +111,6 @@ struct ClubHeader: View {
         currentUser.user = DBUser(userID: "123", name: "spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
         let clubModel = ClubModel()
         clubModel.club = Club(clubName: "Levski", description: "Blue", category: "Football", ownerId: "1234")
-        return ClubHeader(clubModel: clubModel, isOwner: true)
-            .environmentObject(currentUser)
+        return ClubHeader(clubModel: .constant(clubModel), isOwner: true)
+            .environment(currentUser)
     }

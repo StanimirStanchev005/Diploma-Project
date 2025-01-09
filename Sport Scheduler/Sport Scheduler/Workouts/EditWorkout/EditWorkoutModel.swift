@@ -9,8 +9,8 @@ import Foundation
 import FirebaseFirestore
 
 @MainActor
-final class EditWorkoutModel: ObservableObject {
-    
+final class EditWorkoutModel {
+
     private var clubRepository: ClubRepository
     
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {

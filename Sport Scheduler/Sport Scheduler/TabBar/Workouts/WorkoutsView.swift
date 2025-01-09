@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct WorkoutsView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var workoutsModel = WorkoutsModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @State var workoutsModel = WorkoutsModel()
 
     var body: some View {
         NavigationStack {
@@ -92,7 +92,7 @@ struct WorkoutsView: View {
 
 #Preview {
     NavigationStack {
-        WorkoutsView().environmentObject({ () -> CurrentUser in
+        WorkoutsView().environment({ () -> CurrentUser in
             let envObj = CurrentUser()
             envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
             envObj.user!.joinedClubs.append("Levski")

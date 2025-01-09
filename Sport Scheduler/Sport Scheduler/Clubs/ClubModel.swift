@@ -17,20 +17,21 @@ enum ClubScreenState {
 }
 
 @MainActor
-final class ClubModel: ObservableObject {
+@Observable
+final class ClubModel {
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
     private var storageRepository: ClubStorageRepository
-    @Published var club: Club?
-    @Published var clubWorkouts: [String: PaginatedClubWorkouts] = [
+    var club: Club?
+    private(set) var clubWorkouts: [String: PaginatedClubWorkouts] = [
         "future" : PaginatedClubWorkouts(),
         "history" : PaginatedClubWorkouts()
     ]
-    @Published var userRequests: [ClubRequestModel] = []
-    @Published var isTaskInProgress = true
-    @Published var state: ClubScreenState
-    @Published var errorMessage = ""
-    @Published var selectedItem: PhotosPickerItem?
+    var userRequests: [ClubRequestModel] = []
+    var isTaskInProgress = true
+    var state: ClubScreenState
+    var errorMessage = ""
+    var selectedItem: PhotosPickerItem?
     var isHistory = false
 
     init(clubRepository: ClubRepository = FirestoreClubRepository(), storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
@@ -38,7 +39,6 @@ final class ClubModel: ObservableObject {
         self.clubRepository = clubRepository
         self.storageRepository = storageRepository
         self.userRepository = userRepository
-
         state = .loading
     }
 

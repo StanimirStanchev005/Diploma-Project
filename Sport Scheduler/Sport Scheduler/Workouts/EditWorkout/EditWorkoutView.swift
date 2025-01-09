@@ -9,7 +9,7 @@ import SwiftUI
 
 struct EditWorkoutView: View {
     @Environment(\.presentationMode) var presentationMode
-    @StateObject var editWorkoutModel = EditWorkoutModel()
+    private let editWorkoutModel = EditWorkoutModel()
     @State var workout: Workout
     let clubID: String
     

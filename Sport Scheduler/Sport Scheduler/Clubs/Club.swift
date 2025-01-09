@@ -18,16 +18,16 @@ final class Club: Identifiable, Codable, @unchecked Sendable {
         case members
     }
 
-    var id: String {
-        clubName
-    }
     let ownerId: String
     var clubName: String
     var description: String
     var category: String
     var picture = "ClubPlaceholder"
     var members: [ClubUserModel] = []
-    
+    var id: String {
+        clubName
+    }
+
     init(clubName: String, description: String, category: String, ownerId: String) {
         self.clubName = clubName
         self.description = description

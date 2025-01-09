@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct OwnedClubsView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @ObservedObject var ownedClubsModel: TabBarClubsModel
-    
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @Binding var ownedClubsModel: TabBarClubsModel
+
     var body: some View {
         VStack {
             if currentUser.user!.ownedClubs.isEmpty {
@@ -50,7 +50,7 @@ struct OwnedClubsView: View {
 
 #Preview {
     NavigationStack {
-        OwnedClubsView(ownedClubsModel: TabBarClubsModel()).environmentObject({ () -> CurrentUser in
+        OwnedClubsView(ownedClubsModel: .constant(TabBarClubsModel())).environment({ () -> CurrentUser in
         let envObj = CurrentUser()
         envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
         return envObj

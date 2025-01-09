@@ -10,13 +10,13 @@ import CodeScanner
 import FirebaseFirestore
 
 @MainActor
-final class WorkoutViewModel: ObservableObject {
+@Observable final class WorkoutViewModel {
     private let clubRepository: ClubRepository
     var club: Club = Club(clubName: "", description: "", category: "", ownerId: "")
-    @Published var workout: Workout = Workout(clubId: "", title: "", date: Date())
-    @Published var isShowingScanner = false
-    @Published var isShowingError = false
-    @Published var errorMessage = ""
+    var workout: Workout = Workout(clubId: "", title: "", date: Date())
+    var isShowingScanner = false
+    var isShowingError = false
+    var errorMessage = ""
     
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository

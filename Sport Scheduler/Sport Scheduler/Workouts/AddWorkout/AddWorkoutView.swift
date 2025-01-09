@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AddWorkoutView: View {
     @Environment(\.dismiss) var dismiss
-    @StateObject var addWorkoutModel = AddWorkoutModel()
+    @State var addWorkoutModel = AddWorkoutModel()
     let clubID: String
     
     var body: some View {

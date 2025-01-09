@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct WorkoutListView: View {
-    @ObservedObject var clubModel: ClubModel
+    @Binding var clubModel: ClubModel
     var isOwner: Bool
     var isHistory: Bool
     var noWorkoutsMessage: String
@@ -22,7 +22,7 @@ struct WorkoutListView: View {
             ForEach(clubModel.clubWorkouts[key]!.workoutDates, id:\.self) { date in
                 Section {
                     ForEach(clubModel.filteredWorkouts(on: date, for: key), id:\.self.workoutId) { workout in
-                        NavigationLink(destination: WorkoutView(workout: workout, clubModel: clubModel)) {
+                        NavigationLink(destination: WorkoutView(workout: workout, clubModel: $clubModel)) {
                             WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
                         }
                         .swipeActions(edge: .leading) {
@@ -66,5 +66,5 @@ struct WorkoutListView: View {
 }
 
 #Preview {
-    WorkoutListView(clubModel: ClubModel(), isOwner: false, isHistory: false, noWorkoutsMessage: "", key: "current")
+    WorkoutListView(clubModel: .constant(ClubModel()), isOwner: false, isHistory: false, noWorkoutsMessage: "", key: "current")
 }

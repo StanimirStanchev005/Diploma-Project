@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct ClubView: View {
-    @StateObject var clubModel = ClubModel()
-    @EnvironmentObject var currentUser: CurrentUser
-    
+    @State var clubModel = ClubModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+
     let club: UserClubModel
     
     var body: some View {
@@ -23,7 +23,7 @@ struct ClubView: View {
                     Text("Loading...")
                 }
             case .club:
-                ClubContentView(clubModel: clubModel)
+                ClubContentView(clubModel: $clubModel)
             }
         }
         .task {

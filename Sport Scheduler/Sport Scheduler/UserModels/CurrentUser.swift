@@ -7,9 +7,10 @@
 
 import Foundation
 
-final class CurrentUser: ObservableObject {
-    @Published var user: DBUser?
-    @Published var state = ContentViewScreenState.loading
+@Observable
+final class CurrentUser {
+    var user: DBUser?
+    var state = ContentViewScreenState.loading
 
     func updateUser(with newUser: DBUser) {
         self.user = newUser

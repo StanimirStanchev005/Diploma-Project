@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-final class MainViewModel: ObservableObject {
+final class MainViewModel {
     private var userRepository: UserRepository
     
     init(userRepository: UserRepository = FirestoreUserRepository()) {
@@ -26,8 +26,9 @@ final class MainViewModel: ObservableObject {
 }
 
 struct MainView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var mainViewModel = MainViewModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    private let mainViewModel = MainViewModel()
+
     var body: some View {
         TabView {
             JoinedClubsView()

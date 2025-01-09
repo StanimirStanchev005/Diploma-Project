@@ -10,16 +10,16 @@ import FirebaseAuth
 import FirebaseFirestore
 
 @MainActor
-final class RegisterModel: ObservableObject {
+@Observable final class RegisterModel {
     private var authenticationProvider: AuthenticationServiceProvidable
     private var userRepository: UserRepository
 
-    @Published var fullName = ""
-    @Published var email = ""
-    @Published var password = ""
-    @Published var hasError = false
-    @Published var localizedError: String = "There was an error with signing up!"
-    @Published var isTaskInProgress = false
+    var fullName = ""
+    var email = ""
+    var password = ""
+    var hasError = false
+    var localizedError: String = "There was an error with signing up!"
+    var isTaskInProgress = false
 
     init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(), databaseProvider: UserRepository = FirestoreUserRepository()) {
         self.authenticationProvider = authenticationProvider

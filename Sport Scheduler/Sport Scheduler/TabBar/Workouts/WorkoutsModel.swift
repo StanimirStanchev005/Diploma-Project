@@ -8,12 +8,12 @@
 @preconcurrency import FirebaseFirestore
 
 @MainActor
-final class WorkoutsModel: ObservableObject {
+@Observable final class WorkoutsModel {
     private var clubRepository: ClubRepository
 
-    @Published var isTaskInProgress = true
-    @Published var selectedClub = ""
-    @Published var clubWorkouts: [String: PaginatedClubWorkouts] = [ : ]
+    var isTaskInProgress = true
+    var selectedClub = ""
+    var clubWorkouts: [String: PaginatedClubWorkouts] = [ : ]
 
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
@@ -38,7 +38,7 @@ final class WorkoutsModel: ObservableObject {
         return clubWorkouts[selectedClub]!.workouts.filter { calendar.startOfDay(for: $0.date) == date }
     }
 
-    @MainActor func fetchWorkouts(for user: DBUser?) {
+    func fetchWorkouts(for user: DBUser?) {
         guard user != nil else {
             print("Unable to find user")
             return

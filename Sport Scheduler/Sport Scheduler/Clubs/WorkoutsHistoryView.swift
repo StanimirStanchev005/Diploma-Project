@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct WorkoutsHistoryView: View {
-    @ObservedObject var clubModel: ClubModel
+    @Binding var clubModel: ClubModel
     private let key = "history"
     let isOwner: Bool
     
     var body: some View {
         VStack {
-            WorkoutListView(clubModel: clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "Your workouts history is empty", key: key)
+            WorkoutListView(clubModel: $clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "Your workouts history is empty", key: key)
         }
         .onAppear {
             clubModel.isHistory = true
@@ -25,5 +25,5 @@ struct WorkoutsHistoryView: View {
 }
 
 #Preview {
-    WorkoutsHistoryView(clubModel: ClubModel(), isOwner: false)
+    WorkoutsHistoryView(clubModel: .constant(ClubModel()), isOwner: false)
 }

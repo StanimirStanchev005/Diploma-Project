@@ -14,10 +14,11 @@ enum ContentViewScreenState {
     case hasUser
 }
 
-final class ContentViewModel: ObservableObject {
+@Observable
+final class ContentViewModel {
     private let authenticationProvider: AuthenticationServiceProvidable
     private let userRepository: UserRepository
-    @Published var showSplashView = true
+    var showSplashView = true
     
     init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(), userRepository: UserRepository = FirestoreUserRepository()) {
         self.authenticationProvider = authenticationProvider

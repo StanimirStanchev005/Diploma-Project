@@ -12,15 +12,15 @@ import GoogleSignInSwift
 import FirebaseFirestore
 
 @MainActor
-final class LoginModel: ObservableObject {
+@Observable final class LoginModel {
     private var authenticationProvider: AuthenticationServiceProvidable
     private var userRepository: UserRepository
     
-    @Published var email = ""
-    @Published var password = ""
-    @Published var hasError = false
-    @Published var localizedError: String = "There was an error signing in!"
-    @Published var isTaskInProgress = false
+    var email = ""
+    var password = ""
+    var hasError = false
+    var localizedError: String = "There was an error signing in!"
+    var isTaskInProgress = false
     
     init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(),
          databaseProvider: UserRepository = FirestoreUserRepository()) {

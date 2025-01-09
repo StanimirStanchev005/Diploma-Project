@@ -11,9 +11,9 @@ struct ClubContentView: View {
     @State private var showAddWorkoutScreen = false
     @State private var selectedDate = Date()
     @State private var isRequestSend = false
-    @ObservedObject var clubModel: ClubModel
-    @EnvironmentObject var currentUser: CurrentUser
-    
+    @Binding var clubModel: ClubModel
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+
     private let key = "future"
 
     private var isOwner: Bool {
@@ -53,14 +53,14 @@ struct ClubContentView: View {
     
     var body: some View {
         VStack {
-            ClubHeader(clubModel: clubModel, isOwner: isOwner, isJoined: isJoined)
+            ClubHeader(clubModel: $clubModel, isOwner: isOwner, isJoined: isJoined)
             
             if isOwner || isJoined {
                 if clubModel.isTaskInProgress {
                     ProgressView()
                         .controlSize(.large)
                 } else {
-                    WorkoutListView(clubModel: clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "There are no upcomming workouts", key: key)
+                    WorkoutListView(clubModel: $clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "There are no upcomming workouts", key: key)
                 }
             } else {
                 ContentUnavailableView("Club is locked", systemImage: "lock", description: Text("Join this club to see their workouts"))

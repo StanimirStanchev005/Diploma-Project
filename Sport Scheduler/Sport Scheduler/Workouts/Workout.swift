@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class Workout: ObservableObject, Codable, Equatable, @unchecked Sendable {
+@Observable final class Workout: Codable, Equatable, @unchecked Sendable {
 
     enum CodingKeys: CodingKey {
         case workoutId, clubId, title, description, date, participants
@@ -15,9 +15,9 @@ final class Workout: ObservableObject, Codable, Equatable, @unchecked Sendable {
 
     let workoutId: String
     let clubId: String
-    @Published var title: String
-    @Published var description: String
-    @Published var date: Date
+    var title: String
+    var description: String
+    var date: Date
     var participants: [ClubUserModel] = []
     
     init(clubId: String, title: String, description: String = "", date: Date, workoutId: String = UUID().uuidString) {

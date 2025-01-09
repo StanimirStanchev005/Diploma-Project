@@ -10,8 +10,8 @@ import PhotosUI
 
 struct CreateClubView: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject private var createClubModel = CreateClubModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @State private var createClubModel = CreateClubModel()
     @State private var showTermsOfService = false
 
 
