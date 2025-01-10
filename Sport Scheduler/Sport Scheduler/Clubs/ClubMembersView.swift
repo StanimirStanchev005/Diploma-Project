@@ -58,10 +58,10 @@ struct ClubMembersView: View {
             }
         }
         .onAppear() {
-            clubMembersModel.members = clubModel.club!.members
+            clubMembersModel.members = clubModel.club!.data.members
         }
-        .onChange(of: clubModel.club!.members.count) {
-            clubMembersModel.members = clubModel.club!.members
+        .onChange(of: clubModel.club!.data.members.count) {
+            clubMembersModel.members = clubModel.club!.data.members
         }
     }
 }

@@ -69,7 +69,7 @@ final class ClubModel {
         guard let userId else {
             return false
         }
-        return club?.ownerId == userId
+        return club?.data.ownerId == userId
     }
     
     func isJoined(joinedClubs: [String]?) -> Bool {
@@ -77,7 +77,7 @@ final class ClubModel {
             return false
         }
         return joinedClubs.contains(where: { club in
-            club == self.club?.clubName })
+            club == self.club?.data.clubName })
     }
     
     func visitedWorkouts(for userId: String?) -> Int {
@@ -85,7 +85,7 @@ final class ClubModel {
             print("Invalid userId")
             return -1
         }
-        let clubMember = club?.members.first { member in
+        let clubMember = club?.data.members.first { member in
             member.userID == userId
         }
         guard let clubMember else {
@@ -96,7 +96,7 @@ final class ClubModel {
     }
     
     func triggerClubListeners() {
-        clubRepository.listenForChanges(for: club!.id) { [weak self] club in
+        clubRepository.listenForChanges(for: club!.data.id) { [weak self] club in
             guard let self = self else {
                 print("Unable to update club")
                 return
@@ -106,7 +106,7 @@ final class ClubModel {
     }
     
     func triggerRequestListeners() {
-        clubRepository.listenForRequestChanges(for: club!.clubName) { [weak self] requests in
+        clubRepository.listenForRequestChanges(for: club!.data.clubName) { [weak self] requests in
             guard let self = self else {
                 print("Unable to update userRequests")
                 return
@@ -130,7 +130,7 @@ final class ClubModel {
     func fetchWorkouts(for key: String) {
         Task {
             do {
-                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key]!.lastDocument, history: isHistory)
+                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.data.clubName, lastDocument: clubWorkouts[key]!.lastDocument, history: isHistory)
                 await MainActor.run {
                     for workout in fetchedWorkouts {
                         if !self.clubWorkouts[key]!.workouts.contains(where: { $0 == workout }) {
@@ -151,7 +151,7 @@ final class ClubModel {
 
     func deleteWorkout(id: String) {
         do {
-            try clubRepository.deleteWorkout(for: self.club!.clubName, with: id)
+            try clubRepository.deleteWorkout(for: self.club!.data.clubName, with: id)
             clubWorkouts["future"]!.workouts.removeAll(where: {$0.workoutId == id})
         } catch {
             print("Error deleting workout: \(error)")
@@ -161,7 +161,7 @@ final class ClubModel {
     func remove(member: ClubUserModel) {
         do {
             try clubRepository.remove(user: member, from: self.club!)
-            club!.members.removeAll(where: { $0.userID == member.userID })
+            club!.data.members.removeAll(where: { $0.userID == member.userID })
         } catch {
             print("Error removing user from club: \(error)")
         }
@@ -193,9 +193,9 @@ final class ClubModel {
         }
         Task {
             guard let data = try await selectedItem.loadTransferable(type: Data.self) else { return }
-            let returnedData = try await storageRepository.saveImage(data: data, name: club.clubName)
+            let returnedData = try await storageRepository.saveImage(data: data, name: club.data.clubName)
             let url = try await storageRepository.getUrlFromImage(path: returnedData.path)
-            try clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
+            try clubRepository.updateClubPicture(clubID: club.data.clubName, pictureUrl: url.absoluteString)
         }
     }
 }

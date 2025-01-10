@@ -27,7 +27,7 @@ struct WorkoutListView: View {
                         }
                         .swipeActions(edge: .leading) {
                             if isOwner && !isHistory {
-                                NavigationLink(destination: EditWorkoutView(workout: workout, clubID: clubModel.club!.clubName)) {
+                                NavigationLink(destination: EditWorkoutView(workout: workout, clubID: clubModel.club!.data.clubName)) {
                                     Label("Edit", systemImage: "pencil")
                                 }
                                 .tint(.indigo)

@@ -27,7 +27,7 @@ struct ClubHeader: View {
 //    }
 
     var cachedImage: some View {
-        CachedAsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
+        CachedAsyncImage(url: URL(string: clubModel.club?.data.picture ?? "")) { phase in
             switch phase {
             case .success(let image):
                 image
@@ -61,7 +61,7 @@ struct ClubHeader: View {
             }
             .frame(width: 100, height: 100)
                 HStack(spacing: 10) {
-                    Text("Members: \(clubModel.club?.members.count ?? 0)")
+                    Text("Members: \(clubModel.club?.data.members.count ?? 0)")
                         .font(.headline)
                     if isJoined {
                         Text("My workouts: \(clubModel.visitedWorkouts(for: currentUser.user?.userID))")
@@ -69,7 +69,7 @@ struct ClubHeader: View {
                     }
                 }
 
-                Text(clubModel.club?.description ?? "")
+            Text(clubModel.club?.data.description ?? "")
                     .multilineTextAlignment(.center)
                     .font(.title3)
                     .padding([.leading, .trailing], 15)

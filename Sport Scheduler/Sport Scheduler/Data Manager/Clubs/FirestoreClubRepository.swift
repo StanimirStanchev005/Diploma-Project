@@ -16,24 +16,26 @@ final class FirestoreClubRepository: ClubRepository {
     
     func create(club: Club) async throws {
         do {
-            let clubDocument = try await db.collection("clubs").document(club.id).getDocument()
+            let clubDocument = try await db.collection("clubs").document(club.data.id).getDocument()
             guard !clubDocument.exists else {
                 throw ClubRepositoryError.alreadyExists
             }
-            try clubDocument.reference.setData(from: club, merge: false)
+            try clubDocument.reference.setData(from: club.data, merge: false)
         } catch {
             throw ClubRepositoryError.alreadyExists
         }
     }
     
     func getClub(clubId: String) async throws -> Club {
-        try await db.collection("clubs").document(clubId).getDocument(as: Club.self)
+        let data = try await db.collection("clubs").document(clubId).getDocument(as: ClubData.self)
+        return Club(data: data)
     }
     
     private func getAllClubs() async throws -> [Club] {
         let clubsSnapshot = try await db.collection("clubs").getDocuments()
         return try clubsSnapshot.documents.compactMap { document in
-            try document.data(as: Club.self)
+            let data = try document.data(as: ClubData.self)
+            return Club(data: data)
         }
     }
     
@@ -53,7 +55,8 @@ final class FirestoreClubRepository: ClubRepository {
                 }
                 let clubs = clubDocuments.compactMap { club in
                     do {
-                        return try club.data(as: Club.self)
+                        let data = try club.data(as: ClubData.self)
+                        return Club(data: data)
                     } catch {
                         print("Error decoding club: \(club)")
                         return nil
@@ -135,8 +138,8 @@ final class FirestoreClubRepository: ClubRepository {
                 return
             }
             do {
-                let club = try clubSnapshot.data(as: Club.self)
-                onSuccess(club)
+                let clubData = try clubSnapshot.data(as: ClubData.self)
+                onSuccess(Club(data: clubData))
             } catch {
                 print("Error decoding club: \(club)")
             }
@@ -171,14 +174,14 @@ final class FirestoreClubRepository: ClubRepository {
 
         let requestToRemove = [
             "requestID": request.requestID,
-            "clubID": club.clubName,
+            "clubID": club.data.clubName,
             "status": RequestStatus.pending.rawValue
         ]
         db.collection("clubs").document(request.clubID).updateData([
             "members": FieldValue.arrayUnion([member])
         ])
         db.collection("users").document(request.userID).updateData([
-            "joinedClubs": FieldValue.arrayUnion([club.clubName]),
+            "joinedClubs": FieldValue.arrayUnion([club.data.clubName]),
             "requests": FieldValue.arrayRemove([requestToRemove])
         ])
         db.collection("clubs").document(request.clubID).collection("requests").document(request.requestID).delete()
@@ -187,7 +190,7 @@ final class FirestoreClubRepository: ClubRepository {
     func reject(request: ClubRequestModel, from club: Club) throws {
         let requestToRemove = [
             "requestID": request.requestID,
-            "clubID": club.clubName,
+            "clubID": club.data.clubName,
             "status": RequestStatus.pending.rawValue
         ]
         db.collection("users").document(request.userID).updateData([
@@ -207,16 +210,16 @@ final class FirestoreClubRepository: ClubRepository {
             "participants": FieldValue.arrayUnion([participantToAdd])
         ])
     
-        let memberIndex = club.members.firstIndex { member in
+        let memberIndex = club.data.members.firstIndex { member in
             participant.userID == member.userID
         }
         guard let memberIndex else {
             print("This user is not a member in this club")
             return
         }
-        club.members[memberIndex].visitedWorkouts += 1
-       
-        try db.collection("clubs").document(workout.clubId).setData(from: club, merge: true)
+        club.data.members[memberIndex].visitedWorkouts += 1
+
+        try db.collection("clubs").document(workout.clubId).setData(from: club.data, merge: true)
     }
     
     func remove(user: ClubUserModel, from club: Club) throws {
@@ -226,11 +229,11 @@ final class FirestoreClubRepository: ClubRepository {
             "visitedWorkouts": user.visitedWorkouts
         ] as [String : Any]
         
-        db.collection("clubs").document(club.id).updateData([
+        db.collection("clubs").document(club.data.id).updateData([
             "members": FieldValue.arrayRemove([userToRemove])
         ])
         db.collection("users").document(user.userID).updateData([
-            "joinedClubs": FieldValue.arrayRemove([club.clubName])
+            "joinedClubs": FieldValue.arrayRemove([club.data.clubName])
         ])
     }
     

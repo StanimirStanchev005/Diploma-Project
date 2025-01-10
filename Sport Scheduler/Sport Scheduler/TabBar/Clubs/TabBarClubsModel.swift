@@ -25,7 +25,7 @@ import Combine
     var numberOfClubsAllowed = 0
     var mappedClubs: [UserClubModel] {
         clubs.map { club in
-            UserClubModel(name: club.clubName, picture: club.picture)
+            UserClubModel(name: club.data.clubName, picture: club.data.picture)
         }
     }
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
@@ -34,7 +34,7 @@ import Combine
     
     func filterUserClubs(by clubsToFilter: [String]) -> [UserClubModel] {
         let mappedClubs = clubs.map { club in
-            UserClubModel(name: club.clubName, picture: club.picture)
+            UserClubModel(name: club.data.clubName, picture: club.data.picture)
         }
         return mappedClubs.filter { club in
             clubsToFilter.contains { $0 == club.name }
@@ -54,10 +54,10 @@ import Combine
     func searchClub(searchText: String, clubs: [Club]) -> [UserClubModel] {
         let searchText = searchText.lowercased()
         return clubs.filter { club in
-            club.clubName.lowercased().contains(searchText)
+            club.data.clubName.lowercased().contains(searchText)
         }
         .map { club in
-            UserClubModel(name: club.clubName, picture: club.picture)
+            UserClubModel(name: club.data.clubName, picture: club.data.picture)
         }
     }
     
