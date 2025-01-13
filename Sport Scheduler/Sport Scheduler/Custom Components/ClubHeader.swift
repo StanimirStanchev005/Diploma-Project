@@ -20,11 +20,6 @@ struct ClubHeader: View {
         self.isOwner = isOwner
         self.isJoined = isJoined
     }
-//    init(clubModel: ClubModel, isOwner: Bool = false, isJoined: Bool = false) {
-//        self.clubModel = clubModel
-//        self.isOwner = isOwner
-//        self.isJoined = isJoined
-//    }
 
     var cachedImage: some View {
         CachedAsyncImage(url: URL(string: clubModel.club?.data.picture ?? "")) { phase in
