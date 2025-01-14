@@ -10,7 +10,6 @@ import Combine
 @MainActor
 @Observable final class TabBarClubsModel {
     private var clubRepository: ClubRepository
-    private var cancellables = Set<AnyCancellable>()
     private var clubs: [Club] = []
     var searchQuery: String = "" {
         didSet {
@@ -25,7 +24,7 @@ import Combine
     var numberOfClubsAllowed = 0
     var mappedClubs: [UserClubModel] {
         clubs.map { club in
-            UserClubModel(name: club.data.clubName, picture: club.data.picture)
+            UserClubModel(name: club.clubName, picture: club.picture)
         }
     }
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
@@ -34,7 +33,7 @@ import Combine
     
     func filterUserClubs(by clubsToFilter: [String]) -> [UserClubModel] {
         let mappedClubs = clubs.map { club in
-            UserClubModel(name: club.data.clubName, picture: club.data.picture)
+            UserClubModel(name: club.clubName, picture: club.picture)
         }
         return mappedClubs.filter { club in
             clubsToFilter.contains { $0 == club.name }
@@ -54,10 +53,10 @@ import Combine
     func searchClub(searchText: String, clubs: [Club]) -> [UserClubModel] {
         let searchText = searchText.lowercased()
         return clubs.filter { club in
-            club.data.clubName.lowercased().contains(searchText)
+            club.clubName.lowercased().contains(searchText)
         }
         .map { club in
-            UserClubModel(name: club.data.clubName, picture: club.data.picture)
+            UserClubModel(name: club.clubName, picture: club.picture)
         }
     }
     

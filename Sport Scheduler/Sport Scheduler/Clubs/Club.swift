@@ -7,30 +7,8 @@
 
 import Foundation
 
-@MainActor
-final class Club {
+struct Club: Codable, Identifiable {
 
-    var data: ClubData
-
-    init(clubName: String, description: String, category: String, ownerId: String) {
-        data = ClubData(ownerId: ownerId,
-                        clubName: clubName,
-                        description: description,
-                        category: category)
-    }
-
-    init(data: ClubData) {
-        self.data = data
-    }
-}
-
-struct ClubUserModel: Codable {
-    let userID: String
-    let name: String
-    var visitedWorkouts: Int = 0
-}
-
-struct ClubData: Codable, Identifiable {
     let ownerId: String
     var clubName: String
     var description: String
@@ -40,4 +18,18 @@ struct ClubData: Codable, Identifiable {
     var id: String {
         clubName
     }
+
+    init(ownerId: String, clubName: String, description: String, category: String) {
+        self.ownerId = ownerId
+        self.clubName = clubName
+        self.description = description
+        self.category = category
+    }
 }
+
+struct ClubUserModel: Codable {
+    let userID: String
+    let name: String
+    var visitedWorkouts: Int = 0
+}
+

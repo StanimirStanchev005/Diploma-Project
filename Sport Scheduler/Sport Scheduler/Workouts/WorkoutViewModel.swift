@@ -3,7 +3,6 @@
 //  Sport Scheduler
 //
 //  Created by Tumba Developer on 29.02.24.
-//
 
 import Foundation
 import CodeScanner
@@ -12,7 +11,7 @@ import FirebaseFirestore
 @MainActor
 @Observable final class WorkoutViewModel {
     private let clubRepository: ClubRepository
-    var club: Club = Club(clubName: "", description: "", category: "", ownerId: "")
+    var club: Club = Club(ownerId: "", clubName: "", description: "", category: "")
     var workout: Workout = Workout(clubId: "", title: "", date: Date())
     var isShowingScanner = false
     var isShowingError = false

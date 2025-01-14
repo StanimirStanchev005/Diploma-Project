@@ -76,7 +76,7 @@ struct CreateClubView: View {
                         }
 
                         Button {
-                            let club = Club(clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport, ownerId: currentUser.user!.userID)
+                            let club = Club(ownerId: currentUser.user!.userID, clubName: createClubModel.name, description: createClubModel.description, category: createClubModel.selectedSport)
                             createClubModel.create(club: club, for: currentUser.user!.userID, photo: createClubModel.selectedItem)
                         } label: {
                             SignInButton(text: "Create", color: createClubModel.isInputValid ? .blue : .gray)

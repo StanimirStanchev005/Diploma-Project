@@ -34,8 +34,8 @@ struct ClubContentView: View {
             } else if !isJoined {
                 Button {
                     do {
-                        let request = ClubRequestModel(clubID: clubModel.club!.data.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
-                        try clubModel.sendJoinRequest(for: clubModel.club!.data.clubName, request: request)
+                        let request = ClubRequestModel(clubID: clubModel.club!.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
+                        try clubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
                         isRequestSend = true
                     } catch {
                         print("Error while sending join request: \(error)")
@@ -44,7 +44,7 @@ struct ClubContentView: View {
                     Text("Apply")
                 }
                 .disabled(currentUser.user!.requests.contains(where: { request in
-                    request.clubID == clubModel.club!.data.clubName &&
+                    request.clubID == clubModel.club!.clubName &&
                     request.status == RequestStatus.pending.rawValue
                 }))
             }
@@ -78,9 +78,9 @@ struct ClubContentView: View {
             clubModel.clearFutureWorkouts()
             clubModel.fetchWorkouts(for: key)
         } content: {
-            AddWorkoutView(clubID: clubModel.club!.data.clubName)
+            AddWorkoutView(clubID: clubModel.club!.clubName)
         }
-        .navigationTitle(clubModel.club!.data.clubName)
+        .navigationTitle(clubModel.club!.clubName)
         .toolbar {
             navbarButtons
         }
