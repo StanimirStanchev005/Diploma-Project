@@ -8,7 +8,6 @@
 import Foundation
 import FirebaseFirestore
 
-@MainActor
 final class EditWorkoutModel {
 
     private var clubRepository: ClubRepository

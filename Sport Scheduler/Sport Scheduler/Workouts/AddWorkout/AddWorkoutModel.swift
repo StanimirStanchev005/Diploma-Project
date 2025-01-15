@@ -8,7 +8,6 @@
 import Foundation
 import FirebaseFirestore
 
-@MainActor
 @Observable final class AddWorkoutModel {
     var workoutDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
     var workoutTitle = ""

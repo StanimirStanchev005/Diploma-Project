@@ -17,8 +17,7 @@ final class SignInGoogleHelper {
         self.authenticationProvider = authenticationProvider
     }
     
-    @MainActor
-    func signIn() async throws -> GoogleSignInResultModel {
+    @MainActor func signIn() async throws -> GoogleSignInResultModel {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { throw "Cannot find windowScene" }
         guard let rootViewController = windowScene.windows.first?.rootViewController else { throw "Cannot find rootViewController" }
 

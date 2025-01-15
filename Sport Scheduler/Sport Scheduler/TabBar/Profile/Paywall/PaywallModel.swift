@@ -8,7 +8,6 @@
 import Foundation
 import FirebaseFirestore
 
-@MainActor
 @Observable final class PaywallModel {
     var isStandardChosen = false
     var isGoldChosen = false

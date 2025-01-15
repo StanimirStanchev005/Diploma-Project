@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DBUser: Codable, Sendable {
+struct DBUser: Codable {
 
     let userID: String
     var name: String

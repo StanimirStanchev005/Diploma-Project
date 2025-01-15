@@ -8,7 +8,6 @@
 import FirebaseFirestore
 import FirebaseAuth
 
-@MainActor
 final class ProfileModel {
     
     private var authenticationProvider: AuthenticationServiceProvidable

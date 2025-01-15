@@ -7,7 +7,6 @@
 import FirebaseFirestore
 import Combine
 
-@MainActor
 @Observable final class TabBarClubsModel {
     private var clubRepository: ClubRepository
     private var clubs: [Club] = []

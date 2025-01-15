@@ -16,7 +16,6 @@ enum ClubScreenState {
     // Add error state
 }
 
-@MainActor
 @Observable
 final class ClubModel {
     private var clubRepository: ClubRepository
@@ -47,7 +46,7 @@ final class ClubModel {
         clubWorkouts["future"]!.workoutDates = []
         clubWorkouts["future"]!.lastDocument = nil
     }
-        
+
     func getUniqueDates(isHistory: Bool) {
         let calendar = Calendar.current
         if isHistory {
@@ -57,9 +56,9 @@ final class ClubModel {
             let dateSet = Set(clubWorkouts["future"]!.workouts.map { calendar.startOfDay(for: $0.date) })
             clubWorkouts["future"]!.workoutDates = Array(dateSet).sorted()
         }
-        
+
     }
-    
+
     func filteredWorkouts(on date: Date, for key: String) -> [Workout] {
         let calendar = Calendar.current
         return clubWorkouts[key]!.workouts.filter { calendar.startOfDay(for: $0.date) == date }
@@ -71,7 +70,7 @@ final class ClubModel {
         }
         return club?.ownerId == userId
     }
-    
+
     func isJoined(joinedClubs: [String]?) -> Bool {
         guard let joinedClubs else {
             return false
@@ -79,7 +78,7 @@ final class ClubModel {
         return joinedClubs.contains(where: { club in
             club == self.club?.clubName })
     }
-    
+
     func visitedWorkouts(for userId: String?) -> Int {
         guard let userId else {
             print("Invalid userId")
@@ -94,7 +93,7 @@ final class ClubModel {
         }
         return clubMember.visitedWorkouts
     }
-    
+
     func triggerClubListeners() {
         clubRepository.listenForChanges(for: club!.id) { [weak self] club in
             guard let self = self else {
@@ -104,7 +103,7 @@ final class ClubModel {
             self.club = club
         }
     }
-    
+
     func triggerRequestListeners() {
         clubRepository.listenForRequestChanges(for: club!.clubName) { [weak self] requests in
             guard let self = self else {
@@ -114,35 +113,31 @@ final class ClubModel {
             self.userRequests = requests
         }
     }
-    
-    func fetchData(for clubID: String) async throws {
+
+    @MainActor func fetchData(for clubID: String) async throws {
         let fetchedClub = try await clubRepository.getClub(clubId: clubID)
         Task {
-            await MainActor.run {
-                self.club = fetchedClub
-                self.state = .club(fetchedClub)
-                triggerClubListeners()
-                triggerRequestListeners()
-            }
+            self.club = fetchedClub
+            self.state = .club(fetchedClub)
+            triggerClubListeners()
+            triggerRequestListeners()
         }
     }
     //Here
-    func fetchWorkouts(for key: String) {
+    @MainActor func fetchWorkouts(for key: String) {
         Task {
             do {
                 let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key]!.lastDocument, history: isHistory)
-                await MainActor.run {
-                    for workout in fetchedWorkouts {
-                        if !self.clubWorkouts[key]!.workouts.contains(where: { $0 == workout }) {
-                            self.clubWorkouts[key]!.workouts.append(workout)
-                        }
+                for workout in fetchedWorkouts {
+                    if !self.clubWorkouts[key]!.workouts.contains(where: { $0 == workout }) {
+                        self.clubWorkouts[key]!.workouts.append(workout)
                     }
-                    if let lastDocument {
-                        self.clubWorkouts[key]!.lastDocument = lastDocument
-                    }
-                    getUniqueDates(isHistory: isHistory)
-                    isTaskInProgress = false
                 }
+                if let lastDocument {
+                    self.clubWorkouts[key]!.lastDocument = lastDocument
+                }
+                getUniqueDates(isHistory: isHistory)
+                isTaskInProgress = false
             } catch {
                 print("Error: \(error)")
             }
@@ -170,21 +165,21 @@ final class ClubModel {
     func sendJoinRequest(for clubId: String, request: ClubRequestModel) throws {
         try clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
     }
-    
+
     func accept(request: ClubRequestModel) throws {
         try clubRepository.accept(request: request, from: club!)
         let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
         userRequests[index].status = RequestStatus.accepted.rawValue
         userRequests.remove(at: index)
     }
-    
+
     func reject(request: ClubRequestModel) throws {
         try clubRepository.reject(request: request, from: club!)
         let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
         userRequests.remove(at: index)
     }
 
-    func updateClubPicture() {
+    @MainActor func updateClubPicture() {
         guard let club else {
             return
         }

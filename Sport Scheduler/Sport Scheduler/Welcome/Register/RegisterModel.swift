@@ -9,7 +9,6 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-@MainActor
 @Observable final class RegisterModel {
     private var authenticationProvider: AuthenticationServiceProvidable
     private var userRepository: UserRepository
@@ -42,14 +41,14 @@ import FirebaseFirestore
         isFullNameValid && isEmailValid && isPasswordValid
     }
 
-    func register() async throws -> DBUser {
+    @MainActor func register() async throws -> DBUser {
         let authDataResultModel = try await authenticationProvider.signUp(email: email, password: password)
         let user = DBUser(userID: authDataResultModel.uid, name: fullName, email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
         try userRepository.create(user: user)
         return user
     }
 
-    func signInGoogle() async throws -> DBUser {
+    @MainActor func signInGoogle() async throws -> DBUser {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
 
         let tokens = try await helper.signIn()

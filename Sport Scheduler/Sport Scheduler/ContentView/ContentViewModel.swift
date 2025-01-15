@@ -25,8 +25,7 @@ final class ContentViewModel {
         self.userRepository = userRepository
     }
     
-    @MainActor
-    func checkUser(currentUser: CurrentUser) async {
+    @MainActor func checkUser(currentUser: CurrentUser) async {
         do {
             let authUser: AuthDataResultModel? = try authenticationProvider.getAuthenticatedUser()
             guard authUser != nil else {

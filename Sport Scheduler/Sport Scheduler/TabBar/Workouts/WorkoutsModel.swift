@@ -7,7 +7,6 @@
 
 @preconcurrency import FirebaseFirestore
 
-@MainActor
 @Observable final class WorkoutsModel {
     private var clubRepository: ClubRepository
 
@@ -38,7 +37,7 @@
         return clubWorkouts[selectedClub]!.workouts.filter { calendar.startOfDay(for: $0.date) == date }
     }
 
-    func fetchWorkouts(for user: DBUser?) {
+    @MainActor func fetchWorkouts(for user: DBUser?) {
         guard user != nil else {
             print("Unable to find user")
             return

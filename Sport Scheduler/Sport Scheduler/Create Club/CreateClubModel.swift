@@ -9,7 +9,6 @@ import FirebaseFirestore
 import SwiftUI
 import PhotosUI
 
-@MainActor
 @Observable final class CreateClubModel {
 
     enum CreateClubImageState {
@@ -50,16 +49,14 @@ import PhotosUI
         isValidRepresenter && !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
-    func convertDataToImage() {
+    @MainActor func convertDataToImage() {
         guard let selectedItem else { return }
         imageState = .loading
         Task {
             do {
                 if let image = try await selectedItem.loadTransferable(type: Image.self) {
-                    await MainActor.run {
                         self.photo = image
                         imageState = .success
-                    }
                 }
             } catch {
                 print(error)
@@ -67,7 +64,7 @@ import PhotosUI
         }
     }
 
-    func create(club: Club, for userID: String, photo: PhotosPickerItem?) {
+    @MainActor func create(club: Club, for userID: String, photo: PhotosPickerItem?) {
         isTaskInProgress = true
         Task {
             do {

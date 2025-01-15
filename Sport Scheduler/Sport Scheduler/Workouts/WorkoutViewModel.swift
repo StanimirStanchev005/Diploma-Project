@@ -8,7 +8,6 @@ import Foundation
 import CodeScanner
 import FirebaseFirestore
 
-@MainActor
 @Observable final class WorkoutViewModel {
     private let clubRepository: ClubRepository
     var club: Club = Club(ownerId: "", clubName: "", description: "", category: "")

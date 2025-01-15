@@ -11,11 +11,9 @@ import GoogleSignIn
 import GoogleSignInSwift
 import FirebaseFirestore
 
-@MainActor
 @Observable final class LoginModel {
     private var authenticationProvider: AuthenticationServiceProvidable
     private var userRepository: UserRepository
-    
     var email = ""
     var password = ""
     var hasError = false
@@ -40,12 +38,12 @@ import FirebaseFirestore
         isEmailValid && isPasswordValid
     }
     
-    func login() async throws -> DBUser {
+    @MainActor func login() async throws -> DBUser {
         let authDataResult = try await authenticationProvider.signIn(email: email, password: password)
         return try await userRepository.getUser(userId: authDataResult.uid)
     }
     
-    func signInGoogle() async throws -> DBUser {
+    @MainActor func signInGoogle() async throws -> DBUser {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
