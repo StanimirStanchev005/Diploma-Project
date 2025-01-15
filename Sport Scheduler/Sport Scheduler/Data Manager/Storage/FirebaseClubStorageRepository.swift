@@ -8,7 +8,7 @@
 import Foundation
 @preconcurrency import FirebaseStorage
 
-final class FirebaseClubStorageRepository: ClubStorageRepository {
+actor FirebaseClubStorageRepository: ClubStorageRepository {
     
     private let storage = Storage.storage().reference()
    
