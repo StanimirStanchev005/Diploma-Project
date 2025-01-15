@@ -14,8 +14,6 @@ struct ClubContentView: View {
     @Binding var clubModel: ClubModel
     @Environment(CurrentUser.self) private var currentUser: CurrentUser
 
-    private let key = "future"
-
     private var isOwner: Bool {
         clubModel.isUserOwner(userId: currentUser.user?.userID)
     }
@@ -60,7 +58,7 @@ struct ClubContentView: View {
                     ProgressView()
                         .controlSize(.large)
                 } else {
-                    WorkoutListView(clubModel: $clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "There are no upcomming workouts", key: key)
+                    WorkoutListView(clubModel: $clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "There are no upcomming workouts")
                 }
             } else {
                 ContentUnavailableView("Club is locked", systemImage: "lock", description: Text("Join this club to see their workouts"))
@@ -75,8 +73,9 @@ struct ClubContentView: View {
             Text("Request to join was sent successfully")
         }
         .sheet(isPresented: $showAddWorkoutScreen) {
+            clubModel.key = .future
             clubModel.clearFutureWorkouts()
-            clubModel.fetchWorkouts(for: key)
+            clubModel.fetchWorkouts()
         } content: {
             AddWorkoutView(clubID: clubModel.club!.clubName)
         }
@@ -86,7 +85,8 @@ struct ClubContentView: View {
         }
         .onAppear {
             clubModel.isHistory = false
-            clubModel.fetchWorkouts(for: key)
+            clubModel.key = .future
+            clubModel.fetchWorkouts()
         }
         .onChange(of: clubModel.selectedItem) {
             clubModel.updateClubPicture()

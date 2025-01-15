@@ -18,6 +18,12 @@ enum ClubScreenState {
 
 @Observable
 final class ClubModel {
+
+    enum ClubWorkoutKey: String {
+        case future = "future"
+        case history = "history"
+    }
+
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
     private var storageRepository: ClubStorageRepository
@@ -32,6 +38,7 @@ final class ClubModel {
     var errorMessage = ""
     var selectedItem: PhotosPickerItem?
     var isHistory = false
+    var key: ClubWorkoutKey = .future
 
     init(clubRepository: ClubRepository = FirestoreClubRepository(), storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
@@ -42,9 +49,11 @@ final class ClubModel {
     }
 
     func clearFutureWorkouts() {
-        clubWorkouts["future"]!.workouts = []
-        clubWorkouts["future"]!.workoutDates = []
-        clubWorkouts["future"]!.lastDocument = nil
+        if let data = clubWorkouts["future"] {
+            data.workouts = []
+            data.workoutDates = []
+            data.lastDocument = nil
+        }
     }
 
     func getUniqueDates(isHistory: Bool) {
@@ -59,9 +68,9 @@ final class ClubModel {
 
     }
 
-    func filteredWorkouts(on date: Date, for key: String) -> [Workout] {
+    func filteredWorkouts(on date: Date) -> [Workout] {
         let calendar = Calendar.current
-        return clubWorkouts[key]!.workouts.filter { calendar.startOfDay(for: $0.date) == date }
+        return clubWorkouts[key.rawValue]!.workouts.filter { calendar.startOfDay(for: $0.date) == date }
     }
 
     func isUserOwner(userId: String?) -> Bool {
@@ -124,17 +133,17 @@ final class ClubModel {
         }
     }
     //Here
-    @MainActor func fetchWorkouts(for key: String) {
+    @MainActor func fetchWorkouts() {
         Task {
             do {
-                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key]!.lastDocument, history: isHistory)
+                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key.rawValue]!.lastDocument, history: isHistory)
                 for workout in fetchedWorkouts {
-                    if !self.clubWorkouts[key]!.workouts.contains(where: { $0 == workout }) {
-                        self.clubWorkouts[key]!.workouts.append(workout)
+                    if !self.clubWorkouts[key.rawValue]!.workouts.contains(where: { $0 == workout }) {
+                        self.clubWorkouts[key.rawValue]!.workouts.append(workout)
                     }
                 }
                 if let lastDocument {
-                    self.clubWorkouts[key]!.lastDocument = lastDocument
+                    self.clubWorkouts[key.rawValue]!.lastDocument = lastDocument
                 }
                 getUniqueDates(isHistory: isHistory)
                 isTaskInProgress = false

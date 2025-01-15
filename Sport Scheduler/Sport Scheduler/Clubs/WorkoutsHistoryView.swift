@@ -9,16 +9,16 @@ import SwiftUI
 
 struct WorkoutsHistoryView: View {
     @Binding var clubModel: ClubModel
-    private let key = "history"
     let isOwner: Bool
     
     var body: some View {
         VStack {
-            WorkoutListView(clubModel: $clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "Your workouts history is empty", key: key)
+            WorkoutListView(clubModel: $clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "Your workouts history is empty")
         }
         .onAppear {
+            clubModel.key = .history
             clubModel.isHistory = true
-            clubModel.fetchWorkouts(for: key)
+            clubModel.fetchWorkouts()
         }
         .navigationTitle("Workouts History")
     }

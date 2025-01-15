@@ -12,16 +12,15 @@ struct WorkoutListView: View {
     var isOwner: Bool
     var isHistory: Bool
     var noWorkoutsMessage: String
-    var key: String
 
     var body: some View {
         List {
-            if clubModel.clubWorkouts[key]!.workouts.isEmpty && !clubModel.isTaskInProgress {
+            if clubModel.clubWorkouts[clubModel.key.rawValue]!.workouts.isEmpty && !clubModel.isTaskInProgress {
                 ContentUnavailableView(noWorkoutsMessage, systemImage: "figure.core.training")
             }
-            ForEach(clubModel.clubWorkouts[key]!.workoutDates, id:\.self) { date in
+            ForEach(clubModel.clubWorkouts[clubModel.key.rawValue]!.workoutDates, id:\.self) { date in
                 Section {
-                    ForEach(clubModel.filteredWorkouts(on: date, for: key), id:\.self.workoutId) { workout in
+                    ForEach(clubModel.filteredWorkouts(on: date), id:\.self.workoutId) { workout in
                         NavigationLink(destination: WorkoutView(workout: workout, clubModel: $clubModel)) {
                             WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
                         }
@@ -42,8 +41,8 @@ struct WorkoutListView: View {
                                 }
                             }
                         }
-                        if date == clubModel.clubWorkouts[key]!.workoutDates.last {
-                            if workout == clubModel.filteredWorkouts(on: date, for: key).last {
+                        if date == clubModel.clubWorkouts[clubModel.key.rawValue]!.workoutDates.last {
+                            if workout == clubModel.filteredWorkouts(on: date).last {
                                 HStack {
                                     Spacer()
                                     Text("You've reached the last planned workout")
@@ -51,7 +50,7 @@ struct WorkoutListView: View {
                                     Spacer()
                                 }
                                 .onAppear {
-                                    clubModel.fetchWorkouts(for: key)
+                                    clubModel.fetchWorkouts()
                                 }
                             }
                         }
@@ -66,5 +65,5 @@ struct WorkoutListView: View {
 }
 
 #Preview {
-    WorkoutListView(clubModel: .constant(ClubModel()), isOwner: false, isHistory: false, noWorkoutsMessage: "", key: "current")
+    WorkoutListView(clubModel: .constant(ClubModel()), isOwner: false, isHistory: false, noWorkoutsMessage: "")
 }
