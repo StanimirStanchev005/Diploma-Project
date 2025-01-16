@@ -44,7 +44,7 @@ import FirebaseFirestore
     @MainActor func register() async throws -> DBUser {
         let authDataResultModel = try await authenticationProvider.signUp(email: email, password: password)
         let user = DBUser(userID: authDataResultModel.uid, name: fullName, email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-        try userRepository.create(user: user)
+        try await userRepository.create(user: user)
         return user
     }
 
@@ -58,7 +58,7 @@ import FirebaseFirestore
             return user
         } else {
             let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-            try userRepository.create(user: user)
+            try await userRepository.create(user: user)
             return user
         }
     }

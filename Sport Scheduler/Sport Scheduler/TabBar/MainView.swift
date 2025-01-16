@@ -14,13 +14,15 @@ final class MainViewModel {
         self.userRepository = userRepository
     }
     
-    func triggerListener(for user: CurrentUser) {
-        userRepository.listenForUserChanges(for: user.user!.userID) { [weak self] newUser in
-            guard self != nil else {
-                print("Unable to update user")
-                return
+    @MainActor func triggerListener(for user: CurrentUser) {
+        Task {
+            do {
+                for try await result in try await userRepository.listenForUserChanges(for: user.user!.userID) {
+                    user.updateUser(with: result)
+                }
+            } catch let error {
+                print(error.localizedDescription)
             }
-            user.updateUser(with: newUser)
         }
     }
 }
@@ -47,7 +49,7 @@ struct MainView: View {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
         }
-        .onAppear {
+        .onAppear() {
             UITabBar.appearance().backgroundColor = .tabBar
             mainViewModel.triggerListener(for: currentUser)
         }

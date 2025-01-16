@@ -69,7 +69,7 @@ import PhotosUI
         Task {
             do {
                 try await clubRepository.create(club: club)
-                try userRepository.addClub(for: userID, clubName: club.clubName)
+                try await userRepository.addClub(for: userID, clubName: club.clubName)
                 if let photo {
                     try await saveClubImage(item: photo, club: club.id)
                 }
