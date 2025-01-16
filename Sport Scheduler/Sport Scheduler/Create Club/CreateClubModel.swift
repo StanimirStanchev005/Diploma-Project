@@ -87,6 +87,6 @@ import PhotosUI
         guard let data = try await item.loadTransferable(type: Data.self) else { return }
         let returnedData = try await storageRepository.saveImage(data: data, name: name)
         let url = try  await storageRepository.getUrlFromImage(path: returnedData.path)
-        try clubRepository.updateClubPicture(clubID: name, pictureUrl: url.absoluteString)
+        try await clubRepository.updateClubPicture(clubID: name, pictureUrl: url.absoluteString)
     }
 }

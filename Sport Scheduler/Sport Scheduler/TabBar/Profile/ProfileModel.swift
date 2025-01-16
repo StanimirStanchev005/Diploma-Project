@@ -19,11 +19,11 @@ final class ProfileModel {
     }
     
     func laodCurrentUser() async throws -> DBUser {
-        let authDataResult = try authenticationProvider.getAuthenticatedUser()
+        let authDataResult = try await authenticationProvider.getAuthenticatedUser()
         return try await databaseProvider.getUser(userId: authDataResult.uid)
     }
     
-    func signOut() throws {
-        try authenticationProvider.signOut()
+    @MainActor func signOut() async throws {
+        try await authenticationProvider.signOut()
     }
 }

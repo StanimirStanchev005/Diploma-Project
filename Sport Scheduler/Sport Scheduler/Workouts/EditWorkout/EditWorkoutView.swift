@@ -12,14 +12,14 @@ struct EditWorkoutView: View {
     @State var workout: Workout
     private let editWorkoutModel = EditWorkoutModel()
     let clubID: String
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Form {
                 DatePicker("Date", selection: $workout.date)
-                
+
                 CustomRow(label: "Title", placeholder: "Title", text: $workout.title)
-                
+
                 CustomRow(label: "Description", placeholder: "Description", text: $workout.description)
             }
         }
@@ -28,12 +28,8 @@ struct EditWorkoutView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing ) {
                 Button("Save") {
-                    do {
-                        try editWorkoutModel.updateWorkout(for: clubID, with: workout)
-                        presentationMode.wrappedValue.dismiss()
-                    } catch {
-                        print(error)
-                    }
+                    editWorkoutModel.updateWorkout(for: clubID, with: workout)
+                    presentationMode.wrappedValue.dismiss()
                 }
             }
         }

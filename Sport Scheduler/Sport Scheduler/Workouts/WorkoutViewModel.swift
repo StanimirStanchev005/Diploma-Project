@@ -20,7 +20,7 @@ import FirebaseFirestore
         self.clubRepository = clubRepository
     }
     
-    func handleScan(result: Result<ScanResult, ScanError>) {
+    @MainActor func handleScan(result: Result<ScanResult, ScanError>) {
         isShowingScanner = false
         
         switch result {
@@ -47,13 +47,16 @@ import FirebaseFirestore
             }
 
             let participant = ClubUserModel(userID: details[0], name: details[1])
-            do {
-                try clubRepository.add(participant: participant, for: self.workout, from: self.club)
-                workout.participants.append(participant)
-            } catch {
-                print("Error adding participant: \(error)")
+
+            Task {
+                do {
+                    try await clubRepository.add(participant: participant, for: self.workout, from: self.club)
+                    workout.participants.append(participant)
+                } catch {
+                    print("Error adding participant: \(error)")
+                }
             }
-            
+
         case .failure(let error):
             self.errorMessage = error.localizedDescription
             isShowingError = true

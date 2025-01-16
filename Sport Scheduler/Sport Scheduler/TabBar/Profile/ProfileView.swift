@@ -63,7 +63,7 @@ struct ProfileView: View {
                     Button("Sign Out", role: .destructive) {
                         Task {
                             do {
-                                try profileModel.signOut()
+                                try await profileModel.signOut()
                                 withAnimation(.easeInOut) {
                                     currentUser.state = .noUser
                                 }

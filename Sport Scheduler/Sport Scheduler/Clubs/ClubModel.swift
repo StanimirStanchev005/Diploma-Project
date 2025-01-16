@@ -103,23 +103,27 @@ final class ClubModel {
         return clubMember.visitedWorkouts
     }
 
-    func triggerClubListeners() {
-        clubRepository.listenForChanges(for: club!.id) { [weak self] club in
-            guard let self = self else {
-                print("Unable to update club")
-                return
+    @MainActor func triggerClubListeners() {
+        Task {
+            do {
+                for try await result in try await clubRepository.listenForChanges(for: club!.id) {
+                    club = result
+                }
+            } catch {
+                throw error
             }
-            self.club = club
         }
     }
 
-    func triggerRequestListeners() {
-        clubRepository.listenForRequestChanges(for: club!.clubName) { [weak self] requests in
-            guard let self = self else {
-                print("Unable to update userRequests")
-                return
+    @MainActor func triggerRequestListeners() {
+        Task {
+            do {
+                for try await result in try await clubRepository.listenForRequestChanges(for: club!.id) {
+                    userRequests = result
+                }
+            } catch {
+                throw "Failed to update user requests!"
             }
-            self.userRequests = requests
         }
     }
 
@@ -153,39 +157,62 @@ final class ClubModel {
         }
     }
 
-    func deleteWorkout(id: String) {
-        do {
-            try clubRepository.deleteWorkout(for: self.club!.clubName, with: id)
-            clubWorkouts["future"]!.workouts.removeAll(where: {$0.workoutId == id})
-        } catch {
-            print("Error deleting workout: \(error)")
+    @MainActor func deleteWorkout(id: String) {
+        Task {
+            do {
+                try await clubRepository.deleteWorkout(for: self.club!.clubName, with: id)
+                clubWorkouts["future"]!.workouts.removeAll(where: {$0.workoutId == id})
+            } catch {
+                throw "Error deleting workout: \(error)"
+            }
         }
     }
 
-    func remove(member: ClubUserModel) {
-        do {
-            try clubRepository.remove(user: member, from: self.club!)
-            club!.members.removeAll(where: { $0.userID == member.userID })
-        } catch {
-            print("Error removing user from club: \(error)")
+    @MainActor func remove(member: ClubUserModel) {
+        Task {
+            do {
+                try await clubRepository.remove(user: member, from: self.club!)
+                club!.members.removeAll(where: { $0.userID == member.userID })
+            } catch {
+                throw "Error removing user from club: \(error)"
+            }
         }
     }
 
-    func sendJoinRequest(for clubId: String, request: ClubRequestModel) throws {
-        try clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
+    @MainActor func sendJoinRequest(for clubId: String, request: ClubRequestModel) {
+        Task {
+            do {
+                try await clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
+            } catch {
+                throw error
+            }
+        }
     }
 
-    func accept(request: ClubRequestModel) throws {
-        try clubRepository.accept(request: request, from: club!)
-        let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
-        userRequests[index].status = RequestStatus.accepted.rawValue
-        userRequests.remove(at: index)
+    @MainActor func accept(request: ClubRequestModel) {
+        Task {
+            do {
+                try await clubRepository.accept(request: request, from: club!)
+                let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
+                userRequests[index].status = RequestStatus.accepted.rawValue
+                userRequests.remove(at: index)
+            } catch {
+                throw error
+            }
+        }
+
     }
 
-    func reject(request: ClubRequestModel) throws {
-        try clubRepository.reject(request: request, from: club!)
-        let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
-        userRequests.remove(at: index)
+    @MainActor func reject(request: ClubRequestModel) {
+        Task {
+            do {
+                try await clubRepository.reject(request: request, from: club!)
+                let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
+                userRequests.remove(at: index)
+            } catch {
+                throw error
+            }
+        }
     }
 
     @MainActor func updateClubPicture() {
@@ -199,7 +226,7 @@ final class ClubModel {
             guard let data = try await selectedItem.loadTransferable(type: Data.self) else { return }
             let returnedData = try await storageRepository.saveImage(data: data, name: club.clubName)
             let url = try await storageRepository.getUrlFromImage(path: returnedData.path)
-            try clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
+            try await clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
         }
     }
 }

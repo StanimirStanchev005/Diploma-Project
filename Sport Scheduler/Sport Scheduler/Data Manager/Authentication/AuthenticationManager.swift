@@ -8,7 +8,7 @@
 import Foundation
 @preconcurrency import FirebaseAuth
 
-final class FirebaseAuthenticationProvider: AuthenticationServiceProvidable {
+actor FirebaseAuthenticationProvider: AuthenticationServiceProvidable {
     private let auth = Auth.auth()
     
     func signInWithGoogle(tokens: GoogleSignInResultModel) async throws -> AuthDataResultModel {
@@ -68,14 +68,14 @@ final class FirebaseAuthenticationProvider: AuthenticationServiceProvidable {
         }
     }
     
-    func getAuthenticatedUser() throws -> AuthDataResultModel {
+    func getAuthenticatedUser() async throws -> AuthDataResultModel {
         guard let user = auth.currentUser else {
             throw URLError(.badServerResponse)
         }
         return AuthDataResultModel(user: user)
     }
     
-    func signOut() throws {
+    func signOut() async throws {
         try auth.signOut()
     }
 }

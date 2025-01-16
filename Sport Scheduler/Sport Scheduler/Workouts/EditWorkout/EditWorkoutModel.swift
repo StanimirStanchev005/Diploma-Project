@@ -16,11 +16,13 @@ final class EditWorkoutModel {
         self.clubRepository = clubRepository
     }
     
-    func updateWorkout(for clubId: String, with workout: Workout) throws {
-        do {
-            try clubRepository.updateWorkout(for: clubId, with: workout)
-        } catch {
-            throw error
+    @MainActor func updateWorkout(for clubId: String, with workout: Workout) {
+        Task {
+            do {
+                try await clubRepository.updateWorkout(for: clubId, with: workout)
+            } catch {
+                throw error
+            }
         }
     }
 }

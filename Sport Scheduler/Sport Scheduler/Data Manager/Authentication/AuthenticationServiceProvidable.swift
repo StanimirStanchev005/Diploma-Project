@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import FirebaseAuth
+@preconcurrency import FirebaseAuth
 
 protocol AuthenticationServiceProvidable: Sendable {
-    func signOut() throws
-    func getAuthenticatedUser() throws -> AuthDataResultModel
+    func signOut() async throws
+    func getAuthenticatedUser() async throws -> AuthDataResultModel
     func signUp(email: String, password: String) async throws -> AuthDataResultModel
     func signIn(email: String, password: String) async throws -> AuthDataResultModel
     func signIn(credential: AuthCredential) async throws -> AuthDataResultModel

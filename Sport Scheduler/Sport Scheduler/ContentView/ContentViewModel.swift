@@ -27,7 +27,7 @@ final class ContentViewModel {
     
     @MainActor func checkUser(currentUser: CurrentUser) async {
         do {
-            let authUser: AuthDataResultModel? = try authenticationProvider.getAuthenticatedUser()
+            let authUser: AuthDataResultModel? = try await authenticationProvider.getAuthenticatedUser()
             guard authUser != nil else {
                 currentUser.state = .noUser
                 return

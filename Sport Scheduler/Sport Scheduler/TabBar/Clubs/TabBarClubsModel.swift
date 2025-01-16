@@ -39,13 +39,15 @@ import Combine
         }
     }
     
-    func triggerListener() {
-        clubRepository.listenForClubChanges { [weak self] clubs in
-            guard let self = self else {
-                print("Unable to update clubs")
-                return
+    @MainActor func triggerListener() {
+        Task {
+            do {
+                for try await results in try await clubRepository.listenForClubChanges() {
+                    clubs = results
+                }
+            } catch {
+                throw error
             }
-            self.clubs = clubs
         }
     }
 

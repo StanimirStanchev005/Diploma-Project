@@ -25,7 +25,7 @@ import FirebaseFirestore
         self.clubRepository = clubRepository
     }
     
-    func save(for club: String, title: String, description: String, date: Date) throws {
+    @MainActor func save(for club: String, title: String, description: String, date: Date) throws {
         if isRepeating {
             try saveWorkouts(for: club, title: title, description: description, date: date)
         } else {
@@ -33,11 +33,13 @@ import FirebaseFirestore
         }
     }
     
-    func saveWorkout(for club: String, title: String, description: String, date: Date) throws {
-        try clubRepository.add(workout: Workout(clubId: club, title: title, description: description, date: date), for: club)
+    @MainActor func saveWorkout(for club: String, title: String, description: String, date: Date) throws {
+        Task {
+            try await clubRepository.add(workout: Workout(clubId: club, title: title, description: description, date: date), for: club)
+        }
     }
     
-    func saveWorkouts(for club: String, title: String, description: String, date: Date) throws {
+    @MainActor func saveWorkouts(for club: String, title: String, description: String, date: Date) throws {
         let endDate = Calendar.current.date(byAdding: .day, value: 27, to: date)!
         var currentDate = date
         

@@ -31,13 +31,9 @@ struct ClubContentView: View {
                 }
             } else if !isJoined {
                 Button {
-                    do {
-                        let request = ClubRequestModel(clubID: clubModel.club!.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
-                        try clubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
-                        isRequestSend = true
-                    } catch {
-                        print("Error while sending join request: \(error)")
-                    }
+                    let request = ClubRequestModel(clubID: clubModel.club!.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
+                    clubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
+                    isRequestSend = true
                 } label: {
                     Text("Apply")
                 }
