@@ -49,7 +49,7 @@ struct MainView: View {
                     Label("Profile", systemImage: "person.crop.circle.fill")
                 }
         }
-        .onAppear() {
+        .onAppear {
             UITabBar.appearance().backgroundColor = .tabBar
             mainViewModel.triggerListener(for: currentUser)
         }
