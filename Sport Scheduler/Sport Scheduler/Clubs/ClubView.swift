@@ -12,7 +12,7 @@ struct ClubView: View {
     @Environment(CurrentUser.self) private var currentUser: CurrentUser
 
     let club: UserClubModel
-    
+
     var body: some View {
         ZStack {
             switch clubModel.state {
@@ -26,18 +26,14 @@ struct ClubView: View {
                 ClubContentView(clubModel: $clubModel)
             }
         }
-        .task {
-            do {
-                try await clubModel.fetchData(for: club.name)
-            } catch {
-                print("Error fetching club: \(error)")
-            }
+        .onAppear {
+            clubModel.fetchData(for: club.name)
         }
     }
 }
 
 #Preview {
     NavigationStack {
-       Text("Will add previews later")
+        Text("Will add previews later")
     }
 }

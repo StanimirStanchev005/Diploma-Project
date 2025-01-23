@@ -127,13 +127,17 @@ final class ClubModel {
         }
     }
 
-    @MainActor func fetchData(for clubID: String) async throws {
-        let fetchedClub = try await clubRepository.getClub(clubId: clubID)
+    @MainActor func fetchData(for clubID: String) {
         Task {
-            self.club = fetchedClub
-            self.state = .club(fetchedClub)
-            triggerClubListeners()
-            triggerRequestListeners()
+            do {
+                let fetchedClub = try await clubRepository.getClub(clubId: clubID)
+                self.club = fetchedClub
+                self.state = .club(fetchedClub)
+                triggerClubListeners()
+                triggerRequestListeners()
+            } catch {
+                throw error
+            }
         }
     }
     //Here
