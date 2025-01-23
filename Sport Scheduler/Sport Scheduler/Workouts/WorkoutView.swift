@@ -10,9 +10,9 @@ import CodeScanner
 
 struct WorkoutView: View {
     let workout: Workout
-    @EnvironmentObject var currentUser: CurrentUser
-    @ObservedObject var clubModel: ClubModel
-    @StateObject var workoutViewModel = WorkoutViewModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @Binding var clubModel: ClubModel
+    @State var workoutViewModel = WorkoutViewModel()
     @State private var hasError = false
     
     var isOwner: Bool {
@@ -26,12 +26,12 @@ struct WorkoutView: View {
                 .padding([.bottom, .horizontal], 10)
             Text("Participants")
                 .font(.headline)
-            List() {
+            List {
                 ForEach(workoutViewModel.workout.participants, id:\.userID) { participant in
                     HStack {
                         Text(participant.name)
                         Spacer()
-                        Text("Visited: \(participant.visitedWorkouts)")
+                        Text("Arrived: \(Date().formatted(date: .omitted, time: .shortened))")
                     }
                 }
             }
@@ -66,6 +66,6 @@ struct WorkoutView: View {
 
 #Preview {
     NavigationStack {
-        WorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date()), clubModel: ClubModel())
+        WorkoutView(workout: Workout(clubId: "Levski", title: "Title", date: Date()), clubModel: .constant(ClubModel()))
     }
 }

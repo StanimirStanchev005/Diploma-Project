@@ -8,11 +8,11 @@
 import Foundation
 import FirebaseFirestore
 
-final class AddWorkoutModel: ObservableObject {
-    @Published var workoutDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
-    @Published var workoutTitle = ""
-    @Published var workoutDescription = ""
-    @Published var isRepeating = false
+@Observable final class AddWorkoutModel {
+    var workoutDate = Calendar.current.date(bySettingHour: 0, minute: 0, second: 0, of: Date())!
+    var workoutTitle = ""
+    var workoutDescription = ""
+    var isRepeating = false
     let calendar = Calendar.current
     
     private var clubRepository: ClubRepository
@@ -25,7 +25,7 @@ final class AddWorkoutModel: ObservableObject {
         self.clubRepository = clubRepository
     }
     
-    func save(for club: String, title: String, description: String, date: Date) throws {
+    @MainActor func save(for club: String, title: String, description: String, date: Date) throws {
         if isRepeating {
             try saveWorkouts(for: club, title: title, description: description, date: date)
         } else {
@@ -33,11 +33,13 @@ final class AddWorkoutModel: ObservableObject {
         }
     }
     
-    func saveWorkout(for club: String, title: String, description: String, date: Date) throws {
-        try clubRepository.add(workout: Workout(clubId: club, title: title, description: description, date: date), for: club)
+    @MainActor func saveWorkout(for club: String, title: String, description: String, date: Date) throws {
+        Task {
+            try await clubRepository.add(workout: Workout(clubId: club, title: title, description: description, date: date), for: club)
+        }
     }
     
-    func saveWorkouts(for club: String, title: String, description: String, date: Date) throws {
+    @MainActor func saveWorkouts(for club: String, title: String, description: String, date: Date) throws {
         let endDate = Calendar.current.date(byAdding: .day, value: 27, to: date)!
         var currentDate = date
         

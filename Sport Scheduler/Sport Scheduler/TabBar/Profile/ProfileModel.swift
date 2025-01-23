@@ -8,8 +8,7 @@
 import FirebaseFirestore
 import FirebaseAuth
 
-@MainActor
-final class ProfileModel: ObservableObject {
+final class ProfileModel {
     
     private var authenticationProvider: AuthenticationServiceProvidable
     private var databaseProvider: UserRepository
@@ -20,11 +19,11 @@ final class ProfileModel: ObservableObject {
     }
     
     func laodCurrentUser() async throws -> DBUser {
-        let authDataResult = try authenticationProvider.getAuthenticatedUser()
+        let authDataResult = try await authenticationProvider.getAuthenticatedUser()
         return try await databaseProvider.getUser(userId: authDataResult.uid)
     }
     
-    func signOut() throws {
-        try authenticationProvider.signOut()
+    @MainActor func signOut() async throws {
+        try await authenticationProvider.signOut()
     }
 }

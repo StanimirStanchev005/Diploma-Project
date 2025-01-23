@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct ClubList: View {
     var clubs: [UserClubModel]
@@ -21,25 +22,28 @@ struct ClubList: View {
 
                         Spacer()
 
-                        AsyncImage(url: URL(string: club.picture)) { image in
-                            image
-                                .resizable()
-                                .frame(width: 100)
-                                .clipShape(Circle())
-                                .frame(width: 100, height: 100)
-                        } placeholder: {
-                            if club.picture == "ClubPlaceholder" {
+                        CachedAsyncImage(url: URL(string: club.picture)) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .frame(width: 100)
+                                    .clipShape(Circle())
+                                    .frame(width: 100, height: 100)
+                                    .padding()
+                            case .failure(_):
                                 Image(systemName: "person.3.fill")
                                     .resizable()
                                     .scaledToFit()
                                     .foregroundStyle(.lightBackground)
-                                    .frame(width: 80, height: 80)
                                     .frame(width: 100, height: 100)
                                     .padding()
-                            } else {
-                                    ProgressView()
-                                        .frame(width: 100, height: 100)
-                                }
+                            default:
+                                ProgressView()
+                                    .controlSize(.large)
+                                    .frame(width: 100, height: 100)
+                                    .padding()
+                            }
                         }
                     }
                 }

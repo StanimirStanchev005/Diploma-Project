@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import CachedAsyncImage
 
 struct JoinedClubsView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var joinedClubsModel = TabBarClubsModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @State var joinedClubsModel = TabBarClubsModel()
     
     var body: some View {
         NavigationStack {
@@ -19,7 +20,7 @@ struct JoinedClubsView: View {
                         ForEach(joinedClubsModel.filteredClubs, id: \.name.self) { club in
                             NavigationLink(destination: ClubView(club: club)) {
                                 HStack {
-                                    AsyncImage(url: URL(string: club.picture)) { image in
+                                    CachedAsyncImage(url: URL(string: club.picture)) { image in
                                         image
                                             .resizable()
                                             .frame(width: 50)
@@ -60,7 +61,7 @@ struct JoinedClubsView: View {
             }
             .toolbar {
                 NavigationLink("Owned Clubs") {
-                    OwnedClubsView(ownedClubsModel: joinedClubsModel)
+                    OwnedClubsView(ownedClubsModel: $joinedClubsModel)
                 }
             }
             .navigationTitle("Joined Clubs")
@@ -78,7 +79,7 @@ struct JoinedClubsView: View {
 
 #Preview {
     NavigationStack {
-        JoinedClubsView().environmentObject({ () -> CurrentUser in
+        JoinedClubsView().environment({ () -> CurrentUser in
             let envObj = CurrentUser()
             envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
             return envObj

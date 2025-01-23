@@ -11,16 +11,14 @@ import GoogleSignIn
 import GoogleSignInSwift
 import FirebaseFirestore
 
-@MainActor
-final class LoginModel: ObservableObject {
+@Observable final class LoginModel {
     private var authenticationProvider: AuthenticationServiceProvidable
     private var userRepository: UserRepository
-    
-    @Published var email = ""
-    @Published var password = ""
-    @Published var hasError = false
-    @Published var localizedError: String = "There was an error signing in!"
-    @Published var isTaskInProgress = false
+    var email = ""
+    var password = ""
+    var hasError = false
+    var localizedError: String = "There was an error signing in!"
+    var isTaskInProgress = false
     
     init(authenticationProvider: AuthenticationServiceProvidable = FirebaseAuthenticationProvider(),
          databaseProvider: UserRepository = FirestoreUserRepository()) {
@@ -40,12 +38,12 @@ final class LoginModel: ObservableObject {
         isEmailValid && isPasswordValid
     }
     
-    func login() async throws -> DBUser {
+    @MainActor func login() async throws -> DBUser {
         let authDataResult = try await authenticationProvider.signIn(email: email, password: password)
         return try await userRepository.getUser(userId: authDataResult.uid)
     }
     
-    func signInGoogle() async throws -> DBUser {
+    @MainActor func signInGoogle() async throws -> DBUser {
         let helper = SignInGoogleHelper(authenticationProvider: authenticationProvider)
         let tokens = try await helper.signIn()
         let authDataResultModel = try await authenticationProvider.signInWithGoogle(tokens: tokens)
@@ -53,7 +51,7 @@ final class LoginModel: ObservableObject {
             return try await userRepository.getUser(userId: authDataResultModel.uid)
         } else {
             let user = DBUser(userID: authDataResultModel.uid, name: authDataResultModel.name ?? "", email: authDataResultModel.email ?? "", photoUrl: authDataResultModel.photoUrl, dateCreated: Date())
-            try userRepository.create(user: user)
+            try await userRepository.create(user: user)
             return user
         }
     }

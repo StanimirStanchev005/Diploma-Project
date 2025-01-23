@@ -11,9 +11,9 @@ struct ClubContentView: View {
     @State private var showAddWorkoutScreen = false
     @State private var selectedDate = Date()
     @State private var isRequestSend = false
-    @ObservedObject var clubModel: ClubModel
-    @EnvironmentObject var currentUser: CurrentUser
-    
+    @Binding var clubModel: ClubModel
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+
     private var isOwner: Bool {
         clubModel.isUserOwner(userId: currentUser.user?.userID)
     }
@@ -31,13 +31,9 @@ struct ClubContentView: View {
                 }
             } else if !isJoined {
                 Button {
-                    do {
-                        let request = ClubRequestModel(clubID: clubModel.club!.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
-                        try clubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
-                        isRequestSend = true
-                    } catch {
-                        print("Error while sending join request: \(error)")
-                    }
+                    let request = ClubRequestModel(clubID: clubModel.club!.clubName, userID: currentUser.user!.userID, userName: currentUser.user!.name)
+                    clubModel.sendJoinRequest(for: clubModel.club!.clubName, request: request)
+                    isRequestSend = true
                 } label: {
                     Text("Apply")
                 }
@@ -51,14 +47,14 @@ struct ClubContentView: View {
     
     var body: some View {
         VStack {
-            ClubHeader(clubModel: clubModel, isOwner: isOwner, isJoined: isJoined)
+            ClubHeader(clubModel: $clubModel, isOwner: isOwner, isJoined: isJoined)
             
             if isOwner || isJoined {
                 if clubModel.isTaskInProgress {
                     ProgressView()
                         .controlSize(.large)
                 } else {
-                    WorkoutListView(clubModel: clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "There are no upcomming workouts")
+                    WorkoutListView(clubModel: $clubModel, isOwner: isOwner, isHistory: clubModel.isHistory, noWorkoutsMessage: "There are no upcomming workouts")
                 }
             } else {
                 ContentUnavailableView("Club is locked", systemImage: "lock", description: Text("Join this club to see their workouts"))
@@ -73,7 +69,8 @@ struct ClubContentView: View {
             Text("Request to join was sent successfully")
         }
         .sheet(isPresented: $showAddWorkoutScreen) {
-            clubModel.clearWorkouts()
+            clubModel.key = .future
+            clubModel.clearFutureWorkouts()
             clubModel.fetchWorkouts()
         } content: {
             AddWorkoutView(clubID: clubModel.club!.clubName)
@@ -84,12 +81,12 @@ struct ClubContentView: View {
         }
         .onAppear {
             clubModel.isHistory = false
-            clubModel.isTaskInProgress = true
-            clubModel.clearWorkouts()
+            clubModel.key = .future
             clubModel.fetchWorkouts()
         }
         .onChange(of: clubModel.selectedItem) {
             clubModel.updateClubPicture()
+
         }
     }
 }

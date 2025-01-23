@@ -7,16 +7,19 @@
 import FirebaseFirestore
 import Combine
 
-final class TabBarClubsModel: ObservableObject {
+@Observable final class TabBarClubsModel {
     private var clubRepository: ClubRepository
-    private var cancellables = Set<AnyCancellable>()
     private var clubs: [Club] = []
-    @Published var searchQuery: String = ""
-    @Published private(set) var filteredClubs: [UserClubModel] = []
-    @Published var ownedClubs: [UserClubModel] = []
-    @Published var joinedClubs: [UserClubModel] = []
-    @Published var showCreateClubView = false
-    @Published var showSubscribeAlert = false
+    var searchQuery: String = "" {
+        didSet {
+            filterClubs(searchText: searchQuery)
+        }
+    }
+    private(set) var filteredClubs: [UserClubModel] = []
+    var ownedClubs: [UserClubModel] = []
+    var joinedClubs: [UserClubModel] = []
+    var showCreateClubView = false
+    var showSubscribeAlert = false
     var numberOfClubsAllowed = 0
     var mappedClubs: [UserClubModel] {
         clubs.map { club in
@@ -25,37 +28,29 @@ final class TabBarClubsModel: ObservableObject {
     }
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
-        
-        addSubscribers()
     }
     
-    func filterUserClubs(by clubsToFilter: [UserClubModel]) -> [UserClubModel] {
+    func filterUserClubs(by clubsToFilter: [String]) -> [UserClubModel] {
         let mappedClubs = clubs.map { club in
             UserClubModel(name: club.clubName, picture: club.picture)
         }
         return mappedClubs.filter { club in
-            clubsToFilter.contains { $0.name == club.name }
+            clubsToFilter.contains { $0 == club.name }
         }
     }
     
-    func triggerListener() {
-        clubRepository.listenForClubChanges { [weak self] clubs in
-            guard let self = self else {
-                print("Unable to update clubs")
-                return
+    @MainActor func triggerListener() {
+        Task {
+            do {
+                for try await results in try await clubRepository.listenForClubChanges() {
+                    clubs = results
+                }
+            } catch {
+                throw error
             }
-            self.clubs = clubs
         }
     }
-    
-    private func addSubscribers() {
-        $searchQuery
-            .sink { searchedClub in
-                self.filterClubs(searchText: searchedClub)
-            }
-            .store(in: &cancellables)
-    }
-    
+
     func searchClub(searchText: String, clubs: [Club]) -> [UserClubModel] {
         let searchText = searchText.lowercased()
         return clubs.filter { club in

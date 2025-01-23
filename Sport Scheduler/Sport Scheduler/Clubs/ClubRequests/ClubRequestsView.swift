@@ -9,9 +9,9 @@ import SwiftUI
 
 
 struct ClubRequestsView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @ObservedObject var clubModel: ClubModel
-    
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @Binding var clubModel: ClubModel
+
     var body: some View {
         VStack {
             List {
@@ -25,14 +25,9 @@ struct ClubRequestsView: View {
                             Text(request.date.formatted())
                         }
                         Spacer()
-                        
-                        Button() {
-                            do {
-                                try clubModel.accept(request: request)
-                                print("Accepted")
-                            } catch {
-                                print("Error accepting join request \(error)")
-                            }
+
+                        Button {
+                            clubModel.accept(request: request)
                         } label: {
                             VStack {
                                 Image(systemName: "checkmark")
@@ -41,14 +36,9 @@ struct ClubRequestsView: View {
                             .foregroundStyle(.green)
                         }
                         .buttonStyle(.borderless)
-                        
+
                         Button(role: .destructive) {
-                            do {
-                                try clubModel.reject(request: request)
-                                print("Rejected")
-                            } catch {
-                                print("Error rejecting request: \(error)")
-                            }
+                            clubModel.reject(request: request)
                         } label: {
                             VStack {
                                 Image(systemName: "xmark")
@@ -68,6 +58,6 @@ struct ClubRequestsView: View {
 }
 
 #Preview {
-    ClubRequestsView(clubModel: ClubModel())
-        .environmentObject(CurrentUser())
+    ClubRequestsView(clubModel: .constant(ClubModel()))
+        .environment(CurrentUser())
 }

@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-final class ClubMembersModel: ObservableObject {
-    @Published var members: [ClubUserModel] = []
+@Observable final class ClubMembersModel {
+    var members: [ClubUserModel] = []
     
     func sortMembersByName() {
         members.sort { $0.name < $1.name }
@@ -20,9 +20,9 @@ final class ClubMembersModel: ObservableObject {
 }
 
 struct ClubMembersView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @ObservedObject var clubModel: ClubModel
-    @StateObject var clubMembersModel = ClubMembersModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @Binding var clubModel: ClubModel
+    @State var clubMembersModel = ClubMembersModel()
     
     var body: some View {
         List {
@@ -35,8 +35,14 @@ struct ClubMembersView: View {
                     Spacer()
                     Text("Workouts visited: \(member.visitedWorkouts)")
                 }
+                .swipeActions {
+                    Button(role: .destructive) {
+                        clubModel.remove(member: member)
+                    } label: {
+                        Label("Delete", systemImage: "trash.fill")
+                    }
+                }
             }
-            .onDelete(perform: clubModel.removeMember)
         }
         .navigationTitle("Members")
         .toolbar {

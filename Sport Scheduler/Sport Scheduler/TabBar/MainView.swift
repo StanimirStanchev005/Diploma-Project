@@ -7,27 +7,30 @@
 
 import SwiftUI
 
-final class MainViewModel: ObservableObject {
+final class MainViewModel {
     private var userRepository: UserRepository
     
     init(userRepository: UserRepository = FirestoreUserRepository()) {
         self.userRepository = userRepository
     }
     
-    func triggerListener(for user: CurrentUser) {
-        userRepository.listenForUserChanges(for: user.user!.userID) { [weak self] newUser in
-            guard self != nil else {
-                print("Unable to update user")
-                return
+    @MainActor func triggerListener(for user: CurrentUser) {
+        Task {
+            do {
+                for try await result in try await userRepository.listenForUserChanges(for: user.user!.userID) {
+                    user.updateUser(with: result)
+                }
+            } catch let error {
+                print(error.localizedDescription)
             }
-            user.updateUser(with: newUser)
         }
     }
 }
 
 struct MainView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var mainViewModel = MainViewModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    private let mainViewModel = MainViewModel()
+
     var body: some View {
         TabView {
             JoinedClubsView()

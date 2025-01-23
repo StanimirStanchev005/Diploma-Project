@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import GoogleSignIn
+@preconcurrency import GoogleSignIn
 import GoogleSignInSwift
 
 final class SignInGoogleHelper {
@@ -17,8 +17,7 @@ final class SignInGoogleHelper {
         self.authenticationProvider = authenticationProvider
     }
     
-    @MainActor
-    func signIn() async throws -> GoogleSignInResultModel {
+    @MainActor func signIn() async throws -> GoogleSignInResultModel {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else { throw "Cannot find windowScene" }
         guard let rootViewController = windowScene.windows.first?.rootViewController else { throw "Cannot find rootViewController" }
 
@@ -41,6 +40,7 @@ struct GoogleSignInResultModel {
     let accessToken: String
 }
 
-extension String: LocalizedError {
+extension String: @retroactive Error {}
+extension String: @retroactive LocalizedError {
     public var errorDescription: String? { return self }
 }

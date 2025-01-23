@@ -81,6 +81,7 @@
 		36E8E18F2B8F33FF00811EA1 /* TabBarWorkoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8E18E2B8F33FF00811EA1 /* TabBarWorkoutRow.swift */; };
 		36E8E1942B908D7000811EA1 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 36E8E1932B908D7000811EA1 /* CodeScanner */; };
 		36E8E1962B90914800811EA1 /* WorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */; };
+		36EBB4BA2BD9790D00F49C35 /* CachedAsyncImage in Frameworks */ = {isa = PBXBuildFile; productRef = 36EBB4B92BD9790D00F49C35 /* CachedAsyncImage */; };
 		36EBE3B82B933BDE00CEE8A9 /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBE3B72B933BDE00CEE8A9 /* ContentViewModel.swift */; };
 		36EBE3BA2B93493900CEE8A9 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBE3B92B93493900CEE8A9 /* CurrentUser.swift */; };
 		36EBE3BC2B93495100CEE8A9 /* UserClubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36EBE3BB2B93495100CEE8A9 /* UserClubModel.swift */; };
@@ -198,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				36ADF9752B28B8FB0028C73B /* GoogleSignInSwift in Frameworks */,
+				36EBB4BA2BD9790D00F49C35 /* CachedAsyncImage in Frameworks */,
 				36ADF95D2B2743EC0028C73B /* FirebaseAuth in Frameworks */,
 				36E8E1942B908D7000811EA1 /* CodeScanner in Frameworks */,
 				36ADF9732B28B8FB0028C73B /* GoogleSignIn in Frameworks */,
@@ -452,8 +454,8 @@
 			children = (
 				36F005B82B614AC600FA9458 /* EditWorkout */,
 				36F005B72B614AB000FA9458 /* AddWorkout */,
-				36F005B32B60210200FA9458 /* WorkoutView.swift */,
 				36E8E1952B90914800811EA1 /* WorkoutViewModel.swift */,
+				36F005B32B60210200FA9458 /* WorkoutView.swift */,
 				36CA9DA42B5ED07C002A7E57 /* Workout.swift */,
 			);
 			path = Workouts;
@@ -566,6 +568,7 @@
 				36ADF9742B28B8FB0028C73B /* GoogleSignInSwift */,
 				36E8E1932B908D7000811EA1 /* CodeScanner */,
 				361CE5242BC0081600D1ADE4 /* FirebaseStorage */,
+				36EBB4B92BD9790D00F49C35 /* CachedAsyncImage */,
 			);
 			productName = "Sport Scheduler";
 			productReference = 36ADF9062B21AD690028C73B /* Sport Scheduler.app */;
@@ -615,7 +618,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1500;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1620;
 				TargetAttributes = {
 					36ADF9052B21AD690028C73B = {
 						CreatedOnToolsVersion = 15.0.1;
@@ -643,6 +646,7 @@
 				36ADF95B2B2743EC0028C73B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				36ADF9712B28B8FB0028C73B /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				36E8E1922B908D7000811EA1 /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				36EBB4B82BD9790D00F49C35 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */,
 			);
 			productRefGroup = 36ADF9072B21AD690028C73B /* Products */;
 			projectDirPath = "";
@@ -940,7 +944,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "my.bundle.Sport-Scheduler";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -973,7 +977,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "my.bundle.Sport-Scheduler";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -981,7 +985,6 @@
 		36ADF92E2B21AD6C0028C73B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1001,7 +1004,6 @@
 		36ADF92F2B21AD6C0028C73B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1021,7 +1023,6 @@
 		36ADF9312B21AD6C0028C73B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RDVA332VHN;
@@ -1039,7 +1040,6 @@
 		36ADF9322B21AD6C0028C73B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RDVA332VHN;
@@ -1120,6 +1120,14 @@
 				minimumVersion = 2.4.0;
 			};
 		};
+		36EBB4B82BD9790D00F49C35 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/lorenzofiamingo/swiftui-cached-async-image.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1157,6 +1165,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 36E8E1922B908D7000811EA1 /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		36EBB4B92BD9790D00F49C35 /* CachedAsyncImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36EBB4B82BD9790D00F49C35 /* XCRemoteSwiftPackageReference "swiftui-cached-async-image" */;
+			productName = CachedAsyncImage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

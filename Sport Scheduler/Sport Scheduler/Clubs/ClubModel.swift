@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestore
+@preconcurrency import FirebaseFirestore
 import SwiftUI
 import PhotosUI
 
@@ -16,68 +16,78 @@ enum ClubScreenState {
     // Add error state
 }
 
-final class ClubModel: ObservableObject {
+@Observable
+final class ClubModel {
+
+    enum ClubWorkoutKey: String {
+        case future = "future"
+        case history = "history"
+    }
+
     private var clubRepository: ClubRepository
     private var userRepository: UserRepository
     private var storageRepository: ClubStorageRepository
-    private var lastDocument: DocumentSnapshot? = nil
-    
-    @Published var club: Club?
-    @Published var workouts: [Workout] = []
-    @Published var workoutDates: [Date] = []
-    @Published var userRequests: [ClubRequestModel] = []
-    @Published var isTaskInProgress = true
-    @Published var state: ClubScreenState
-    @Published var errorMessage = ""
-    @Published var selectedItem: PhotosPickerItem?
+    var club: Club?
+    private(set) var clubWorkouts: [String: PaginatedClubWorkouts] = [
+        "future" : PaginatedClubWorkouts(),
+        "history" : PaginatedClubWorkouts()
+    ]
+    var userRequests: [ClubRequestModel] = []
+    var isTaskInProgress = true
+    var state: ClubScreenState
+    var errorMessage = ""
+    var selectedItem: PhotosPickerItem?
     var isHistory = false
+    var key: ClubWorkoutKey = .future
 
-    func clearWorkouts() {
-        self.workouts = []
-        self.workoutDates = []
-        self.lastDocument = nil
-    }
-        
-    func getUniqueDates(isHistory: Bool) {
-        let calendar = Calendar.current
-        let dateSet = Set(workouts.map { calendar.startOfDay(for: $0.date) })
-        if isHistory {
-            workoutDates = Array(dateSet).sorted(by: >)
-        } else {
-            workoutDates = Array(dateSet).sorted()
-        }
-        
-    }
-    
-    func filteredWorkouts(for date: Date) -> [Workout] {
-        let calendar = Calendar.current
-        return workouts.filter { calendar.startOfDay(for: $0.date) == date }
-    }
-    
     init(clubRepository: ClubRepository = FirestoreClubRepository(), storageRepository: ClubStorageRepository = FirebaseClubStorageRepository(),
          userRepository: UserRepository = FirestoreUserRepository()) {
         self.clubRepository = clubRepository
         self.storageRepository = storageRepository
         self.userRepository = userRepository
-        
         state = .loading
     }
-    
+
+    func clearFutureWorkouts() {
+        if let data = clubWorkouts["future"] {
+            data.workouts = []
+            data.workoutDates = []
+            data.lastDocument = nil
+        }
+    }
+
+    func getUniqueDates(isHistory: Bool) {
+        let calendar = Calendar.current
+        if isHistory {
+            let dateSet = Set(clubWorkouts["history"]!.workouts.map { calendar.startOfDay(for: $0.date) })
+            clubWorkouts["history"]!.workoutDates = Array(dateSet).sorted(by: >)
+        } else {
+            let dateSet = Set(clubWorkouts["future"]!.workouts.map { calendar.startOfDay(for: $0.date) })
+            clubWorkouts["future"]!.workoutDates = Array(dateSet).sorted()
+        }
+
+    }
+
+    func filteredWorkouts(on date: Date) -> [Workout] {
+        let calendar = Calendar.current
+        return clubWorkouts[key.rawValue]!.workouts.filter { calendar.startOfDay(for: $0.date) == date }
+    }
+
     func isUserOwner(userId: String?) -> Bool {
         guard let userId else {
             return false
         }
         return club?.ownerId == userId
     }
-    
-    func isJoined(joinedClubs: [UserClubModel]?) -> Bool {
+
+    func isJoined(joinedClubs: [String]?) -> Bool {
         guard let joinedClubs else {
             return false
         }
         return joinedClubs.contains(where: { club in
-            club.name == self.club?.clubName })
+            club == self.club?.clubName })
     }
-    
+
     func visitedWorkouts(for userId: String?) -> Int {
         guard let userId else {
             print("Invalid userId")
@@ -92,103 +102,124 @@ final class ClubModel: ObservableObject {
         }
         return clubMember.visitedWorkouts
     }
-    
-    func triggerClubListeners() {
-        clubRepository.listenForChanges(for: club!.id) { [weak self] club in
-            guard let self = self else {
-                print("Unable to update club")
-                return
-            }
-            self.club = club
-        }
-    }
-    
-    func triggerRequestListeners() {
-        clubRepository.listenForRequestChanges(for: club!.clubName) { [weak self] requests in
-            guard let self = self else {
-                print("Unable to update userRequests")
-                return
-            }
-            self.userRequests = requests
-        }
-    }
-    
-    func fetchData(for clubID: String) async throws {
-        let fetchedClub = try await clubRepository.getClub(clubId: clubID)
+
+    @MainActor func triggerClubListeners() {
         Task {
-            await MainActor.run {
+            do {
+                for try await result in try await clubRepository.listenForChanges(for: club!.id) {
+                    club = result
+                }
+            } catch {
+                throw error
+            }
+        }
+    }
+
+    @MainActor func triggerRequestListeners() {
+        Task {
+            do {
+                for try await result in try await clubRepository.listenForRequestChanges(for: club!.id) {
+                    userRequests = result
+                }
+            } catch {
+                throw "Failed to update user requests!"
+            }
+        }
+    }
+
+    @MainActor func fetchData(for clubID: String) {
+        Task {
+            do {
+                let fetchedClub = try await clubRepository.getClub(clubId: clubID)
                 self.club = fetchedClub
                 self.state = .club(fetchedClub)
                 triggerClubListeners()
                 triggerRequestListeners()
+            } catch {
+                throw error
             }
         }
     }
     //Here
-    func fetchWorkouts() {
+    @MainActor func fetchWorkouts() {
         Task {
             do {
-                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: lastDocument, history: isHistory)
-                await MainActor.run {
-                    for workout in fetchedWorkouts {
-                        if !self.workouts.contains(where: { $0 == workout }) {
-                            self.workouts.append(workout)
-                        }
+                let (fetchedWorkouts, lastDocument) = try await clubRepository.getWorkouts(for: self.club!.clubName, lastDocument: clubWorkouts[key.rawValue]!.lastDocument, history: isHistory)
+                for workout in fetchedWorkouts {
+                    if !self.clubWorkouts[key.rawValue]!.workouts.contains(where: { $0 == workout }) {
+                        self.clubWorkouts[key.rawValue]!.workouts.append(workout)
                     }
-                    if let lastDocument {
-                        self.lastDocument = lastDocument
-                    }
-                    getUniqueDates(isHistory: isHistory)
-                    isTaskInProgress = false
                 }
+                if let lastDocument {
+                    self.clubWorkouts[key.rawValue]!.lastDocument = lastDocument
+                }
+                getUniqueDates(isHistory: isHistory)
+                isTaskInProgress = false
             } catch {
                 print("Error: \(error)")
             }
         }
     }
 
-    func deleteWorkout(at offsets: IndexSet) {
-        let deletedWorkouts = offsets.map { workouts[$0] }
-        
-        for deletedWorkout in deletedWorkouts {
+    @MainActor func deleteWorkout(id: String) {
+        Task {
             do {
-                try clubRepository.deleteWorkout(for: self.club!.clubName, with: deletedWorkout.workoutId)
+                try await clubRepository.deleteWorkout(for: self.club!.clubName, with: id)
+                clubWorkouts["future"]!.workouts.removeAll(where: {$0.workoutId == id})
             } catch {
-                print("Error deleting workout: \(error)")
+                throw "Error deleting workout: \(error)"
             }
         }
-    }
-    
-    func removeMember(at offsets: IndexSet) {
-        let membersToRemove = offsets.map { club!.members[$0] }
-        
-        for member in membersToRemove {
-            do {
-                try clubRepository.remove(user: member, from: self.club!)
-            } catch {
-                print("Error removing user from club: \(error)")
-            }
-        }
-    }
-    
-    func sendJoinRequest(for clubId: String, request: ClubRequestModel) throws {
-        try clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
-    }
-    
-    func accept(request: ClubRequestModel) throws {
-        try clubRepository.accept(request: request, from: club!)
-        let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
-        userRequests[index].status = RequestStatus.accepted.rawValue
-        userRequests.remove(at: index)
-    }
-    
-    func reject(request: ClubRequestModel) throws {
-        try clubRepository.reject(request: request, from: club!)
-        let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
-        userRequests.remove(at: index)
     }
 
-    func updateClubPicture() {
+    @MainActor func remove(member: ClubUserModel) {
+        Task {
+            do {
+                try await clubRepository.remove(user: member, from: self.club!)
+                club!.members.removeAll(where: { $0.userID == member.userID })
+            } catch {
+                throw "Error removing user from club: \(error)"
+            }
+        }
+    }
+
+    @MainActor func sendJoinRequest(for clubId: String, request: ClubRequestModel) {
+        Task {
+            do {
+                try await clubRepository.sendJoinRequest(for: clubId, from: request.userID, with: request.userName)
+            } catch {
+                throw error
+            }
+        }
+    }
+
+    @MainActor func accept(request: ClubRequestModel) {
+        Task {
+            do {
+                try await clubRepository.accept(request: request, from: club!)
+                let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
+                userRequests[index].status = RequestStatus.accepted.rawValue
+                userRequests.remove(at: index)
+            } catch {
+                throw error
+            }
+        }
+
+    }
+
+    @MainActor func reject(request: ClubRequestModel) {
+        Task {
+            do {
+                try await clubRepository.reject(request: request, from: club!)
+                let index = userRequests.firstIndex(where: {newRequest in newRequest.requestID == request.requestID})!
+                userRequests.remove(at: index)
+            } catch {
+                throw error
+            }
+        }
+    }
+
+    @MainActor func updateClubPicture() {
         guard let club else {
             return
         }
@@ -199,7 +230,7 @@ final class ClubModel: ObservableObject {
             guard let data = try await selectedItem.loadTransferable(type: Data.self) else { return }
             let returnedData = try await storageRepository.saveImage(data: data, name: club.clubName)
             let url = try await storageRepository.getUrlFromImage(path: returnedData.path)
-            try clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
+            try await clubRepository.updateClubPicture(clubID: club.clubName, pictureUrl: url.absoluteString)
         }
     }
 }

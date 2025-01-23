@@ -10,8 +10,8 @@ import GoogleSignIn
 import GoogleSignInSwift
 
 struct LoginView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject private var loginModel = LoginModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @State private var loginModel = LoginModel()
 
     var body: some View {
         GeometryReader { geometry in
@@ -98,7 +98,7 @@ struct LoginView: View {
 
 #Preview {
     NavigationStack {
-        LoginView().environmentObject({ () -> CurrentUser in
+        LoginView().environment({ () -> CurrentUser in
             let envObj = CurrentUser()
             envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
             return envObj

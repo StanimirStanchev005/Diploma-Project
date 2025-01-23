@@ -8,13 +8,14 @@
 import Foundation
 import FirebaseFirestore
 
-final class PaywallModel: ObservableObject {
-    @Published var isStandardChosen = false
-    @Published var isGoldChosen = false
-    @Published var isDiamondChosen = false
-    @Published var isAlertShown = false
-    @Published var errorDowngradingPlan = false
-    @Published var upgradeSuccess = false
+@MainActor
+@Observable final class PaywallModel {
+    var isStandardChosen = false
+    var isGoldChosen = false
+    var isDiamondChosen = false
+    var isAlertShown = false
+    var errorDowngradingPlan = false
+    var upgradeSuccess = false
         
     private var userRepository: UserRepository
     
@@ -71,11 +72,13 @@ final class PaywallModel: ObservableObject {
             errorDowngradingPlan = true
             return
         }
-        do {
-            try userRepository.upgrade(plan: plan, for: user.userID)
-            upgradeSuccess = true
-        } catch {
-            print("Error upgrading plan: \(error)")
+        Task {
+            do {
+                try await userRepository.upgrade(plan: plan, for: user.userID)
+                upgradeSuccess = true
+            } catch {
+                print("Error upgrading plan: \(error)")
+            }
         }
     }
 }

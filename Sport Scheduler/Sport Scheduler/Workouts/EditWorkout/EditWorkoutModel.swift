@@ -8,19 +8,21 @@
 import Foundation
 import FirebaseFirestore
 
-final class EditWorkoutModel: ObservableObject {
-    
+final class EditWorkoutModel {
+
     private var clubRepository: ClubRepository
     
     init(clubRepository: ClubRepository = FirestoreClubRepository()) {
         self.clubRepository = clubRepository
     }
     
-    func updateWorkout(for clubId: String, with workout: Workout) throws {
-        do {
-            try clubRepository.updateWorkout(for: clubId, with: workout)
-        } catch {
-            throw error
+    @MainActor func updateWorkout(for clubId: String, with workout: Workout) {
+        Task {
+            do {
+                try await clubRepository.updateWorkout(for: clubId, with: workout)
+            } catch {
+                throw error
+            }
         }
     }
 }

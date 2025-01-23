@@ -7,54 +7,54 @@
 
 import SwiftUI
 import PhotosUI
+@preconcurrency import CachedAsyncImage
 
 struct ClubHeader: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @ObservedObject var clubModel: ClubModel
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @Binding var clubModel: ClubModel
     let isOwner: Bool
     let isJoined: Bool
 
-    init(clubModel: ClubModel, isOwner: Bool = false, isJoined: Bool = false) {
-        self.clubModel = clubModel
+    init(clubModel: Binding<ClubModel>, isOwner: Bool = false, isJoined: Bool = false) {
+        self._clubModel = clubModel
         self.isOwner = isOwner
         self.isJoined = isJoined
     }
 
+    var cachedImage: some View {
+        CachedAsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
+            switch phase {
+            case .success(let image):
+                image
+                    .resizable()
+                    .frame(width: 100)
+                    .clipShape(Circle())
+                    .frame(width: 100, height: 100)
+                    .padding()
+            case .failure(_):
+                Image(systemName: "person.3.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(.lightBackground)
+                    .frame(width: 100, height: 100)
+                    .padding()
+            default:
+                ProgressView()
+                    .controlSize(.large)
+                    .frame(width: 100, height: 100)
+                    .padding()
+            }
+        }
+    }
+
     var body: some View {
         VStack(spacing: 10) {
-            PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) {
-                AsyncImage(url: URL(string: clubModel.club?.picture ?? "")) { phase in
-                    switch phase {
-                    case .success(let image):
-                        image
-                            .resizable()
-                            .frame(width: 100)
-                            .clipShape(Circle())
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    case .empty:
-                        Image(systemName: "person.3.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(.lightBackground)
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    case .failure(_):
-                        Image(systemName: "person.3.fill")
-                            .resizable()
-                            .scaledToFit()
-                            .foregroundStyle(.lightBackground)
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    default:
-                        ProgressView()
-                            .controlSize(.large)
-                            .frame(width: 100, height: 100)
-                            .padding()
-                    }
-                }
+            ZStack {
+                cachedImage
+                PhotosPicker(selection: $clubModel.selectedItem, matching: .images, photoLibrary: .shared()) { Color.black.opacity(0) }
+                    .disabled(!isOwner)
             }
-                .disabled(!isOwner)
+            .frame(width: 100, height: 100)
                 HStack(spacing: 10) {
                     Text("Members: \(clubModel.club?.members.count ?? 0)")
                         .font(.headline)
@@ -64,7 +64,7 @@ struct ClubHeader: View {
                     }
                 }
 
-                Text(clubModel.club?.description ?? "")
+            Text(clubModel.club?.description ?? "")
                     .multilineTextAlignment(.center)
                     .font(.title3)
                     .padding([.leading, .trailing], 15)
@@ -73,16 +73,16 @@ struct ClubHeader: View {
 
                 if isOwner {
                     HStack(spacing: 10) {
-                        NavigationLink("History", destination: WorkoutsHistoryView(clubModel: clubModel, isOwner: isOwner))
+                        NavigationLink("History", destination: WorkoutsHistoryView(clubModel: $clubModel, isOwner: isOwner))
                             .foregroundStyle(.lightBackground)
                             .tint(.gray.opacity(0.2))
                             .buttonStyle(.borderedProminent)
-                        NavigationLink("Requests (\(clubModel.userRequests.count))", destination: ClubRequestsView(clubModel: clubModel))
+                        NavigationLink("Requests (\(clubModel.userRequests.count))", destination: ClubRequestsView(clubModel: $clubModel))
                             .foregroundStyle(.lightBackground)
                             .tint(.gray.opacity(0.2))
                             .buttonStyle(.borderedProminent)
                             .frame(maxWidth: 130)
-                        NavigationLink("Members", destination: ClubMembersView(clubModel: clubModel))
+                        NavigationLink("Members", destination: ClubMembersView(clubModel: $clubModel))
                             .foregroundStyle(.lightBackground)
                             .tint(.gray.opacity(0.2))
                             .buttonStyle(.borderedProminent)
@@ -90,7 +90,7 @@ struct ClubHeader: View {
                     }
                     .padding(10)
                 } else if isJoined {
-                    NavigationLink("History", destination: WorkoutsHistoryView(clubModel: clubModel, isOwner: isOwner))
+                    NavigationLink("History", destination: WorkoutsHistoryView(clubModel: $clubModel, isOwner: isOwner))
                         .foregroundStyle(.lightBackground)
                         .tint(.gray.opacity(0.2))
                         .buttonStyle(.borderedProminent)
@@ -105,7 +105,7 @@ struct ClubHeader: View {
         let currentUser = CurrentUser()
         currentUser.user = DBUser(userID: "123", name: "spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
         let clubModel = ClubModel()
-        clubModel.club = Club(clubName: "Levski", description: "Blue", category: "Football", ownerId: "1234")
-        return ClubHeader(clubModel: clubModel, isOwner: true)
-            .environmentObject(currentUser)
+        clubModel.club = Club(ownerId: "1234", clubName: "Levski", description: "Blue", category: "Football")
+        return ClubHeader(clubModel: .constant(clubModel), isOwner: true)
+            .environment(currentUser)
     }

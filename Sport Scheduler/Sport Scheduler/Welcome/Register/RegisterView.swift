@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject private var registerModel = RegisterModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @State private var registerModel = RegisterModel()
 
     var body: some View {
         GeometryReader { geometry in
@@ -103,7 +103,7 @@ struct RegisterView: View {
 
 #Preview {
     NavigationStack {
-        RegisterView().environmentObject({ () -> CurrentUser in
+        RegisterView().environment({ () -> CurrentUser in
             let envObj = CurrentUser()
             envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
             return envObj

@@ -8,24 +8,23 @@
 import SwiftUI
 
 struct WorkoutsView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject var workoutsModel = WorkoutsModel()
-    
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    @State var workoutsModel = WorkoutsModel()
+
     var body: some View {
         NavigationStack {
             VStack {
                 if currentUser.user!.joinedClubs.isEmpty {
                     VStack {
                         Spacer()
-                        Text("Joined club workouts will appear here")
-                            .font(.system(size: 20))
+                        ContentUnavailableView("Join a Club", systemImage: "figure.strengthtraining.traditional", description: Text("Joined club workouts will appear here"))
                         Spacer()
                     }
                 } else {
                     ScrollView(.horizontal) {
                         Picker("Club", selection: $workoutsModel.selectedClub) {
-                            ForEach(currentUser.user?.joinedClubs ?? [], id:\.self.name) { club in
-                                Text(club.name)
+                            ForEach(currentUser.user?.joinedClubs ?? [], id:\.self) { club in
+                                Text(club)
                             }
                         }
                         .padding(.horizontal)
@@ -34,17 +33,23 @@ struct WorkoutsView: View {
                     }
                     List {
                         if workoutsModel.isTaskInProgress {
-                            ProgressView()
-                                .controlSize(.large)
-                            Text("Loading...")
+
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                Spacer()
+                                    .controlSize(.large)
+
+                            }
+
                         } else if workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workouts.isEmpty && !workoutsModel.isTaskInProgress {
-                           ContentUnavailableView("No upcomming workouts", systemImage: "sofa", description: Text("Feel free to relax"))
+                            ContentUnavailableView("No upcomming workouts", systemImage: "sofa", description: Text("Feel free to relax"))
                         } else {
                             ForEach(workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workoutDates, id:\.self) { date in
                                 Section {
                                     ForEach(workoutsModel.filteredWorkouts(on: date), id:\.self.workoutId) { workout in
                                         WorkoutRow(title: workout.title, description: workout.description, participants: workout.participants, date: workout.date)
-                                        
+
                                         if date == workoutsModel.clubWorkouts[workoutsModel.selectedClub]!.workoutDates.last {
                                             if workout == workoutsModel.filteredWorkouts(on: date).last {
                                                 HStack {
@@ -72,7 +77,7 @@ struct WorkoutsView: View {
             .navigationTitle("Workouts")
         }
         .onAppear {
-            guard let first = currentUser.user?.joinedClubs.first?.name else {
+            guard let first = currentUser.user?.joinedClubs.first else {
                 return
             }
             workoutsModel.selectedClub = first
@@ -87,10 +92,10 @@ struct WorkoutsView: View {
 
 #Preview {
     NavigationStack {
-        WorkoutsView().environmentObject({ () -> CurrentUser in
+        WorkoutsView().environment({ () -> CurrentUser in
             let envObj = CurrentUser()
             envObj.user = DBUser(userID: "123", name: "Spas", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
-            envObj.user!.joinedClubs.append(UserClubModel(name: "Levski", picture: ""))
+            envObj.user!.joinedClubs.append("Levski")
             return envObj
         }() )
     }

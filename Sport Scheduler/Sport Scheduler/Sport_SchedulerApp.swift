@@ -13,13 +13,12 @@ import FirebaseFirestore
 @main
 struct Sport_SchedulerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var user: CurrentUser = CurrentUser()
+    @State var user: CurrentUser = CurrentUser()
         
     var body: some Scene {
         WindowGroup {
-            
             ContentView()
-                .environmentObject(user)
+                .environment(user)
         }
     }
 }

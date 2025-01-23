@@ -7,32 +7,23 @@
 
 import Foundation
 
+struct Club: Codable, Identifiable {
 
-final class Club: Identifiable, Codable {
-    var id: String {
-        clubName
-    }
     let ownerId: String
     var clubName: String
     var description: String
     var category: String
     var picture = "ClubPlaceholder"
     var members: [ClubUserModel] = []
-    
-    init(clubName: String, description: String, category: String, ownerId: String) {
+    var id: String {
+        clubName
+    }
+
+    init(ownerId: String, clubName: String, description: String, category: String) {
+        self.ownerId = ownerId
         self.clubName = clubName
         self.description = description
         self.category = category
-        self.ownerId = ownerId
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case ownerId
-        case clubName
-        case description
-        case category
-        case picture
-        case members
     }
 }
 

@@ -9,8 +9,8 @@ import SwiftUI
 import CoreImage.CIFilterBuiltins
 
 struct ProfileView: View {
-    @EnvironmentObject var currentUser: CurrentUser
-    @StateObject private var profileModel = ProfileModel()
+    @Environment(CurrentUser.self) private var currentUser: CurrentUser
+    private let profileModel = ProfileModel()
     @State private var isPaywallTriggered = false
     @State private var showUserPlanDetails = false
     private let context = CIContext()
@@ -63,7 +63,7 @@ struct ProfileView: View {
                     Button("Sign Out", role: .destructive) {
                         Task {
                             do {
-                                try profileModel.signOut()
+                                try await profileModel.signOut()
                                 withAnimation(.easeInOut) {
                                     currentUser.state = .noUser
                                 }
@@ -102,7 +102,7 @@ struct ProfileView: View {
 
 #Preview {
     NavigationStack {
-        ProfileView().environmentObject({ () -> CurrentUser in
+        ProfileView().environment({ () -> CurrentUser in
             let envObj = CurrentUser()
             envObj.user = DBUser(userID: "123", name: "Stanimir Stanchev", email: "spas@mail.bg", photoUrl: "", dateCreated: Date())
             return envObj

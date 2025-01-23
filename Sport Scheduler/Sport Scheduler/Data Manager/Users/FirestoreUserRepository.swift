@@ -6,28 +6,41 @@
 //
 
 import Foundation
-import FirebaseFirestore
+@preconcurrency import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class FirestoreUserRepository: UserRepository {
+actor FirestoreUserRepository: UserRepository {
     private let db = Firestore.firestore()
+
+
     
-    func listenForUserChanges(for userID: String, onSuccess: @escaping (DBUser) -> Void) {
-        db.collection("users").document(userID).addSnapshotListener { userSnapshot, error in
-            guard let userSnapshot else {
-                print("Error listening to user changes")
-                return
+    func listenForUserChanges(for userID: String) async throws -> AsyncThrowingStream<DBUser, Error> {
+        AsyncThrowingStream<DBUser, Error> { continuation in
+            let listener = db.collection("users").document(userID).addSnapshotListener { userSnapshot, error in
+                if let error {
+                    continuation.finish(throwing: error)
+                    return
+                }
+                guard let userSnapshot else {
+                    continuation.finish(throwing: "Error listening to user changes")
+                    return
+                }
+                do {
+                    let user = try userSnapshot.data(as: DBUser.self)
+                    continuation.yield(user)
+                    continuation.finish()
+                } catch let error {
+                    continuation.finish(throwing: error)
+                }
             }
-            do {
-                let user = try userSnapshot.data(as: DBUser.self)
-                onSuccess(user)
-            } catch {
-                print("Error decoding user")
+
+            continuation.onTermination = { _ in
+                listener.remove()
             }
         }
     }
     
-    func create(user: DBUser) throws {
+    func create(user: DBUser) async throws {
         try db.collection("users").document(user.userID).setData(from: user, merge: false)
     }
     
@@ -46,19 +59,17 @@ class FirestoreUserRepository: UserRepository {
         }
     }
     
-    func save(user: DBUser) throws {
+    func save(user: DBUser) async throws {
         try db.collection("users").document(user.userID).setData(from: user, merge: true)
     }
     
-    func addClub(for userID: String, clubName: String, clubPicture: String) throws {
-        let club = ["name": clubName,
-                    "picture": clubPicture]
-        db.collection("users").document(userID).updateData([
-            "ownedClubs": FieldValue.arrayUnion([club])
+    func addClub(for userID: String, clubName: String) async throws {
+        try await db.collection("users").document(userID).updateData([
+            "ownedClubs": FieldValue.arrayUnion([clubName])
         ])
     }
     
-    func upgrade(plan: PremiumPlan, for userID: String) throws {
+    func upgrade(plan: PremiumPlan, for userID: String) async throws {
         let upgradePlan = [
             "title": plan.title,
             "tier": plan.tier,
@@ -66,7 +77,7 @@ class FirestoreUserRepository: UserRepository {
             "price": plan.price
         ] as [String : Any]
         
-        db.collection("users").document(userID).updateData([
+        try await db.collection("users").document(userID).updateData([
             "subscriptionPlan": upgradePlan
         ])
     }
